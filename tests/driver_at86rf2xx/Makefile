@@ -21,8 +21,8 @@ ifneq (,$(filter mulle,$(BOARD)))
   DRIVER := at86rf212b
 endif
 
-# use the at86rf231 as fallback device
-DRIVER ?= at86rf231
+# use the at86rf233 as fallback device
+DRIVER ?= at86rf233
 
 # include the selected driver
 USEMODULE += $(DRIVER)

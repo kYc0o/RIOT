@@ -57,6 +57,14 @@ extern "C" {
 #define XTIMER_BACKOFF              (40)
 /** @} */
 
+#define AT86RF2XX_PARAMS_BOARD      {.spi = SPI_0, \
+                                     .spi_speed = SPI_SPEED_5MHZ, \
+                                     .cs_pin = ARDUINO_PIN_49, \
+                                     .int_pin = ARDUINO_PIN_46, \
+                                     .sleep_pin = ARDUINO_PIN_47, \
+                                     .reset_pin = ARDUINO_PIN_48}
+
+
 /**
  * @brief Initialize board specific hardware, including clock, LEDs and std-IO
  */
