@@ -28,6 +28,9 @@
 #include "periph/timer.h"
 #include "periph_conf.h"
 
+#define ENABLE_DEBUG    (1)
+#include "debug.h"
+
 /**
  * @brief   All timers have three channels
  */
@@ -40,6 +43,11 @@
 
 /**
  * @brief   Possible prescaler values, encoded as 2 ^ val
+ * 0 = CLOCK_CORECLOCK/1
+ * 3 = CLOCK_CORECLOCK/8
+ * 6 = CLOCK_CORECLOCK/64
+ * 8 = CLOCK_CORECLOCK/256
+ * 10 = CLOCK_CORECLOCK/1024
  */
 static const uint8_t prescalers[] = { 0, 3, 6, 8, 10 };
 
@@ -86,6 +94,7 @@ static ctx_t *ctx[] = {{ NULL }};
  */
 int timer_init(tim_t tim, unsigned long freq, timer_cb_t cb, void *arg)
 {
+    DEBUG("timer.c: freq = %ld\n", freq);
     uint8_t pre = 0;
 
     /* make sure given device is valid */
@@ -100,6 +109,7 @@ int timer_init(tim_t tim, unsigned long freq, timer_cb_t cb, void *arg)
         }
     }
     if (pre == PRESCALE_NUMOF) {
+        DEBUG("timer.c: prescaling failed!\n");
         return -1;
     }
 
@@ -116,6 +126,7 @@ int timer_init(tim_t tim, unsigned long freq, timer_cb_t cb, void *arg)
 
     /* enable timer with calculated prescaler */
     ctx[tim].dev->CRB = (pre + 1);
+    DEBUG("timer.c: prescaler set at %d\n", pre + 1);
 
     return 0;
 }
