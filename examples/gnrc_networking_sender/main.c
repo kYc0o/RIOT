@@ -11,7 +11,7 @@
  * @{
  *
  * @file
- * @brief       Demonstrating the sending and receiving of UDP data
+ * @brief       Example application for demonstrating the RIOT network stack
  *
  * @author      Hauke Petersen <hauke.petersen@fu-berlin.de>
  *
@@ -19,14 +19,26 @@
  */
 
 #include <stdio.h>
-#include <inttypes.h>
+#include <stdbool.h>
 
+#include "shell.h"
+#include "msg.h"
 #include "net/gnrc.h"
-#include "net/gnrc/ipv6.h"
+#include "net/ipv6.h"
+#include "net/gnrc/rpl.h"
 #include "net/gnrc/udp.h"
-#include "net/gnrc/pktdump.h"
 #include "timex.h"
 #include "xtimer.h"
+
+#define MAIN_QUEUE_SIZE     (8)
+static msg_t _main_msg_queue[MAIN_QUEUE_SIZE];
+
+extern int udp_cmd(int argc, char **argv);
+
+static const shell_command_t shell_commands[] = {
+        { "udp", "send data over UDP and listen on UDP ports", udp_cmd },
+        { NULL, NULL, NULL }
+};
 
 static gnrc_netreg_entry_t server = { NULL, GNRC_NETREG_DEMUX_CTX_ALL, KERNEL_PID_UNDEF };
 
@@ -36,6 +48,8 @@ static void send(char *addr_str, char *port_str, char *data, unsigned int num,
 {
     uint16_t port;
     ipv6_addr_t addr;
+    uint32_t before, after, total = 0;
+
 
     /* parse destination address */
     if (ipv6_addr_from_str(&addr, addr_str) == NULL) {
@@ -50,6 +64,8 @@ static void send(char *addr_str, char *port_str, char *data, unsigned int num,
     }
 
     for (unsigned int i = 0; i < num; i++) {
+        before = xtimer_now();
+
         gnrc_pktsnip_t *payload, *udp, *ip;
         /* allocate payload */
         payload = gnrc_pktbuf_add(NULL, data, strlen(data), GNRC_NETTYPE_UNDEF);
@@ -77,10 +93,17 @@ static void send(char *addr_str, char *port_str, char *data, unsigned int num,
             gnrc_pktbuf_release(ip);
             return;
         }
-        printf("Success: send %u byte to [%s]:%u\n", (unsigned)payload->size,
+
+        after = xtimer_now();
+
+        total += after - before;
+
+        printf("Success %d: send %u byte to [%s]:%u\n", i, (unsigned)payload->size,
                addr_str, port);
         xtimer_usleep(delay);
     }
+
+    printf("total active time: %d\n", (unsigned int)total);
 }
 
 static void start_server(char *port_str)
@@ -164,5 +187,35 @@ int udp_cmd(int argc, char **argv)
     else {
         puts("error: invalid command");
     }
+    return 0;
+}
+
+int main(void)
+{
+    /* we need a message queue for the thread running the shell in order to
+     * receive potentially fast incoming networking packets */
+    msg_init_queue(_main_msg_queue, MAIN_QUEUE_SIZE);
+    /*msg_t msg;*/
+
+    puts("RIOT network stack example application");
+
+    gnrc_rpl_init(7);
+
+    xtimer_sleep(5);
+
+    char data[65];
+
+    sprintf(data, "Message buffer with 64 bytes long abcbdefghijklmnopqrstuvwxy 000");
+
+    send("2001::1", "1234", data, 50, 2 * 1000000);
+
+    printf("Finished!\n");
+
+    /* start shell */
+    /*puts("All up, running the shell now");
+    char line_buf[SHELL_DEFAULT_BUFSIZE];
+    shell_run(shell_commands, line_buf, SHELL_DEFAULT_BUFSIZE);*/
+
+    /* should be never reached */
     return 0;
 }
