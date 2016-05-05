@@ -29,6 +29,7 @@
 #include "net/gnrc/udp.h"
 #include "timex.h"
 #include "xtimer.h"
+#include "ps.h"
 
 #define MAIN_QUEUE_SIZE     (8)
 static msg_t _main_msg_queue[MAIN_QUEUE_SIZE];
@@ -102,6 +103,7 @@ static void send(char *addr_str, char *port_str, char *data, unsigned int num,
                addr_str, port);
         xtimer_usleep(delay);
     }
+    ps();
 
     printf("total active time: %d\n", (unsigned int)total);
 }
