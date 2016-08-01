@@ -42,8 +42,9 @@ typedef struct {
 } _event_tap_t;
 
 void event_post(event_sink_t *sink, event_t *event);
+event_t *event_wait(event_sink_t *sink);
+
 void event_source_attach(event_source_t *source, event_sink_t *sink, event_tap_t *tap);
 void event_source_trigger(event_source_t *source);
-event_t *event_wait(event_sink_t *sink);
 
 #endif /* EVENT_H */
