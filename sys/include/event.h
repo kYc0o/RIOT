@@ -23,12 +23,12 @@ struct event {
 typedef struct {
     clist_node_t event_list;
     thread_t *waiter;
-} event_sink_t;
+} event_queue_t;
 
 struct event_tap {
     clist_node_t list_node;
     event_tap_t *next;
-    event_sink_t *sink;
+    event_queue_t *queue;
 };
 
 struct event_source {
@@ -41,10 +41,10 @@ typedef struct {
     event_t event;
 } _event_tap_t;
 
-void event_post(event_sink_t *sink, event_t *event);
-event_t *event_wait(event_sink_t *sink);
+void event_post(event_queue_t *queue, event_t *event);
+event_t *event_wait(event_queue_t *queue);
 
-void event_source_attach(event_source_t *source, event_sink_t *sink, event_tap_t *tap);
+void event_source_attach(event_source_t *source, event_queue_t *queue, event_tap_t *tap);
 void event_source_trigger(event_source_t *source);
 
 #endif /* EVENT_H */
