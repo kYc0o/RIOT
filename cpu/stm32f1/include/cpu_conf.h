@@ -36,12 +36,67 @@ extern "C" {
 #endif
 
 /**
+ * @brief   Flash page configuration
+ * @{
+ */
+#define FLASHPAGE_SIZE      (2048U)
+
+#if defined(CPU_MODEL_STM32F103CB) || defined(CPU_MODEL_STM32F103RB)
+#define FLASHPAGE_NUMOF     (64U)
+#elif defined(CPU_MODEL_STM32F103RE)
+#define FLASHPAGE_NUMOF     (256U)
+#endif
+/** @} */
+
+/*
+ * @brief   Offset to reset handler on VTOR
+ */
+#define OTA_RESET_VECTOR     0x4
+
+#if defined(CPU_MODEL_STM32F103RE)
+/*
+ * @brief   Flash partitioning for OTA updates
+ * @{
+ */
+#define MAX_OTA_SLOTS               (2)
+#define OTA_SLOT_PAGES              (120)
+#define OTA_SLOT_1                  (0x08004000)
+#define OTA_SLOT_1_END              (0x0803FFFF)
+#define OTA_SLOT_1_PAGE             (8)
+#define OTA_SLOT_2                  (0x08040000)
+#define OTA_SLOT_2_END              (0x0807BFFF)
+#define OTA_SLOT_2_PAGE             (128)
+
+#if OTA
+    #if OTA_SLOT == 1
+    #define CURRENT_FIRMWARE_ADDR       OTA_SLOT_1
+    #define CURRENT_FIRMWARE_PAGE       OTA_SLOT_1_PAGE
+    #define CURRENT_FIURMWARE_END       OTA_SLOT_1_END
+    #endif
+
+    #if OTA_SLOT == 2
+    #define CURRENT_FIRMWARE_ADDR       OTA_SLOT_2
+    #define CURRENT_FIRMWARE_PAGE       OTA_SLOT_2_PAGE
+    #define CURRENT_FIURMWARE_END       OTA_SLOT_2_END
+#endif
+
+#endif /* OTA */
+
+#endif /* defined(CPU_MODEL_STM32F103RE) */
+/** @} */
+
+/**
  * @brief   ARM Cortex-M specific CPU configuration
  * @{
  */
-#define CPU_DEFAULT_IRQ_PRIO            (1U)
-#define CPU_IRQ_NUMOF                   (60U)
-#define CPU_FLASH_BASE                  FLASH_BASE
+#define CPU_DEFAULT_IRQ_PRIO         (1U)
+#define CPU_IRQ_NUMOF                (60U)
+
+#if OTA
+#define CPU_FLASH_BASE               (CURRENT_FIRMWARE_ADDR + OTA_METADATA_SPACE)
+#else
+#define CPU_FLASH_BASE               FLASH_BASE
+#endif
 /** @} */
 
 /**
