@@ -64,19 +64,26 @@
 #error "PLL multiplier cannot be set to 1 or lower"
 #endif
 
+#if !OTA
 static void clk_init(void);
+#endif
 
 void cpu_init(void)
 {
     /* initialize the Cortex-M core */
     cortexm_init();
+
     /* initialize system clocks */
+#if !OTA
     clk_init();
+#endif
+
 }
 
 /**
  * @brief Configure the clock system of the stm32f1
  */
+#if !OTA
 static void clk_init(void)
 {
     /* Reset the RCC clock configuration to the default reset state(for debug purpose) */
@@ -128,3 +135,4 @@ static void clk_init(void)
     while ((RCC->CR & RCC_CR_HSIRDY) != 0) {}
 #endif
 }
+#endif
