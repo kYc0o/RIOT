@@ -100,6 +100,10 @@ ifneq (,$(filter sema,$(USEMODULE)))
     DIRS += sema
 endif
 
+ifneq (,$(filter fota,$(USEMODULE)))
+    DIRS += fota
+endif
+
 DIRS += $(dir $(wildcard $(addsuffix /Makefile, ${USEMODULE})))
 
 include $(RIOTBASE)/Makefile.base
