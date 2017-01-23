@@ -580,6 +580,12 @@ ifneq (,$(filter random,$(USEMODULE)))
     endif
 endif
 
+ifneq (,$(filter fw_slots,$(USEMODULE)))
+  FEATURES_REQUIRED += periph_flashpage
+  USEMODULE += hashes
+  USEPKG += tweetnacl
+endif
+
 # include package dependencies
 -include $(USEPKG:%=$(RIOTPKG)/%/Makefile.dep)
 
