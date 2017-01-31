@@ -13,10 +13,10 @@ BOARD_INSUFFICIENT_MEMORY := chronos msb-430 msb-430h
 #USEMODULE += xbee
 
 ## set default UART to use in case none was defined
-#XBEE_UART ?= "1"
+#XBEE_PARAM_UART = "1"
 
 ## export UART to params file
-#CFLAGS += -DXBEE_UART=$(XBEE_UART)
+#CFLAGS += -DXBEE_PARAM_UART=$(XBEE_PARAM_UART)
 
 # Comment this out to disable code in RIOT that does safety checking
 # which is not needed in a production environment but helps in the
