@@ -40,8 +40,8 @@ extern "C" {
  * @brief Use the UART 0 for STDIO on this board, if the XBee socket is not
  *        being used
  */
-#ifdef XBEE_UART
-#if XBEE_UART == 0
+#ifdef XBEE_PARAM_UART
+#if XBEE_PARAM_UART == 0
 #define UART_STDIO_DEV       (UART_DEV(1))
 #else
 #define UART_STDIO_DEV       (UART_DEV(0))
@@ -91,10 +91,14 @@ extern "C" {
 #define MUX0_PORT                    PORTB
 #define MUX1_PORT                    PORTB
 #define MUX_USB_XBEE_PORT            PORTD
+#define XBEE_PW_PORT                 PORTA
+#define XBEE_MON_PORT                XBEE_PW_PORT
 #define MUX_PW_PIN                   (1 << 7)
 #define MUX0_PIN                     (1 << 6)
 #define MUX1_PIN                     (1 << 7)
 #define MUX_USB_XBEE_PIN             (1 << 5)
+#define XBEE_PW_PIN                  (1 << 1)
+#define XBEE_MON_PIN                 (1 << 7)
 
 #define MUX_PW_ENABLE_PORT           DDRD |= (1 << DDD7);
 #define MUX_PW_ON                    MUX_PW_PORT |= MUX_PW_PIN
@@ -111,6 +115,14 @@ extern "C" {
 #define MUX_USB_XBEE_ENABLE_PORT     DDRD |= (1 << DDD5)
 #define MUX_USB_XBEE_ON              MUX_USB_XBEE_PORT |= MUX_USB_XBEE_PIN
 #define MUX_USB_XBEE_OFF             MUX_USB_XBEE_PORT &= ~MUX_USB_XBEE_PIN
+
+#define XBEE_PW_ENABLE_PORT          DDRA |= (1 << DDA1)
+#define XBEE_PW_ON                   XBEE_PW_PORT |= XBEE_PW_PIN
+#define XBEE_PW_OFF                  XBEE_PW_PORT &= ~XBEE_PW_PIN
+
+#define XBEE_MON_ENABLE_PORT          DDRA |= (1 << DDA7)
+#define XBEE_MON_ON                   XBEE_MON_PORT |= XBEE_MON_PIN
+#define XBEE_MON_OFF                  XBEE_MON_PORT &= ~XBEE_MON_PIN
 
 /* Multiplexer settings to enable UART1 on the desired module
  *
@@ -146,7 +158,10 @@ extern "C" {
 #define SET_MUX_SOCKET0              MUX_PW_ENABLE_PORT; MUX_PW_ON; \
                                      MUX_USB_XBEE_ENABLE_PORT; \
                                      MUX_USB_XBEE_ON
-
+#define SET_XBEE_ON                  XBEE_PW_ENABLE_PORT; XBEE_PW_ON
+#define SET_XBEE_OFF                 XBEE_PW_ENABLE_PORT; XBEE_PW_OFF
+#define SET_XBEE_MON_ON              XBEE_MON_ENABLE_PORT; XBEE_MON_ON
+#define SET_XBEE_MON_OFF             XBEE_MON_ENABLE_PORT; XBEE_MON_OFF
 
 /** @} */
 
@@ -156,12 +171,12 @@ extern "C" {
  * This emulates a software triggered interrupt
  **/
 #define AVR_CONTEXT_SWAP_INIT do { \
-    DDRB |= (1 << PB5); \
+    DDRB |= (1 << PB4); \
     PCICR |= (1 << PCIE0); \
-    PCMSK0 |= (1 << PCINT5); \
+    PCMSK0 |= (1 << PCINT4); \
 } while (0)
 #define AVR_CONTEXT_SWAP_INTERRUPT_VECT  PCINT0_vect
-#define AVR_CONTEXT_SWAP_TRIGGER   PORTB ^= (1 << PB5)
+#define AVR_CONTEXT_SWAP_TRIGGER   PORTB ^= (1 << PB4)
 
 /**
  * @brief xtimer configuration values
