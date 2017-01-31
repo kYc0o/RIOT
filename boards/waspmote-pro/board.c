@@ -42,10 +42,13 @@ void board_init(void)
     /* initialize UART_1 on AUX1 */
     SET_MUX_AUX1_MODULE;
 
-#ifdef XBEE_UART
-#if XBEE_UART == 0
+#ifdef XBEE_PARAM_UART
+#if XBEE_PARAM_UART == 0
     /* initialize UART0 on SOCKET0 (XBee) */
     SET_MUX_SOCKET0;
+    /* Activate XBee */
+    SET_XBEE_ON;
+    SET_XBEE_MON_OFF;
 #else
     /* Initialize UART0 on USB */
     SET_MUX_USB_MODULE;
