@@ -68,14 +68,14 @@ extern "C" {
 
 #define MAX_FW_SLOTS               (2)
 #define FW_SLOT_PAGES              (120)
-#define BOOTLOADER_SPACE           (0x4000)
+#define BOOTLOADER_SPACE           (0x8000)
 #define FW_SLOT_SIZE               FLASHPAGE_SIZE * FW_SLOT_PAGES
 #define FW_SLOT_1                  FLASH_BASE + BOOTLOADER_SPACE
 #define FW_SLOT_1_END              FW_SLOT_1 + FW_SLOT_SIZE
-#define FW_SLOT_1_PAGE             (8)
+#define FW_SLOT_1_PAGE             (16)
 #define FW_SLOT_2                  FW_SLOT_1_END
 #define FW_SLOT_2_END              FW_SLOT_2 + FW_SLOT_SIZE
-#define FW_SLOT_2_PAGE             (128)
+#define FW_SLOT_2_PAGE             (136)
 
 #ifdef FW_SLOTS
     #if FW_SLOT == 1
