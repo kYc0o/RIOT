@@ -79,26 +79,38 @@ extern "C" {
  */
 #define VTOR_RESET_HANDLER     0x4
 
-#if defined(CPU_MODEL_STM32F401RE) || defined(CPU_MODEL_STM32F411RE)
+#if defined(CPU_MODEL_STM32F411RE) /* others not tested */
 /*
  * @brief   Flash partitioning for FW slots
  * @{
  */
 
 #ifndef FW_METADATA_SPACE
-#define FW_METADATA_SPACE          (0x100)
+#define FW_METADATA_SPACE           (0x100)
 #endif
 
-#define MAX_FW_SLOTS               (2)
-#define FW_SLOT_PAGES              (120)
-#define BOOTLOADER_SPACE           (0x4000)
-#define FW_SLOT_SIZE               FLASHPAGE_SIZE * FW_SLOT_PAGES
-#define FW_SLOT_1                  FLASH_BASE + BOOTLOADER_SPACE
-#define FW_SLOT_1_END              FW_SLOT_1 + FW_SLOT_SIZE
-#define FW_SLOT_1_PAGE             (8)
-#define FW_SLOT_2                  FW_SLOT_1_END
-#define FW_SLOT_2_END              FW_SLOT_2 + FW_SLOT_SIZE
-#define FW_SLOT_2_PAGE             (128)
+#define MAX_FW_SLOTS                (2)
+#define BOOTLOADER_SPACE            (0x4000)
+
+#if !defined(FLASH_SECTORS)         /* defined by Makefile.include of the CPU */
+#define FW_SLOT_PAGES               (120)
+#define FW_SLOT_SIZE                FLASHPAGE_SIZE * FW_SLOT_PAGES
+#define FW_SLOT_1                   FLASH_BASE + BOOTLOADER_SPACE
+#define FW_SLOT_1_END               FW_SLOT_1 + FW_SLOT_SIZE
+#define FW_SLOT_1_PAGE              (8)
+#define FW_SLOT_2                   FW_SLOT_1_END
+#define FW_SLOT_2_END               FW_SLOT_2 + FW_SLOT_SIZE
+#define FW_SLOT_2_PAGE              (128)
+#else
+#define FW_SLOT_1                   FLASH_BASE + BOOTLOADER_SPACE
+#define FW_SLOT_1_START_SECTOR      (1)
+#define FW_SLOT_1_SIZE              (0x1C000)
+#define FW_SLOT_1_END               FW_SLOT_1 + FW_SLOT_1_SIZE
+#define FW_SLOT_2                   FW_SLOT_1_END
+#define FW_SLOT_2_START_SECTOR      (5)
+#define FW_SLOT_2_SIZE              (0x20000)
+#define FW_SLOT_2_END               FW_SLOT_2 + FW_SLOT_2_SIZE
+#endif /* FLASHPAGE_SIZE */
 
 #ifdef FW_SLOTS
     #if FW_SLOT == 1
@@ -150,18 +162,56 @@ static inline uint32_t get_slot_page(uint8_t slot)
 {
     switch (slot) {
         case 1:
+#ifdef FLASH_PAGES
             return FW_SLOT_1_PAGE;
+#else
+            return FW_SLOT_1_START_SECTOR;
+#endif
             break;
 
         case 2:
+#ifdef FLASH_PAGES
             return FW_SLOT_2_PAGE;
+#else
+            return FW_SLOT_2_START_SECTOR;
+#endif
             break;
     }
 
     return 0;
 }
 
-#endif /* defined(CPU_MODEL_STM32F401RE) || defined(CPU_MODEL_STM32F411RE) */
+/**
+ * @brief Get size of a given slot
+ *
+ * @param[in] slot    FW slot
+ *
+ * @return            FW slot size
+ */
+static inline uint32_t get_slot_size(uint8_t slot)
+{
+    switch (slot) {
+        case 1:
+#ifdef FLASH_PAGES
+            return FW_SLOT_SIZE;
+#else
+            return FW_SLOT_1_SIZE;
+#endif
+            break;
+
+        case 2:
+#ifdef FLASH_PAGES
+            return FW_SLOT_SIZE;
+#else
+            return FW_SLOT_2_SIZE;
+#endif
+            break;
+    }
+
+    return 0;
+}
+
+#endif /* defined(CPU_MODEL_STM32F411RE) */
 /** @} */
 
 /**
