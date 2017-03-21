@@ -27,7 +27,7 @@
 int main(void)
 {
     uint8_t boot_slot = 0;
-    char *server_port = "8888";
+    //char *server_port = "8888";
 
     (void) puts("Welcome to RIOT bootloader!\n");
     (void) puts("Trying to boot the newest firmware version\n");
@@ -47,7 +47,7 @@ int main(void)
         (void) puts("No bootable slot found!\n");
     }
 
-    start_server(server_port);
+    //start_server(server_port);
 
     /* Should not happen */
     return 0;

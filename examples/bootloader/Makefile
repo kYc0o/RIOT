@@ -20,11 +20,12 @@ QUIET ?= 1
 
 # Use fw_slots module to manage images on ROM
 USEMODULE += fw_slots
+USEMODULE += fw_requests
 
 # Use ethos (ethernet over serial) for network communication and stdio over
 # UART
 GNRC_NETIF_NUMOF := 2
-USEMODULE += ethos gnrc_netdev2
+USEMODULE += ethos gnrc_netdev
 
 # ethos baudrate can be configured from make command
 ETHOS_BAUDRATE ?= 115200
