@@ -14,21 +14,18 @@
 
 #include <errno.h>
 
-#include "requests.h"
-#include "uip.h"
+#include "fw_requests.h"
+#include "net/ipv6/addr.h"
+#include "clist.h"
 
-#include "lib/list.h"
+clist_node_t art_to_file;
+clist_node_t requests_as_server;
 
-LIST(art_to_file);
-LIST(requests_as_server);
-
-static const char* reposotory_base_path = "kev-components";
-
+static const char* reposotory_base_path = "firmwares";
 int sockfd;
 
 /* create artifact list */
-static int
-fill_repository()
+static int fill_repository()
 {
 	FILE *fp;
 	char *line = NULL;
@@ -141,7 +138,7 @@ server_onArtifactRequest(const uip_ipaddr_t* source_address, const char* artifac
 	}
 
 	/* requesting the same */
-	if (req->state == SENDING_SUMMARY || req->state == WAITING_FOR_LOCATION) {
+	if (req->current_state == SENDING_SUMMARY || req->current_state == WAITING_FOR_LOCATION) {
 		/* send summary to the source */
 
 		if (is_artifact_location_known(req)) {
@@ -173,15 +170,15 @@ server_onChunkRequest(uint16_t session_id, uint16_t chunk_id)
 	char _reqSrc[16];
 
 	if (req != NULL && 
-			((req->state == SENDING_CHUNKS && req->current_packet <= chunk_id) ||
-					(req->state == SENDING_SUMMARY && req->current_packet == 0 && chunk_id == 0))  ) {
+			((req->current_state == SENDING_CHUNKS && req->current_packet <= chunk_id) ||
+					(req->current_state == SENDING_SUMMARY && req->current_packet == 0 && chunk_id == 0))  ) {
 
 		req->current_packet = chunk_id;
 
 		/* modifying the state */
-		req->state = SENDING_CHUNKS;
+		req->current_state = SENDING_CHUNKS;
 
-		printf("Session Id '%d', Chunk Id: '%d'. %d %d '%s'\n", session_id, chunk_id, req->state, req->current_packet, req->source_address);
+		printf("Session Id '%d', Chunk Id: '%d'. %d %d '%s'\n", session_id, chunk_id, req->current_state, req->current_packet, req->source_address);
 		/* read from the file */
 		uint8_t buf [REQUEST_PACKET_SIZE];
 		lseek(req->fd, chunk_id * REQUEST_PACKET_SIZE, SEEK_SET);
@@ -254,7 +251,7 @@ main (int argc, char *argv[])
 		return -1;
 	} 
 
-	/* loop for ever */
+	/* loop forever */
 	for (;;)
 	{
 		len = sizeof(cliaddr);
