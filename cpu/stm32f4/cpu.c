@@ -40,7 +40,9 @@
 #error "Please provide CLOCK_HSI or CLOCK_HSE in boards/NAME/includes/perhip_cpu.h"
 #endif
 
+#ifndef FW_SLOTS
 static void cpu_clock_init(void);
+#endif
 
 /**
  * @brief Initialize the CPU, set IRQ priorities
@@ -50,7 +52,10 @@ void cpu_init(void)
     /* initialize the Cortex-M core */
     cortexm_init();
     /* initialize the clock system */
+#ifndef FW_SLOTS
     cpu_clock_init();
+#endif
+
     /* trigger static peripheral initialization */
     periph_init();
 }
@@ -72,6 +77,7 @@ void cpu_init(void)
  * NOTE: currently there is not timeout for initialization of PLL and other locks
  *       -> when wrong values are chosen, the initialization could stall
  */
+#ifndef FW_SLOTS
 static void cpu_clock_init(void)
 {
     /* reset clock configuration register */
@@ -157,3 +163,4 @@ static void cpu_clock_init(void)
     while (RCC->CR & RCC_CR_HSIRDY) {}
 #endif
 }
+#endif
