@@ -28,8 +28,41 @@
 extern "C" {
 #endif
 
-#define REQUEST_PACKET_SIZE    (58)
-#define PORT                   (8888)
+#define REQUEST_PACKET_SIZE        (58)
+#define UDP_PORT                   (8888)
+#define MAX_REQUESTS               (20)
+
+/* a request may be in many states */
+enum state {
+    DONE,
+    WAITING_FOR_SUMMARY,
+    POSSIBLY_WAITING_FOR_SUMMARY,
+    RECEIVING_CHUNKS,
+    SENDING_SUMMARY,
+    SENDING_CHUNKS,
+    WAITING_FOR_LOCATION
+};
+
+/* the request serving protocol has many message types */
+enum message_type {
+    /* command types */
+    END_CHUNKS=2,
+    GET_ARTIFACT=3, // the message request an artifact
+    GET_CHUNK=4, // the message request a packet
+
+    /* response types */
+    RESPONSE_SUMMARY=5, // the message is a response to GET_ARTIFACT when the artifact is locally available
+    RESPONSE_CHUNK=6, // the message is a response to GET_CHUNK
+    RESPONSE_ACK_LOOKING_FOR_PACKET=7, // the message is a response to GET_ARTIFACT when the artifact must be requested to another server
+    GET_REPO_ADDR=8, // Get repository from parent
+    RESPONSE_REPO_ADDR=9
+};
+
+enum message_processing_error_code {
+    NONE = 0,
+    WRONG_CRC = 1,
+    UNKNOWN_MESSAGE_TYPE = 2
+};
 
 /* mapping from artifact name to file name*/
 struct map_entry {
@@ -43,7 +76,7 @@ struct firmware_request {
     /* if we want to put them on a list */
     struct firmware_request* next;
     /* processing state */
-    enum state state;
+    enum state current_state;
     /* source address of this request (can be NULL) */
     char source_address[IPV6_ADDR_MAX_STR_LEN];
     /* deploy unit being requested */
@@ -112,71 +145,39 @@ struct request_processing_callback {
     void (*on_ack_firmware_request)(void);
     void (*on_firmware_request)(const ipv6_addr_t*, const char*);
     void (*on_chunk_request)(uint16_t, uint16_t);
-    void (*on_repo_request)(ipv6_addr_t*, ipv6_addr_t*, char*);
-    void (*on_repo_addr)(ipv6_addr_t*, char*);
+    void (*on_repo_request)(const ipv6_addr_t*, ipv6_addr_t*, char*);
+    void (*on_repo_addr)(const ipv6_addr_t*, char*);
     void (*on_end_chunks)(void);
 };
 
-/* a request may be in many states */
-enum state {
-    DONE,
-    WAITING_FOR_SUMMARY,
-    POSSIBLY_WAITING_FOR_SUMMARY,
-    RECEIVING_CHUNKS,
-    SENDING_SUMMARY,
-    SENDING_CHUNKS,
-    WAITING_FOR_LOCATION
-};
-
-/* the request serving protocol has many message types */
-enum message_type {
-    /* command types */
-    END_CHUNKS=2,
-    GET_ARTIFACT=3, // the message request an artifact
-    GET_CHUNK=4, // the message request a packet
-
-    /* response types */
-    RESPONSE_SUMMARY=5, // the message is a response to GET_ARTIFACT when the artifact is locally available
-    RESPONSE_CHUNK=6, // the message is a response to GET_CHUNK
-    RESPONSE_ACK_LOOKING_FOR_PACKET=7, // the message is a response to GET_ARTIFACT when the artifact must be requested to another server
-    GET_REPO_ADDR=8, // Get repository from parent
-    RESPONSE_REPO_ADDR=9
-};
-
-enum message_processing_error_code {
-    NONE = 0,
-    WRONG_CRC = 1,
-    UNKNOWN_MESSAGE_TYPE = 2
-};
-
-struct map_entry* find_by_artifact(clist_node_t *list, const char* name);
+struct map_entry *find_by_artifact(clist_node_t *list, const char *artifact);
 
 /* calculate the total length of a message */
-uint8_t total_len(struct firmware_packet* pkt);
+uint8_t total_len(struct firmware_packet *pkt);
 
 /**
 	\brief Process an incoming message
 	\ret   0 if everything is Ok, a negative value otherwise
  */
-enum message_processing_error_code process_message(const ipv6_addr_t* source_address,
+enum message_processing_error_code process_message(const ipv6_addr_t *source_address,
         uint16_t msg_len,
-        const uint8_t* msg,
-        const struct request_processing_callback* callbacks);
+        const uint8_t *msg,
+        const struct request_processing_callback *callbacks);
 
 /* create packets */
-void build_get_artifact_packet(struct firmware_packet* dst, const char* artifact);
-void build_get_chunk_packet(struct firmware_packet* dst, uint16_t session_id, uint16_t chunk_id);
-void build_summary_packet(struct firmware_packet* dst, uint16_t session_id, uint16_t nr_chunks);
-void build_chunk_packet(struct firmware_packet* dst, uint16_t chunk_id, uint16_t msg_len, const uint8_t* msg);
-void build_ack_packet(struct firmware_packet* dst);
-void build_routes_packet(struct firmware_packet* pkt, uint16_t *addrs, uint8_t length);
-void build_end_chunks_packet(struct firmware_packet* dst);
+void build_get_artifact_packet(struct firmware_packet *dst, const char *artifact);
+void build_get_chunk_packet(struct firmware_packet *dst, uint16_t session_id, uint16_t chunk_id);
+void build_summary_packet(struct firmware_packet *dst, uint16_t session_id, uint16_t nr_chunks);
+void build_chunk_packet(struct firmware_packet *dst, uint16_t chunk_id, uint16_t msg_len, const uint8_t* msg);
+void build_ack_packet(struct firmware_packet *dst);
+void build_routes_packet(struct firmware_packet *pkt, uint16_t *addrs, uint8_t length);
+void build_end_chunks_packet(struct firmware_packet *dst);
 
 /* dealing with requests */
-struct firmware_request* find_request_by_source(clist_node_t list, const char *source_address, const char* artifact);
-struct firmware_request* find_request_by_session(clist_node_t list, uint16_t session_id);
 struct firmware_request* create_request(const char *source_address, const char* artifact, enum state initial_state);
-struct firmware_request* find_request_by_artifact(clist_node_t list, const char* artifact);
+struct firmware_request* find_request_by_source(clist_node_t *list, const char *source_address, const char* artifact);
+struct firmware_request* find_request_by_session(clist_node_t *list, uint16_t session_id);
+struct firmware_request* find_request_by_artifact(clist_node_t *list, const char* artifact);
 
 #ifdef __cplusplus
 }

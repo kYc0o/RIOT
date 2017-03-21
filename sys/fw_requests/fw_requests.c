@@ -23,9 +23,27 @@
 #include <stdio.h>
 
 #include "fw_requests.h"
+#include "checksum/crc16_ccitt.h"
 
-#define ENABLE_DEBUG (0)
+#define ENABLE_DEBUG (1)
 #include "debug.h"
+
+struct firmware_request requests[MAX_REQUESTS] = { 0 };
+
+struct firmware_request *fw_requests_get_empty_request(void)
+{
+    for (int i = 0; i < MAX_REQUESTS; i++) {
+        if (requests[i].session_id != 0) {
+            continue;
+        } else {
+            return &requests[i];
+        }
+    }
+
+    puts("[fw_requests] No free requests were found!\n");
+
+    return NULL;
+}
 
 /* calculate the total length of a message */
 uint8_t total_len(struct firmware_packet* pkt)
@@ -38,16 +56,18 @@ struct firmware_request* create_request(const char *source_address,
                                         enum state initial_state)
 {
     static uint16_t last_session_id = 1;
-    struct firmware_request* r = (struct firmware_request*)malloc(sizeof(struct firmware_request));
-    r->source_address = source_address;
-    strcpy(artifact, r->firmware_name);
+    struct firmware_request *r = fw_requests_get_empty_request();
+    strcpy(r->source_address, source_address);
+    strcpy(r->firmware_name, artifact);
     r->session_id = last_session_id ++;
-    r->state = initial_state;
+    r->current_state = initial_state;
     r->current_packet = 0;
-    r->local_filename = NULL;
+    strcpy(r->local_filename, '\0');
     r->fd = 0;
     r->nr_packets = 0;
-    printf("INFO: DeploUnitRequest %p from %s for %s created!\n", r, source_address, artifact);
+
+    DEBUG("[fw_requests] Firmware request %p from %s for %s created!\n", r, source_address, artifact);
+
     return r;
 }
 
@@ -57,7 +77,9 @@ enum message_processing_error_code process_message(const ipv6_addr_t *source_add
                                                    const struct request_processing_callback* callbacks)
 {
     uint16_t crc_c;
+#if ENABLE_DEBUG
     char addr_str[IPV6_ADDR_MAX_STR_LEN];
+#endif
     struct firmware_packet* pkt = (struct firmware_packet*)msg;
     uint16_t crc = pkt->crc; /* first check if it is a valid packet (no transmission errors) */
 
@@ -115,8 +137,7 @@ enum message_processing_error_code process_message(const ipv6_addr_t *source_add
             break;
 
         default:
-            int tt = pkt->cmd;
-            DEBUG("[fw_requests] ERROR: Unknown type : %d\n", tt);
+            DEBUG("[fw_requests] ERROR: Unknown type : %d\n", pkt->cmd);
             return UNKNOWN_MESSAGE_TYPE;
     }
 
@@ -228,7 +249,7 @@ struct firmware_request* find_request_by_source(clist_node_t *list,
     return NULL;
 }
 
-struct firmware_request* find_request_by_session(clist_node_t list, uint16_t session_id)
+struct firmware_request* find_request_by_session(clist_node_t *list, uint16_t session_id)
 {
     struct firmware_request* r;
     clist_node_t *node = list->next;
@@ -250,7 +271,7 @@ struct firmware_request* find_request_by_session(clist_node_t list, uint16_t ses
     return NULL;
 }
 
-struct firmware_request* find_request_by_artifact(clist_node_t list, const char* artifact)
+struct firmware_request* find_request_by_artifact(clist_node_t *list, const char* artifact)
 {
     struct firmware_request* r;
     clist_node_t *node = list->next;
@@ -272,7 +293,7 @@ struct firmware_request* find_request_by_artifact(clist_node_t list, const char*
     return NULL;
 }
 
-struct map_entry* find_by_artifact(const clist_node_t *list, const char* name)
+struct map_entry* find_by_artifact(clist_node_t *list, const char *artifact)
 {
     struct map_entry* r = NULL;
     clist_node_t *node = list->next;
@@ -285,12 +306,12 @@ struct map_entry* find_by_artifact(const clist_node_t *list, const char* name)
     do {
         node = node->next;
         r = (struct map_entry*) node;
-        if (strcmp(r->artifact, name) == 0) {
+        if (strcmp(r->artifact, artifact) == 0) {
             return r;
         }
     } while (node != list->next);
 
-    DEBUG("[fw_requests] artifact %s not found in server!\n", name);
+    DEBUG("[fw_requests] artifact %s not found in server!\n", artifact);
     return NULL;
 }
 
