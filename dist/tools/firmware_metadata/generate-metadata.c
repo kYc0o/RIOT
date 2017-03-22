@@ -46,6 +46,10 @@
 #include "fw_slots.h"
 #include "hashes/sha256.h"
 
+#ifndef FW_METADATA_SPACE
+#define FW_METADATA_SPACE           (0x200)
+#endif
+
 /* Input firmware .bin file */
 FILE *firmware_bin;
 
@@ -131,7 +135,7 @@ int main(int argc, char *argv[])
     fwrite(output_buffer, sizeof(output_buffer), 1, metadata_bin);
 
     /* 0xff spacing until firmware binary starts */
-    uint8_t blank_buffer[256 - sizeof(FW_metadata_t)];
+    uint8_t blank_buffer[FW_METADATA_SPACE - sizeof(FW_metadata_t)];
 
     for (unsigned long b = 0; b < sizeof(blank_buffer); b++) {
         blank_buffer[b] = 0xff;

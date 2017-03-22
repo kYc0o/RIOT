@@ -12,7 +12,7 @@ SECTORS = 1
 # Activate FW slots
 FW_SLOTS = 1
 
-FW_METADATA_SPACE = 0x100  # 76 bytes meta-data, 256 byte aligned
+FW_METADATA_SPACE = 0x200  # 76 bytes meta-data, 512 byte aligned
 
 # Define the parameters for the FW slot 1
 VERSION_IMG1 = 0x1
@@ -43,6 +43,10 @@ else              # parameters for paged flash
 	FW_IMAGE2_LENGTH = 0x3C000      # Reserve 120 pages
 	FW_IMAGE2_END = 0x08080000      # FW_IMAGE_OFFSET + FW_IMAGE_LENGTH
 endif
+
+metadata-generator:
+	@cd ../../dist/tools/firmware_metadata; \
+	CFLAGS="-DFW_METADATA_SPACE=$(FW_METADATA_SPACE)" make clean all
 
 bootloader:
 	@cd ../bootloader; \

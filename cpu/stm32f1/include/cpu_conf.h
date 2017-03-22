@@ -63,7 +63,7 @@ extern "C" {
  */
 
 #ifndef FW_METADATA_SPACE
-#define FW_METADATA_SPACE          (0x100)
+#define FW_METADATA_SPACE          (0x200)
 #endif
 
 #define MAX_FW_SLOTS               (2)
