@@ -28,7 +28,7 @@
 #define ENABLE_DEBUG (1)
 #include "debug.h"
 
-struct firmware_request requests[MAX_REQUESTS] = { 0 };
+struct firmware_request requests[MAX_REQUESTS];
 
 struct firmware_request *fw_requests_get_empty_request(void)
 {
@@ -62,11 +62,12 @@ struct firmware_request* create_request(const char *source_address,
     r->session_id = last_session_id ++;
     r->current_state = initial_state;
     r->current_packet = 0;
-    strcpy(r->local_filename, '\0');
+    strcpy(r->local_filename, "\0");
     r->fd = 0;
     r->nr_packets = 0;
 
-    DEBUG("[fw_requests] Firmware request %p from %s for %s created!\n", r, source_address, artifact);
+    DEBUG("[fw_requests] Firmware request %p from %s for %s created!\n", (void*)r,
+          source_address, artifact);
 
     return r;
 }
@@ -255,7 +256,7 @@ struct firmware_request* find_request_by_session(clist_node_t *list, uint16_t se
     clist_node_t *node = list->next;
 
     if (!node) {
-        puts("[fw_requests] Request list empty\n");
+        puts("[fw_requests] Request list empty");
         return NULL;
     }
 
@@ -277,7 +278,7 @@ struct firmware_request* find_request_by_artifact(clist_node_t *list, const char
     clist_node_t *node = list->next;
 
     if (!node) {
-        puts("[fw_requests] Request list empty\n");
+        puts("[fw_requests] Request list empty");
         return NULL;
     }
 
@@ -299,7 +300,7 @@ struct map_entry* find_by_artifact(clist_node_t *list, const char *artifact)
     clist_node_t *node = list->next;
 
     if (!node) {
-        puts("list empty");
+        puts("[fw_requests] Artifact list empty");
         return NULL;
     }
 
@@ -315,7 +316,7 @@ struct map_entry* find_by_artifact(clist_node_t *list, const char *artifact)
     return NULL;
 }
 
-void dispose_request(struct firmware_request* r)
+/*void dispose_request(struct firmware_request* r)
 {
     printf("INFO: Deleting DeployUnitRequest %p for %s\n", r, r->firmware_name);
 
@@ -332,4 +333,4 @@ void dispose_request(struct firmware_request* r)
     }
 
     free(r);
-}
+}*/

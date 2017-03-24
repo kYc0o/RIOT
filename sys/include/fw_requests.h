@@ -29,8 +29,9 @@ extern "C" {
 #endif
 
 #define REQUEST_PACKET_SIZE        (58)
-#define UDP_PORT                   (8888)
+#define FW_SERVER_UDP_PORT         (8888)
 #define MAX_REQUESTS               (20)
+#define MAX_FW_NAME                (32)
 
 /* a request may be in many states */
 enum state {
@@ -66,23 +67,23 @@ enum message_processing_error_code {
 
 /* mapping from artifact name to file name*/
 struct map_entry {
-    struct map_entry* next;
-    char* filename;
-    char* artifact;
+    struct map_entry *next;
+    char *filename;
+    char *artifact;
 };
 
 /* represent a request */
 struct firmware_request {
     /* if we want to put them on a list */
-    struct firmware_request* next;
+    struct firmware_request *next;
     /* processing state */
     enum state current_state;
     /* source address of this request (can be NULL) */
     char source_address[IPV6_ADDR_MAX_STR_LEN];
     /* deploy unit being requested */
-    char firmware_name[32];
+    char firmware_name[MAX_FW_NAME];
     /* local file with the deploy unit */
-    char local_filename[32];
+    char local_filename[MAX_FW_NAME];
     /* a file descriptor to the local file with the deploy unit */
     int fd;
     /* session id: used in multithread servers */
@@ -94,10 +95,10 @@ struct firmware_request {
 };
 
 struct artifact_request {
-    void* next;
-    char * artifact;
-    void* user_data;
-    void (*notification_routine)(const char* artifact, const char* filename, void* user_data);
+    void *next;
+    char *artifact;
+    void *user_data;
+    void (*notification_routine)(const char *artifact, const char *filename, void *user_data);
 };
 
 /* general packet */
@@ -132,7 +133,7 @@ struct firmware_packet {
         /* relevant ip6 addresses */
         struct {
             ipv6_addr_t src;
-            char fw_name[32];
+            char fw_name[MAX_FW_NAME];
         } get_repo;
     } data;
 
@@ -165,6 +166,7 @@ enum message_processing_error_code process_message(const ipv6_addr_t *source_add
         const struct request_processing_callback *callbacks);
 
 /* create packets */
+void build_repo_addr(struct firmware_packet* pkt, char *name);
 void build_get_artifact_packet(struct firmware_packet *dst, const char *artifact);
 void build_get_chunk_packet(struct firmware_packet *dst, uint16_t session_id, uint16_t chunk_id);
 void build_summary_packet(struct firmware_packet *dst, uint16_t session_id, uint16_t nr_chunks);
