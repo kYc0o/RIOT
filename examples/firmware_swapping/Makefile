@@ -28,8 +28,8 @@ bootloader:
 	CFLAGS+=-DFW_METADATA_SPACE=$(FW_METADATA_SPACE) make clean all; \
 	cp bin/$(BOARD)/bootloader.hex ../firmware_swapping
 
-gnrc_networking-slot1:
-	@cd ../gnrc_networking; \
+tftp_OTA_update:
+	@cd ../tftp_OTA_update; \
 	CFLAGS="-DFW_SLOT=1 -DVERSION=$(VERSION_IMG1) -DUUID=$(UUID_IMG1) \
 	-DFW_SLOTS=$(FW_SLOTS)" FW_SLOTS=$(FW_SLOTS) \
 	FW_METADATA_SPACE=$(FW_METADATA_SPACE) FW_SLOT=1 \
@@ -50,11 +50,9 @@ merge-binary:
 	srec_cat bootloader.hex -intel -crop 0x08000000 $(FW_IMAGE1_OFFSET) \
 	slot-image-$(UUID_IMG1)-$(VERSION_IMG1).bin -binary -offset $(FW_IMAGE1_OFFSET) \
 	-crop $(FW_IMAGE1_OFFSET) $(FW_IMAGE1_END) \
-	slot-image-$(UUID_IMG2)-$(VERSION_IMG2).bin -binary -offset $(FW_IMAGE2_OFFSET) \
-	-crop $(FW_IMAGE2_OFFSET) $(FW_IMAGE2_END) \
 	-o firmware-slots.hex -intel
 
-master-hex: bootloader gnrc_networking-slot1 gnrc_networking-slot2 merge-binary
+master-hex: bootloader tftp_OTA_update merge-binary
 	@true
 
 clean:
