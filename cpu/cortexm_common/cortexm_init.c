@@ -38,6 +38,9 @@ void cortexm_init(void)
 #if defined(CPU_ARCH_CORTEX_M3) || defined(CPU_ARCH_CORTEX_M4) || \
     defined(CPU_ARCH_CORTEX_M4F)
     SCB->VTOR = CPU_FLASH_BASE;
+#if FW_SLOTS
+    SCB->VTOR += FW_METADATA_SPACE;
+#endif
 #endif
 
     /* initialize the interrupt priorities */
