@@ -11,7 +11,7 @@
  * @{
  *
  * @file
- * @brief           Memory definitions for the STM32F103RE Slot 1
+ * @brief           Memory definitions for the STM32F103RE Slot 0
  *
  * @author          Francisco Acosta <francisco.acosta@inria.fr>
  *
@@ -20,9 +20,9 @@
 
 MEMORY
 {
-    rom (rx)        : ORIGIN = 0x08040200, LENGTH = 0x3C000
-    ram (xrw)       : ORIGIN = 0x20000000, LENGTH = 64K
-    cpuid (r)       : ORIGIN = 0x1ffff7e8, LENGTH = 12
+    rom (rx)    : ORIGIN = 0x08004200, LENGTH = 0x1C000
+    ram (rwx)   : ORIGIN = 0x20000000, LENGTH = 128K
+    cpuid (r)   : ORIGIN = 0x1fff7a10, LENGTH = 12
 }
 
 _cpuid_address = ORIGIN(cpuid);

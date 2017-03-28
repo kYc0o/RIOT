@@ -42,7 +42,11 @@
 #include "fw_slots.h"
 #include "cpu_conf.h"
 #include "irq.h"
+#if !defined(FLASH_SECTORS)        /* defined by Makefile.include of the CPU */
 #include "periph/flashpage.h"
+#else
+#include "periph/flashsector.h"
+#endif
 #include "hashes/sha256.h"
 
 #define ENABLE_DEBUG (0)
@@ -109,7 +113,11 @@ int fw_slots_get_int_metadata(uint8_t fw_slot_page, FW_metadata_t *fw_metadata)
 {
     uint32_t fw_address;
 
+#if !defined(FLASH_SECTORS)
     fw_address = fw_slot_page * FLASHPAGE_SIZE + CPU_FLASH_BASE;
+#else
+    fw_address = (uint32_t)flashsector_addr(fw_slot_page);
+#endif
 
     DEBUG("[fw_slots] Getting internal metadata on page %d at address %#lx\n",
             fw_slot_page, fw_address);
@@ -411,17 +419,32 @@ int fw_slots_erase_int_image(uint8_t fw_slot)
 
     fw_image_base_address = fw_slots_get_slot_address(fw_slot);
 
+#if !defined(FLASH_SECTORS)
     printf("[fw_slots] Erasing FW slot %u [%#lx, %#lx]...\n", fw_slot,
             fw_image_base_address,
             fw_image_base_address + (FW_SLOT_PAGES * FLASHPAGE_SIZE) - 1);
+#else
+    printf("[fw_slots] Erasing FW slot %u [%#lx, %#lx]...\n", fw_slot,
+            fw_image_base_address,
+            fw_image_base_address + get_slot_size(fw_slot) - 1);
+#endif
 
     slot_page = fw_slots_get_slot_page(fw_slot);
 
     /* Erase each page in the FW internal slot! */
+#if !defined(FLASH_SECTORS)
     for (int page = slot_page; page < slot_page + FW_SLOT_PAGES; page++) {
         DEBUG("[fw_slots] Erasing page %d\n", page);
         flashpage_write(page, NULL);
     }
+#else
+    int slot_last_page = flashsector_sector((void *)(fw_image_base_address + get_slot_size(fw_slot) - 1));
+    for (int sector = slot_page; sector < slot_last_page; sector++) {
+        DEBUG("[fw_slots] Erasing sector %d\n", page);
+        flashsector_write(sector, NULL, 0);
+    }
+#endif
+
 
     printf("[fw_slots] Erase successful\n");
 
