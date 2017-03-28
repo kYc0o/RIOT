@@ -149,7 +149,7 @@ static inline uint32_t get_slot_page(uint8_t slot)
 #define CPU_IRQ_NUMOF                (60U)
 
 #ifdef FW_SLOTS
-#define CPU_FLASH_BASE               (CURRENT_FIRMWARE_ADDR + FW_METADATA_SPACE)
+#define CPU_FLASH_BASE               CURRENT_FIRMWARE_ADDR
 #else
 #define CPU_FLASH_BASE               FLASH_BASE
 #endif
