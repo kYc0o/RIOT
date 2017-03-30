@@ -26,6 +26,7 @@
 #include "net/gnrc/udp.h"
 #include "net/gnrc/ipv6.h"
 #include "random.h"
+#include "byteorder.h"
 
 #define ENABLE_DEBUG                (0)
 #include "debug.h"
@@ -560,6 +561,7 @@ tftp_state _tftp_state_processes(tftp_context_t *ctxt, msg_t *m)
     gnrc_pktsnip_t *outbuf = gnrc_pktbuf_add(NULL, NULL, TFTP_DEFAULT_DATA_SIZE,
                                              GNRC_NETTYPE_UNDEF);
 
+    uint16_t csum = 0;
     /* check if this is an client start */
     if (!m) {
         DEBUG("tftp: starting transaction as client\n");
@@ -598,12 +600,34 @@ tftp_state _tftp_state_processes(tftp_context_t *ctxt, msg_t *m)
 
     gnrc_pktsnip_t *pkt = m->content.ptr;
 
-    gnrc_pktsnip_t *tmp;
-    tmp = gnrc_pktsnip_search_type(pkt, GNRC_NETTYPE_UDP);
-    udp_hdr_t *udp = (udp_hdr_t *)tmp->data;
+    gnrc_pktsnip_t *udp_hdr, *ipv6_hdr;
+    udp_hdr = gnrc_pktsnip_search_type(pkt, GNRC_NETTYPE_UDP);
 
-    tmp = gnrc_pktsnip_search_type(pkt, GNRC_NETTYPE_IPV6);
-    ipv6_hdr_t *ip = (ipv6_hdr_t *)tmp->data;
+    /* Check crc of UDP packet */
+    csum = inet_csum(csum, (uint8_t *)udp_hdr->data, udp_hdr->size);
+    udp_hdr_t *udp = (udp_hdr_t *)udp_hdr->data;
+
+    ipv6_hdr = gnrc_pktsnip_search_type(pkt, GNRC_NETTYPE_IPV6);
+    ipv6_hdr_t *ip = (ipv6_hdr_t *)ipv6_hdr->data;
+    csum = ipv6_hdr_inet_csum(csum, ip, PROTNUM_UDP, (uint16_t)udp_hdr->size);
+
+    if (csum == 0xffff) {
+        if (udp->checksum.u16 == byteorder_htons(csum).u16) {
+            printf("0xFF GOOD CRC!\n");
+        }
+        else {
+            printf("0xFF BAD CRC!\n");
+        }
+    }
+    else {
+        if (udp->checksum.u16 == byteorder_htons(~csum).u16) {
+            printf("GOOD CRC!\n");
+        }
+        else {
+            printf("BAD CRC!\n");
+        }
+    }
+
     uint8_t *data = (uint8_t *)pkt->data;
 
     xtimer_remove(&(ctxt->timer));
@@ -708,19 +732,25 @@ tftp_state _tftp_state_processes(tftp_context_t *ctxt, msg_t *m)
             }
 
             /* wait for the next data block */
-            DEBUG("tftp: wait for the next data block\n");
-            ++(ctxt->block_nr);
-            _tftp_send_dack(ctxt, outbuf, TO_ACK);
+            if (proc == TS_BUSY) {
+                printf("tftp: retrying previous packet\n");
+                //_tftp_send_dack(ctxt, outbuf, TO_ACK);
+            }
+            else {
+                DEBUG("tftp: wait for the next data block\n");
+                ++(ctxt->block_nr);
+                _tftp_send_dack(ctxt, outbuf, TO_ACK);
 
-            /* check if the data transfer has finished */
-            if (proc < ctxt->block_size) {
-                DEBUG("tftp: transfer finished\n");
+                /* check if the data transfer has finished */
+                if (proc < ctxt->block_size) {
+                    DEBUG("tftp: transfer finished\n");
 
-                if (ctxt->stop_cb) {
-                    ctxt->stop_cb(TFTP_SUCCESS, NULL);
+                    if (ctxt->stop_cb) {
+                        ctxt->stop_cb(TFTP_SUCCESS, NULL);
+                    }
+
+                    return TS_FINISHED;
                 }
-
-                return TS_FINISHED;
             }
 
             return TS_BUSY;
@@ -1108,7 +1138,14 @@ int _tftp_process_data(tftp_context_t *ctxt, gnrc_pktsnip_t *buf)
 
     /* check if this is the packet we are waiting for */
     if (block_nr != (ctxt->block_nr + 1)) {
-        DEBUG("tftp: not the packet we were wating for\n");
+        printf("tftp: not the packet we were wating for\n");
+        printf("tftp: expected packet: %d, received: %d\n", block_nr, ctxt->block_nr + 1);
+        if (block_nr < (ctxt->block_nr + 1)) {
+            --(ctxt->block_nr);
+        }
+        else {
+            ++(ctxt->block_nr);
+        }
         return TS_BUSY;
     }
 
