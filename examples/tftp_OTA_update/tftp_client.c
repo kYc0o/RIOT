@@ -45,7 +45,7 @@ static bool tftp_save_to_slot2(uint8_t *data, size_t data_len)
                        page2, buf_ptr, flashpage_addr(page2));
                 page2++;
                 buf_ptr = 0;
-                memset(buf, 0, sizeof(buf));
+                memset(buf, 0xFF, sizeof(buf));
             } else {
                 printf("Flash program failed with error %d\n", err);
                 return false;
@@ -64,9 +64,9 @@ static int write_last_page(uint32_t page, uint32_t slot_addr)
         err = flashpage_write_and_verify(page, buf);
         if (err == FLASHPAGE_OK) {
             printf("Successfully written page %lu\n", page);
-            page = slot_addr;
+            page2 = slot_addr;
             buf_ptr = 0;
-            memset(buf, 0, sizeof(buf));
+            memset(buf, 0xFF, sizeof(buf));
             return true;
         } else {
             printf("Flash program failed with error %d\n", err);
@@ -159,9 +159,11 @@ static void _tftp_client_stop_cb(tftp_event_t event, const char *msg)
     /* decode the stop event received */
     const char *cause = "UNKOWN";
 
+
     if (event == TFTP_SUCCESS) {
         cause = "SUCCESS";
-        write_last_page(page2, FW_SLOT_2_PAGE);
+        puts("tftp_client: writing last page");
+        write_last_page(page2, 120);
     }
     else if (event == TFTP_PEER_ERROR) {
         cause = "ERROR From Client";
@@ -171,7 +173,12 @@ static void _tftp_client_stop_cb(tftp_event_t event, const char *msg)
     }
 
     /* print the transfer result to the console */
-    printf("tftp_client: %s: %s\n", cause, msg);
+    if (msg != NULL) {
+        printf("tftp_client: %s: %s\n", cause, msg);
+    }
+    else {
+        printf("tftp_client: %s\n", cause);
+    }
 }
 
 static int _tftp_client_cmd(int argc, char * *argv)
