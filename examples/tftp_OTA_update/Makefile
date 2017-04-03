@@ -40,8 +40,6 @@ USEMODULE += fw_slots
 # development process:
 CFLAGS += -DDEVELHELP
 
-CFLAGS += -DTHREAD_STACKSIZE_MAIN=\(2*THREAD_STACKSIZE_DEFAULT+THREAD_EXTRA_STACKSIZE_PRINTF\)
-
 # Change this to 0 show compiler invocation lines by default:
 QUIET ?= 1
 
