@@ -28,43 +28,43 @@
 static const char *_tftp_default_host = "::1";
 static uint8_t buf[FLASHPAGE_SIZE];
 static uint32_t buf_ptr = 0;
-/*static uint32_t page1 = FW_SLOT_1_PAGE;*/
 static uint32_t page2 = 120;
 
 static bool tftp_save_to_slot2(uint8_t *data, size_t data_len)
 {
-    for (int i = 0; i < data_len; i++) {
-        if (buf_ptr < FLASHPAGE_SIZE) {
-            buf[buf_ptr] = data[i];
-            buf_ptr++;
+    if ((buf_ptr + data_len) <= FLASHPAGE_SIZE) {
+        memcpy(buf + buf_ptr, data, data_len);
+        buf_ptr += data_len;
+    } else {
+        uint32_t rest = (buf_ptr + data_len) - FLASHPAGE_SIZE;
+        size_t tmp_len = data_len - rest;
+        memcpy(buf + buf_ptr, data, tmp_len);
+        int err;
+        err = flashpage_write_and_verify(page2, buf);
+        if (err == FLASHPAGE_OK) {
+            printf("Successfully written page %lu at %p\n",
+                   page2, flashpage_addr(page2));
+            page2++;
+            memcpy(buf, data + tmp_len, rest);
+            buf_ptr = rest;
         } else {
-            int err;
-            err = flashpage_write_and_verify(page2, buf);
-            if (err == FLASHPAGE_OK) {
-                printf("Successfully written page %lu, ptr: %lu at %p\n",
-                       page2, buf_ptr, flashpage_addr(page2));
-                page2++;
-                buf_ptr = 0;
-                memset(buf, 0xFF, sizeof(buf));
-            } else {
-                printf("Flash program failed with error %d\n", err);
-                return false;
-            }
+            printf("Flash program failed with error %d\n", err);
+            return false;
         }
     }
 
     return true;
 }
 
-static int write_last_page(uint32_t page, uint32_t slot_addr)
+static int write_last_page(uint32_t page, uint32_t slot_page)
 {
     int err;
 
-    if (page != slot_addr) {
+    if (page != slot_page) {
         err = flashpage_write_and_verify(page, buf);
         if (err == FLASHPAGE_OK) {
             printf("Successfully written page %lu\n", page);
-            page2 = slot_addr;
+            page2 = slot_page;
             buf_ptr = 0;
             memset(buf, 0xFF, sizeof(buf));
             return true;
@@ -141,8 +141,7 @@ static int _tftp_client_data_cb(uint32_t offset, void *data, size_t data_len)
         memcpy(data, _tftp_client_hello + offset, data_len);
     }
     else {
-        /* we received a data block which we output to the console
-        printf("\%.*s\n", (int)data_len, c);*/
+        /* we received a data block which we save on slot 2 */
         tftp_save_to_slot2((uint8_t*)c, data_len);
     }
 
