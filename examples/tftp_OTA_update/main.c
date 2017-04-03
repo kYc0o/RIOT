@@ -26,8 +26,8 @@
 #include "shell.h"
 #include "msg.h"
 
-extern int tftp_client_cmd(int argc, char * *argv);
-extern int tftp_server_cmd(int argc, char * *argv);
+extern int tftp_client_cmd(int argc, char **argv);
+extern int tftp_server_cmd(int argc, char **argv);
 
 #define MAIN_QUEUE_SIZE     (4)
 static msg_t _main_msg_queue[MAIN_QUEUE_SIZE];
