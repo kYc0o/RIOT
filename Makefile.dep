@@ -630,9 +630,10 @@ ifneq (,$(filter spiffs,$(USEMODULE)))
 endif
 
 ifneq (,$(filter fw_slots,$(USEMODULE)))
+  USEPKG += tweetnacl
+  USEMODULE += hashes
   FEATURES_REQUIRED += periph_flashpage
   FEATURES_REQUIRED += flash_slots
-  USEMODULE += hashes
 endif
 
 # include package dependencies
