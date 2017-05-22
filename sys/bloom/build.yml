@@ -1,0 +1,5 @@
+module:
+    sources:
+      - bloom.c
+    depends:
+        - sys/hashes

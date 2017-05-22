@@ -1,0 +1,4 @@
+subdir:
+    - native
+    - samd21-xpro
+    - samr21-xpro

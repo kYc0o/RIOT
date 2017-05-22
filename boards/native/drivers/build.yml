@@ -1,0 +1,3 @@
+module:
+    name: native-drivers
+    sources: [native-led.c]

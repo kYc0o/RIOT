@@ -1,0 +1,8 @@
+module:
+    name: periph_common
+    sources:
+        - cpuid.c
+        - flashpage.c
+        - init.c
+        - pm.c
+        - spi.c

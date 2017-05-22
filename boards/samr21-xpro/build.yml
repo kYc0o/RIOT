@@ -1,0 +1,17 @@
+builder:
+    name: samr21-xpro
+    parent: samd21
+    vars:
+        CFLAGS:
+            - -DRIOT_BOARD=\"samr21-xpro\"
+            - -DCPU_MODEL_SAMR21G18A
+            - -Iboards/samr21-xpro/include
+        LINKFLAGS:
+            - -Tsamr21g18a.ld
+
+module:
+    name: board
+    context: samr21-xpro
+    sources: board.c
+    depends:
+        - cpu/samd21

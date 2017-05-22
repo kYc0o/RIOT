@@ -1,0 +1,7 @@
+module:
+    name: cipher_modes
+    sources:
+      - cbc.c
+      - ccm.c
+      - ctr.c
+      - ecb.c

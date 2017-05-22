@@ -1,0 +1,10 @@
+app:
+    sources:
+      - tests-bitfield.c
+    depends:
+        - sys/bitfield
+        - sys/embunit
+        - unittests-base
+    global_vars:
+        CFLAGS:
+            - -DTEST_SUITES=bitfield

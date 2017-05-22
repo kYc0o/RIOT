@@ -1,0 +1,8 @@
+module:
+    name: shell_commands
+    sources:
+        - shell_commands.c
+        - sc_ps.c
+        - sc_sys.c
+    depends:
+        - ps

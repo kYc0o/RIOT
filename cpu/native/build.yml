@@ -1,0 +1,16 @@
+context:
+    name: cpu/native
+    parent: default
+
+module:
+    name: cpu/native
+    sources: [ async_read.c,  irq_cpu.c,  native_cpu.c,  panic.c,  startup.c,  syscalls.c, tramp.S ]
+    global_vars:
+        CFLAGS:
+            - '-Icpu/native/include'
+    depends:
+        - core
+
+subdir:
+    - periph
+

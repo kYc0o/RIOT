@@ -1,0 +1,9 @@
+module:
+    name: newlib
+    sources: syscalls.c
+    global_vars:
+        LINKFLAGS:
+            - -specs=nano.specs
+            - -lc -lnosys
+    depends:
+        sys/uart_stdio

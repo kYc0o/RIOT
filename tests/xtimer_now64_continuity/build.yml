@@ -1,0 +1,7 @@
+app:
+    sources:
+        - main.c
+    depends:
+        - board
+        - fmt
+        - xtimer

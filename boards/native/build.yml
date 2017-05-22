@@ -1,0 +1,23 @@
+builder:
+    name: native
+    parent: cpu/native
+    vars:
+        CC: ccache gcc
+        CFLAGS:
+            - "-m32"
+            - '-DRIOT_BOARD=\"native\"'
+            - '-DRIOT_MCU=\"native\"'
+            - '-Iboards/native/include'
+        LINK: gcc
+        LINKFLAGS: [ -m32, -ldl ]
+
+module:
+    name: board
+    sources: board_init.c
+    depends:
+        - native-drivers
+        - cpu/native
+        - core
+        - periph
+
+subdir: drivers

@@ -1,0 +1,39 @@
+module:
+    - sources:
+        - assert.c
+        - atomic_c11.c
+        - atomic_sync.c
+        - bitarithm.c
+        - kernel_init.c
+        - lifo.c
+        - mutex.c
+        - panic.c
+        - priority_queue.c
+        - ringbuffer.c
+        - rmutex.c
+        - sched.c
+        - thread.c
+      global_vars:
+        CFLAGS:
+            - '-Icore/include'
+      depends:
+          - core_msg
+      uses:
+          - ps
+          - core_msg
+          - core_mbox
+          - core_thread_flags
+
+    - name: core_msg
+      sources: msg.c
+      uses: core
+
+    - name: core_mbox
+      sources: mbox.c
+      uses: core
+
+    - name: core_thread_flags
+      sources: thread_flags.c
+      uses: core
+
+    - name: schedstatistics

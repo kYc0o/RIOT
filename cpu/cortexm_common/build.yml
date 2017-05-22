@@ -1,0 +1,47 @@
+context:
+    name: cortexm
+    parent: default
+    vars:
+        CC: arm-none-eabi-gcc
+        LINK: arm-none-eabi-gcc
+        CFLAGS:
+            - -std=c99
+            - -mlittle-endian -mthumb
+            - -Icpu/cortexm_common/include
+            - -Icpu/cortexm_common/include/vendor
+            - -DDONT_USE_CMSIS_INIT
+            - -DCOREIF_NG=1
+            - -mno-thumb-interwork
+            - -ffunction-sections -fdata-sections -fno-builtin -fshort-enums
+            - -fno-common
+            - -fno-delete-null-pointer-checks
+
+        LINKFLAGS:
+            - -mno-thumb-interwork
+            - -ffunction-sections -fdata-sections -fno-builtin -fshort-enums
+            - -Lcpu/cortexm_common/ldscripts
+            - -static -lgcc -nostartfiles
+            - -Wl,--gc-sections
+
+module:
+    context: cortexm
+    name: cortexm
+    sources:
+     - cortexm_init.c
+     - irq_arch.c
+     - mpu.c
+     - panic.c
+     - thread_arch.c
+     - vectors_cortexm.c
+
+    vars:
+        CFLAGS:
+            - -DMODULE_CORTEXM_COMMON
+
+    depends:
+        - core
+        - newlib
+        - cortexm_common_periph
+
+subdir:
+    - periph

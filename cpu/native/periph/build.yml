@@ -1,0 +1,11 @@
+module:
+    context: cpu/native
+    name: periph
+    sources:
+        - cpuid.c
+        - gpio.c
+        - hwrng.c
+        - pm.c
+        - rtc.c
+        - timer.c
+        - uart.c

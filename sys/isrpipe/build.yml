@@ -1,0 +1,4 @@
+module:
+    sources: isrpipe.c
+    depends:
+        - sys/tsrb

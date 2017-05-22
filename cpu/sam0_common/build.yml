@@ -1,0 +1,11 @@
+context:
+    name: sam0
+    parent: cortexm
+    vars:
+        CFLAGS:
+            - -Icpu/sam0_common/include
+        LINKFLAGS:
+            - -Lcpu/sam0_common/ldscripts
+
+subdir:
+    - periph

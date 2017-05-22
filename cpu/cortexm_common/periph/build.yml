@@ -1,0 +1,5 @@
+module:
+    context: cortexm
+    name: cortexm_common_periph
+    sources:
+        - pm.c

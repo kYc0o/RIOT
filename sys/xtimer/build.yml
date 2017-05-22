@@ -1,0 +1,8 @@
+module:
+    name: xtimer
+    sources:
+        - xtimer.c
+        - xtimer_core.c
+        - xtimer_posix.c
+    depends:
+        - sys/div

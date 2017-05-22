@@ -1,0 +1,13 @@
+subdir:
+    - minimal
+    - msg_avail
+    - pipe
+    - shell
+    - unittests
+    - xtimer_msg
+    - xtimer_msg_receive_timeout
+    - xtimer_now64_continuity
+    - xtimer_periodic_wakeup
+    - xtimer_remove
+    - xtimer_reset
+    - xtimer_usleep

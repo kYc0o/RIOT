@@ -1,0 +1,9 @@
+module:
+    context: sam0
+    name: sam0_common_periph
+
+    sources:
+        #        - adc.c
+        #- cpuid.c
+        #- i2c.c
+        - spi.c

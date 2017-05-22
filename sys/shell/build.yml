@@ -1,0 +1,10 @@
+module:
+    name: shell
+    sources:
+        - shell.c
+    uses:
+        - newlib
+        - shell_commands
+
+subdir:
+    - commands

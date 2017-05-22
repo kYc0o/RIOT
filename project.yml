@@ -1,0 +1,45 @@
+rule:
+    - name: CC
+      in: '.c'
+      out: '.o'
+      cmd: 'ccache ${CC} ${CFLAGS} -c ${in} -o ${out}'
+    - name: ASM
+      in: '.S'
+      out: '.o'
+      cmd: '${CC} ${CFLAGS} -c ${in} -o ${out}'
+    - name: LINK
+      in: '.o'
+      options:
+          combine: true
+      cmd: '${LINK} ${LINKFLAGS} ${CFLAGS} ${in} -o ${out}'
+
+    - name: SYMLINK
+      cmd: 'ln -f ${in} ${out}'
+
+context:
+    - name: default
+      bindir: ${root}bin
+      vars:
+          CFLAGS:
+            - -Wall
+            - -Werror
+            - -Werror=old-style-definition
+            - -Werror=strict-prototypes
+            - -Wold-style-definition
+            - -Wstrict-prototypes
+            - -Os
+            - -g
+            - -Idrivers/include
+            - -Isys/include
+            - -DRIOT_VERSION=\"laze\"
+
+      #builder:
+      #    - name: host
+      #      vars:
+      #          CC : gcc
+      #          LINK: gcc
+      #          tags: host
+      #      parent: default
+
+subdir:
+    [core, boards, cpu, drivers, sys, examples, tests]

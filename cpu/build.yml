@@ -1,0 +1,5 @@
+subdir:
+    - native
+    - cortexm_common
+    - sam0_common
+    - samd21

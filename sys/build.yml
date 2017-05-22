@@ -1,0 +1,17 @@
+subdir:
+    - base64
+    - bitfield
+    - bloom
+    - crypto
+    - div
+    - embunit
+    - fmt
+    - hashes
+    - isrpipe
+    - newlib
+    - pipe
+    - ps
+    - shell
+    - tsrb
+    - uart_stdio
+    - xtimer

@@ -1,0 +1,30 @@
+context:
+    name: samd21
+    parent: sam0
+    vars:
+        CFLAGS:
+            - -mcpu=cortex-m0plus
+            - -mfloat-abi=soft
+            - -Icpu/samd21/include
+            - -DRIOT_MCU=\"samd21\"
+            - -DCPU_SAMD21
+            - -DCPU_FAM_SAMD21
+            - -DCPU_ARCH_CORTEX_M0PLUS
+
+module:
+    name: cpu/samd21
+    context: samd21
+
+    sources:
+        - cpu.c
+        - vectors.c
+
+    depends:
+        - core
+        - cortexm
+        - periph
+        - periph_common
+        - sam0_common_periph
+
+subdir:
+    - periph

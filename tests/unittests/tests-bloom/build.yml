@@ -1,0 +1,10 @@
+app:
+    sources:
+      - tests-bloom.c
+    depends:
+        - sys/bloom
+        - sys/embunit
+        - unittests-base
+    global_vars:
+        CFLAGS:
+            - -DTEST_SUITES=bloom

@@ -1,0 +1,7 @@
+module:
+    name: ps
+    sources: ps.c
+    uses:
+        - schedstatistics
+        - xtimer
+        - tlsf

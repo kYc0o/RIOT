@@ -1,0 +1,6 @@
+app:
+    sources:
+        - main.c
+    depends:
+        - board
+        - sys/pipe

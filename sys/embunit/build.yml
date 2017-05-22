@@ -1,0 +1,20 @@
+module:
+    sources:
+      - AssertImpl.c
+      - ColorOutputter.c
+      - ColorTextOutputter.c
+      - CompilerOutputter.c
+      - RepeatedTest.c
+      - stdImpl.c
+      - TestCaller.c
+      - TestCase.c
+      - TestResult.c
+      - TestRunner.c
+      - TestSuite.c
+      - TextOutputter.c
+      - TextUIRunner.c
+      - XMLOutputter.c
+    global_vars:
+        CFLAGS:
+            - -Isys/include/embUnit
+

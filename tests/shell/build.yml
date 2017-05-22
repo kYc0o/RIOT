@@ -1,0 +1,8 @@
+app:
+    sources:
+        - main.c
+    depends:
+        - shell
+        - shell_commands
+        - ps
+        - board

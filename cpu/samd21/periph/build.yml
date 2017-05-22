@@ -1,0 +1,10 @@
+module:
+    name: periph
+    context: samd21
+    sources:
+        - gpio.c
+        - pm.c
+        - pwm.c
+        - rtt.c
+        - timer.c
+        - uart.c
