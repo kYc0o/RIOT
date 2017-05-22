@@ -32,6 +32,7 @@ context:
             - -Idrivers/include
             - -Isys/include
             - -DRIOT_VERSION=\"laze\"
+            - -DRIOT_FILE_RELATIVE=__FILE__
 
       #builder:
       #    - name: host
