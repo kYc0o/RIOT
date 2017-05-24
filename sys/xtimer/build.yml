@@ -5,4 +5,5 @@ module:
         - xtimer_core.c
         - xtimer_posix.c
     depends:
+        - auto_init
         - sys/div
