@@ -1,13 +1,24 @@
+defaults:
+    app:
+        sources:
+            - main.c
+        depends:
+            - board
 subdir:
     - minimal
     - msg_avail
+    - msg_send_receive
+    - msg_try_receive
+    - mutex_order
+    - mutex_unlock_and_sleep
     - pipe
     - shell
-    - unittests
-    - xtimer_msg
     - xtimer_msg_receive_timeout
     - xtimer_now64_continuity
     - xtimer_periodic_wakeup
     - xtimer_remove
     - xtimer_reset
     - xtimer_usleep
+---
+subdir:
+    - unittests

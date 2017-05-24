@@ -1,0 +1,10 @@
+app:
+    sources:
+      - tests-cbor.c
+    depends:
+        - sys/cbor
+        - sys/embunit
+        - unittests-base
+    global_vars:
+        CFLAGS:
+            - -DTEST_SUITES=cbor

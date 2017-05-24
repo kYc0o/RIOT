@@ -2,6 +2,7 @@ subdir:
     - base64
     - bitfield
     - bloom
+    - cbor
     - crypto
     - div
     - embunit

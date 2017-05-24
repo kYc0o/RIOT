@@ -1,6 +1,4 @@
 app:
-    sources: main.c
-    depends: board
     global_vars:
         CFLAGS:
             - -DNDEBUG

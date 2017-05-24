@@ -1,12 +1,13 @@
 module:
     name: unittests-base
     sources:
-        main.c
+        - main.c
     depends:
-        board
+        - board
     uses:
-        xtimer
+        - xtimer
 subdir:
     - tests-base64
     - tests-bitfield
     - tests-bloom
+    - tests-cbor
