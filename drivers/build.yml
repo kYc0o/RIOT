@@ -1,2 +1,11 @@
 subdir:
+    - at86rf2xx
+    - netdev_eth
+    - netdev_ieee802154
     - periph_common
+
+module:
+    - name: netdev_default
+      depends:
+          - ?at86rf233
+          - ?netdev_tap

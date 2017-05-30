@@ -1,0 +1,4 @@
+module:
+    name: ieee802154
+    sources:
+        - ieee802154.c

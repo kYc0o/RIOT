@@ -6,3 +6,5 @@ module:
         - init.c
         - pm.c
         - spi.c
+    uses:
+        - periph_spi

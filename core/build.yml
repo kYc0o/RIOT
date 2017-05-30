@@ -18,11 +18,13 @@ module:
             - '-Icore/include'
       depends:
           - core_msg
+          - ?periph_pm
       uses:
-          - ps
+          - auto_init
           - core_msg
           - core_mbox
           - core_thread_flags
+          - ps
 
     - name: core_msg
       sources: msg.c

@@ -2,7 +2,9 @@ rule:
     - name: CC
       in: '.c'
       out: '.o'
-      cmd: 'ccache ${CC} ${CFLAGS} -c ${in} -o ${out}'
+      depfile: "$out.d"
+      deps: gcc
+      cmd: 'ccache ${CC} -MMD -MF $out.d ${CFLAGS} -c ${in} -o ${out}'
     - name: ASM
       in: '.S'
       out: '.o'

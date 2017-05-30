@@ -1,0 +1,6 @@
+module:
+    name: netdev_tap
+    sources:
+        - netdev_tap.c
+    depends:
+        - netdev_eth

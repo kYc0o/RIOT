@@ -1,3 +1,5 @@
 module:
     sources: uart_stdio.c
-    depends: sys/isrpipe
+    depends:
+     - sys/isrpipe
+     - periph_uart

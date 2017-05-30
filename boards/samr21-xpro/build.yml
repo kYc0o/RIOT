@@ -15,3 +15,4 @@ module:
     sources: board.c
     depends:
         - cpu/samd21
+        - periph_gpio

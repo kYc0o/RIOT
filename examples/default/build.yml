@@ -1,0 +1,5 @@
+app:
+    depends:
+        - shell
+        - shell_commands
+        - netdev_default

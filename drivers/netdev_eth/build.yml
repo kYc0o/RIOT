@@ -1,0 +1,4 @@
+module:
+    name: netdev_eth
+    sources:
+        - netdev_eth.c

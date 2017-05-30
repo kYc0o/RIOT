@@ -1,10 +1,15 @@
+template:
+    "%NAME%":
+        - gpio
+        - pm
+        - pwm
+        - rtt
+        - timer
+        - uart
+
 module:
-    name: periph
     context: samd21
+    name: "periph_%NAME%"
+
     sources:
-        - gpio.c
-        - pm.c
-        - pwm.c
-        - rtt.c
-        - timer.c
-        - uart.c
+        - "%NAME%.c"

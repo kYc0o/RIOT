@@ -1,0 +1,16 @@
+module:
+    name: at86rf2xx
+    depends:
+        - xtimer
+        - luid
+        - ieee802154
+        - netdev_ieee802154
+    sources:
+        - at86rf2xx.c
+        - at86rf2xx_getset.c
+        - at86rf2xx_internal.c
+        - at86rf2xx_netdev.c
+
+module:
+    - name: at86rf233
+      depends: at86rf2xx

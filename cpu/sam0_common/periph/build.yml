@@ -1,9 +1,13 @@
+template:
+    "%NAME%":
+        - adc
+        - cpuid
+        - i2c
+        - spi
+
 module:
     context: sam0
-    name: sam0_common_periph
+    name: "periph_%NAME%"
 
     sources:
-        #        - adc.c
-        #- cpuid.c
-        #- i2c.c
-        - spi.c
+        - "%NAME%.c"

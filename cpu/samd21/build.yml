@@ -22,9 +22,7 @@ module:
     depends:
         - core
         - cortexm
-        - periph
         - periph_common
-        - sam0_common_periph
 
 subdir:
     - periph

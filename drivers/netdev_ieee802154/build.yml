@@ -1,0 +1,4 @@
+module:
+    name: netdev_ieee802154
+    sources:
+        - netdev_ieee802154.c

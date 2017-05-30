@@ -1,2 +1,7 @@
+defaults:
+    app:
+        sources: main.c
+        depends: board
 subdir:
+    - default
     - hello-world

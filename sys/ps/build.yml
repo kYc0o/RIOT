@@ -3,5 +3,5 @@ module:
     sources: ps.c
     uses:
         - schedstatistics
-        - xtimer
         - tlsf
+        - xtimer

@@ -10,7 +10,16 @@ module:
             - '-Icpu/native/include'
     depends:
         - core
+        - periph_uart
+    uses:
+        - netdev_tap
+        - xtimer
+
+defaults:
+    module:
+        context: cpu/native
 
 subdir:
     - periph
+    - netdev_tap
 

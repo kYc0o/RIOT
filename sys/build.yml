@@ -10,6 +10,8 @@ subdir:
     - fmt
     - hashes
     - isrpipe
+    - luid
+    - net
     - newlib
     - pipe
     - ps
