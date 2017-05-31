@@ -32,8 +32,8 @@
 
 void periph_init(void)
 {
-    /* initialize configured SPI devices */
 #ifdef MODULE_PERIPH_SPI
+    /* initialize configured SPI devices */
     for (unsigned i = 0; i < SPI_NUMOF; i++) {
         spi_init(SPI_DEV(i));
     }
