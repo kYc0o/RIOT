@@ -9,7 +9,8 @@ builder:
             - '-DRIOT_MCU=\"native\"'
             - '-Iboards/native/include'
         LINK: gcc
-        LINKFLAGS: [ -m32, -ldl ]
+        LINKFLAGS: [ -m32 ]
+        libs: [ -ldl, -lm ]
 
 module:
     name: board

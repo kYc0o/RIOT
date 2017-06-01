@@ -5,14 +5,53 @@ defaults:
         depends:
             - board
 subdir:
+    - bitarithm_timings
+    - bloom_bytes
+    - fault_handler
+    - float
+    - fmt_print
+    - irq
+    - leds
+    - malloc
     - minimal
+    - mpu_stack_guard
     - msg_avail
     - msg_send_receive
     - msg_try_receive
     - mutex_order
     - mutex_unlock_and_sleep
+    - od
     - pipe
+    - periph_adc
+    - periph_cpuid
+    - periph_dac
+    - periph_flashpage
+    - periph_gpio
+    - periph_hwrng
+    - periph_i2c
+    - periph_pwm
+    - periph_rtc
+    - periph_rtt
+    - periph_spi
+    - periph_timer
+    - periph_uart
+    - ps_schedstatistics
     - shell
+    - sizeof_tcb
+    - thread_basic
+    - thread_cooperation
+    - thread_exit
+    - thread_flags
+    - thread_flags_xtimer
+    - thread_flood
+    - thread_msg
+    - thread_msg_block_wo_queue
+    - thread_msg_block_w_queue
+    - thread_msg_seq
+    - xtimer_drift
+    - xtimer_hang
+    - xtimer_longterm
+    - xtimer_msg
     - xtimer_msg_receive_timeout
     - xtimer_now64_continuity
     - xtimer_periodic_wakeup
@@ -22,3 +61,101 @@ subdir:
 ---
 subdir:
     - unittests
+---
+ignore:
+    - board_calliope-mini
+    - board_microbit
+    - cpp11_condition_variable
+    - cpp11_mutex
+    - cpp11_thread
+    - driver_adt7310
+    - driver_adxl345
+    - driver_at30tse75x
+    - driver_at86rf2xx
+    - driver_bh1750
+    - driver_bme280
+    - driver_bmp180
+    - driver_dht
+    - driver_dynamixel
+    - driver_enc28j60
+    - driver_encx24j600
+    - driver_feetech
+    - driver_hd44780
+    - driver_hdc1000
+    - driver_hih6130
+    - driver_ina220
+    - driver_io1_xplained
+    - driver_isl29020
+    - driver_isl29125
+    - driver_jc42
+    - driver_kw2xrf
+    - driver_l3g4200d
+    - driver_lis3dh
+    - driver_lis3mdl
+    - driver_lpd8808
+    - driver_lps331ap
+    - driver_lsm303dlhc
+    - driver_lsm6dsl
+    - driver_mag3110
+    - driver_mma8x5x
+    - driver_mpl3115a2
+    - driver_mpu9150
+    - driver_mq3
+    - driver_nrf24l01p_lowlevel
+    - driver_nvram_spi
+    - driver_pcd8544
+    - driver_pir
+    - driver_pn532
+    - driver_sdcard_spi
+    - driver_servo
+    - driver_si70xx
+    - driver_srf02
+    - driver_srf08
+    - driver_tcs37727
+    - driver_tmp006
+    - driver_tsl2561
+    - driver_veml6070
+    - driver_xbee
+    - emb6
+    - gnrc_ipv6_ext
+    - gnrc_sixlowpan
+    - gnrc_sock_dns
+    - gnrc_sock_ip
+    - gnrc_sock_udp
+    - gnrc_tcp_client
+    - gnrc_tcp_server
+    - libfixmath
+    - libfixmath_unittests
+    - lwip
+    - lwip_sock_ip
+    - lwip_sock_tcp
+    - lwip_sock_udp
+    - netdev_test
+    - netstats_l2
+    - nhdp
+    - pkg_aversiveplusplus
+    - pkg_cmsis-dsp
+    - pkg_jsmn
+    - pkg_libcoap
+    - pkg_micro-ecc
+    - pkg_micro-ecc-with-hwrng
+    - pkg_oonf_api
+    - pkg_tiny-asn1
+    - pkg_u8g2
+    - posix_semaphore
+    - posix_sleep
+    - pthread
+    - pthread_barrier
+    - pthread_cleanup
+    - pthread_condition_variable
+    - pthread_cooperation
+    - pthread_rwlock
+    - pthread_tls
+    - rmutex
+    - saul
+    - sched_testing
+    - slip
+    - sntp
+    - struct_tm_utility
+    - unittests
+    - warn_conflict

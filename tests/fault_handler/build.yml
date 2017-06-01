@@ -1,0 +1,6 @@
+app:
+    global_vars:
+        CFLAGS:
+            - -DDEVELHELP
+    depends:
+        - xtimer

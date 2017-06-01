@@ -1,0 +1,4 @@
+app:
+    depends:
+        - core_thread_flags
+        - xtimer

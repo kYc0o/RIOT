@@ -1,0 +1,3 @@
+app:
+    depends:
+        - periph_timer

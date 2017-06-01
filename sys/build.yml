@@ -15,6 +15,7 @@ subdir:
     - newlib
     - pipe
     - ps
+    - random
     - shell
     - tsrb
     - uart_stdio

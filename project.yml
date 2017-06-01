@@ -13,7 +13,7 @@ rule:
       in: '.o'
       options:
           combine: true
-      cmd: '${LINK} ${LINKFLAGS} ${CFLAGS} ${in} -o ${out}'
+      cmd: '${LINK} ${LINKFLAGS} ${CFLAGS} ${in} ${libs} -o ${out}'
 
     - name: SYMLINK
       cmd: 'ln -f ${in} ${out}'

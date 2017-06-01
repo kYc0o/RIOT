@@ -1,0 +1,4 @@
+app:
+    depends:
+        - periph_rtc
+        - xtimer

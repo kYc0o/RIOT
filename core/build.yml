@@ -39,3 +39,5 @@ module:
       uses: core
 
     - name: schedstatistics
+      depends:
+          - xtimer

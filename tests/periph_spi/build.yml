@@ -1,0 +1,6 @@
+app:
+    depends:
+        - periph_spi
+        - shell
+        - shell_commands
+        - xtimer

@@ -1,0 +1,4 @@
+app:
+    depends:
+        - periph_rtt
+        - -auto_init

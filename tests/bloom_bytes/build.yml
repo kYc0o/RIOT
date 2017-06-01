@@ -1,0 +1,5 @@
+app:
+    depends:
+        - sys/bloom
+        - sys/random
+        - xtimer

@@ -1,0 +1,4 @@
+app:
+    depends:
+        - periph_hwrng
+        - xtimer

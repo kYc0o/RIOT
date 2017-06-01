@@ -1,0 +1,7 @@
+app:
+    depends:
+     - ps
+     - schedstatistics
+     - shell
+     - shell_commands
+     - printf_float

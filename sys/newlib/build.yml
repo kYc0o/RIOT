@@ -2,8 +2,11 @@ module:
     name: newlib
     sources: syscalls.c
     global_vars:
+        CFLAGS:
+            - -Isys/libc/include
         LINKFLAGS:
             - -specs=nano.specs
-            - -lc -lnosys
+        libs:
+            - -lc -lnosys -lm
     depends:
         sys/uart_stdio

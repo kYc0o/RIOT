@@ -1,16 +1,27 @@
 module:
-    name: at86rf2xx
-    depends:
-        - xtimer
-        - luid
-        - ieee802154
-        - netdev_ieee802154
-    sources:
-        - at86rf2xx.c
-        - at86rf2xx_getset.c
-        - at86rf2xx_internal.c
-        - at86rf2xx_netdev.c
+    - name: at86rf2xx
+      sources:
+          - at86rf2xx.c
+          - at86rf2xx_getset.c
+          - at86rf2xx_internal.c
+          - at86rf2xx_netdev.c
+      depends:
+          - xtimer
+          - luid
+          - ieee802154
+          - netdev_ieee802154
+          - periph_spi
+      uses:
+          - netstats_l2
+          - gnrc_sixlowpan
+          - at86rf212b
 
-module:
+      vars:
+          CFLAGS:
+              - -Idrivers/at86rf2xx/include
+
     - name: at86rf233
+      depends: at86rf2xx
+
+    - name: at86rf212b
       depends: at86rf2xx

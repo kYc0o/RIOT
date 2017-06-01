@@ -23,3 +23,7 @@ subdir:
     - periph
     - netdev_tap
 
+---
+module:
+    name: printf_float
+    context: cpu/native

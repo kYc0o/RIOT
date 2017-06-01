@@ -24,24 +24,29 @@ context:
             - -Wl,--gc-sections
 
 module:
-    context: cortexm
-    name: cortexm
-    sources:
-     - cortexm_init.c
-     - irq_arch.c
-     - mpu.c
-     - panic.c
-     - thread_arch.c
-     - vectors_cortexm.c
+    - context: cortexm
+      name: cortexm
+      sources:
+       - cortexm_init.c
+       - irq_arch.c
+       - mpu.c
+       - panic.c
+       - thread_arch.c
+       - vectors_cortexm.c
 
-    vars:
-        CFLAGS:
-            - -DMODULE_CORTEXM_COMMON
+      vars:
+          CFLAGS:
+              - -DMODULE_CORTEXM_COMMON
 
-    depends:
-        - core
-        - newlib
-        - cortexm_common_periph
+      depends:
+          - core
+          - newlib
+          - cortexm_common_periph
+
+    - name: mpu_stack_guard
+      context: cortexm
+    - name: printf_float
+      context: cortexm
 
 subdir:
     - periph
