@@ -1,0 +1,31 @@
+template:
+    "%NAME%":
+      - flashpage
+      - gpio
+      - hwrng
+      - pm
+      - rtc
+      - rtt_lptim
+      - timer
+
+module:
+    name: "periph_%NAME%"
+    context: stm32
+    sources:
+        - "%NAME%.c"
+
+---
+template:
+    "%NAME%":
+      - dac
+      - pwm
+      - spi
+      - uart
+
+module:
+    name: "periph_%NAME%"
+    context: stm32
+    sources:
+        - "%NAME%.c"
+    depends:
+        - periph_gpio

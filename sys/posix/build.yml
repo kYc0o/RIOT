@@ -1,0 +1,10 @@
+subdir:
+    - semaphore
+    - pthread
+    - sockets
+
+module:
+    name: posix
+    global_vars:
+        CFLAGS:
+            - -Isys/posix/pthread/include

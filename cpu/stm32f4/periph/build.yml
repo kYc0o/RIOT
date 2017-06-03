@@ -1,0 +1,10 @@
+template:
+    "%NAME%":
+        - adc
+        - i2c
+
+module:
+    name: "periph_%NAME%"
+    context: stm32f4
+    sources:
+        - "%NAME%.c"

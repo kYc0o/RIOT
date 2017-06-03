@@ -1,0 +1,17 @@
+builder:
+    name: stm32f4discovery
+    parent: stm32f4
+    vars:
+        CFLAGS:
+            - -DRIOT_BOARD=\"stm32f4discovery\"
+            - -DCPU_MODEL_STM32F407VG
+            - -Iboards/stm32f4discovery/include
+        LINKFLAGS:
+            - -Tstm32f407vg.ld
+
+module:
+    - name: board
+      context: stm32f4discovery
+      sources: board.c
+      depends:
+          - cpu/stm32f4

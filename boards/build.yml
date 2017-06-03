@@ -1,4 +1,6 @@
 subdir:
     - native
+    - nucleo-f401
     - samd21-xpro
     - samr21-xpro
+    - stm32f4discovery

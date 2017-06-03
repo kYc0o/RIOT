@@ -1,0 +1,4 @@
+module:
+    name: posix_semaphore
+    sources:
+        - posix_semaphore.c

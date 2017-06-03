@@ -3,3 +3,5 @@ subdir:
     - cortexm_common
     - sam0_common
     - samd21
+    - stm32_common
+    - stm32f4

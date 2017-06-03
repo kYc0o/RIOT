@@ -1,0 +1,4 @@
+module:
+    name: posix_sockets
+    sources:
+        - posix_sockets.c

@@ -1,0 +1,30 @@
+context:
+    name: stm32f4
+    parent: stm32
+    vars:
+        CFLAGS:
+            - -mcpu=cortex-m4
+            - -mfloat-abi=soft
+            - -DRIOT_MCU=\"stm32f4\"
+            - -DCPU_STM32F4
+            - -DCPU_FAM_STM32F4
+            - -DCPU_ARCH_CORTEX_M4F
+            - -Icpu/stm32f4/include
+        LINKFLAGS:
+            - -Lcpu/stm32f4/ldscripts
+    disable_modules:
+        - periph_flashpage
+        - periph_hwrng
+        - periph_rtc
+
+module:
+    context: stm32f4
+    sources:
+        - cpu.c
+        - vectors.c
+    depends:
+        - stm32_common
+        - periph_common
+
+subdir:
+    - periph

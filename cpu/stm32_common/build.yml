@@ -1,0 +1,16 @@
+context:
+    name: stm32
+    parent: cortexm
+    vars:
+        CFLAGS:
+            - -Icpu/stm32_common/include
+
+module:
+    name: stm32_common
+    context: stm32
+    sources: cpu_common.c
+    depends:
+        - cortexm
+
+subdir:
+    - periph
