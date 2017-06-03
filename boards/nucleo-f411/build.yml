@@ -1,0 +1,18 @@
+builder:
+    name: nucleo-f411
+    parent: stm32f4
+    vars:
+        CFLAGS:
+            - -DRIOT_BOARD=\"nucleo-f411\"
+            - -DCPU_MODEL_STM32F411RE
+            - -Iboards/nucleo-f411/include
+            - -Iboards/nucleo-common/include
+        LINKFLAGS:
+            - -Tstm32f411re.ld
+
+module:
+    - name: board
+      context: nucleo-f411
+      sources: board.c
+      depends:
+          - cpu/stm32f4
