@@ -1,0 +1,5 @@
+module:
+    name: gnrc_ipv6_whitelist
+    sources:
+        - gnrc_ipv6_whitelist.c
+        - gnrc_ipv6_whitelist_print.c

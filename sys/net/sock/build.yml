@@ -1,0 +1,4 @@
+module:
+    name: sock_util
+    sources:
+        - sock_util.c

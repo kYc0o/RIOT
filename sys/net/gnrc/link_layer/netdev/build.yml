@@ -1,0 +1,11 @@
+module:
+    uses:
+        - od
+        - netstats_l2
+        - gnrc_ipv6
+        - l2filter
+    sources:
+        - gnrc_netdev.c
+        - gnrc_netdev_eth.c
+        - gnrc_netdev_ieee802154.c
+        - gnrc_netdev_xbee.c

@@ -1,0 +1,5 @@
+module:
+    name: gnrc_rpl_p2p
+    sources:
+        - gnrc_rpl_p2p.c
+        - gnrc_rpl_p2p_dodag.c

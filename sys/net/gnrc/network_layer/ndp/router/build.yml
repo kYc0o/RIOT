@@ -1,0 +1,6 @@
+module:
+    name: gnrc_ndp_router
+    uses:
+        - gnrc_ndp_host
+    sources:
+        - gnrc_ndp_router.c

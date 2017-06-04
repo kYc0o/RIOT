@@ -1,0 +1,6 @@
+module:
+    name: gnrc_ipv6_ext
+    uses:
+        - gnrc_rpl_srh
+    sources:
+        - gnrc_ipv6_ext.c

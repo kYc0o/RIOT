@@ -1,0 +1,4 @@
+module:
+    name: gnrc_pkt
+    sources:
+        - gnrc_pkt.c

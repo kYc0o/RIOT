@@ -1,0 +1,4 @@
+module:
+    name: netdev_test
+    sources:
+        - netdev_test.c

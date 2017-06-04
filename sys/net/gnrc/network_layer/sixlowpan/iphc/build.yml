@@ -1,0 +1,7 @@
+module:
+    name: gnrc_sixlowpan_iphc
+    uses:
+        - gnrc_sixlowpan_iphc_nhc
+        - gnrc_udp
+    sources:
+        - gnrc_sixlowpan_iphc.c

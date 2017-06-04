@@ -1,0 +1,6 @@
+module:
+    name: gnrc_icmpv6_echo
+    uses:
+        - od
+    sources:
+        - gnrc_icmpv6_echo.c

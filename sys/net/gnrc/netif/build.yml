@@ -1,0 +1,11 @@
+module:
+    name: gnrc_netif
+    sources:
+        - gnrc_netif.c
+        - gnrc_netif_addr_from_str.c
+        - gnrc_netif_addr_to_str.c
+    uses:
+        - gnrc_ipv4_netif
+        - gnrc_ipv6_netif
+subdir:
+    - hdr

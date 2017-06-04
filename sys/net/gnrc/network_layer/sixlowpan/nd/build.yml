@@ -1,0 +1,11 @@
+module:
+    name: gnrc_sixlowpan_nd
+    uses:
+        - fib
+        - gnrc_sixlowpan_ctx
+        - gnrc_sixlowpan_nd_border_router
+        - gnrc_sixlowpan_nd_router
+    sources:
+        - gnrc_sixlowpan_nd.c
+subdir:
+        - router

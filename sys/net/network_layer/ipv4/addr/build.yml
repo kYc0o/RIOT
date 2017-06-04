@@ -1,0 +1,5 @@
+module:
+    name: ipv4_addr
+    sources:
+        - ipv4_addr_from_str.c
+        - ipv4_addr_to_str.c

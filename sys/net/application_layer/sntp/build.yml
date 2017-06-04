@@ -1,0 +1,6 @@
+module:
+    sources:
+        - sntp.c
+    depends:
+        - gnrc_sock_udp
+        - xtimer

@@ -1,0 +1,7 @@
+module:
+    name: gnrc_sixlowpan_nd_router
+    uses:
+        - gnrc_ndp_router
+        - gnrc_sixlowpan_nd_border_router
+    sources:
+        - gnrc_sixlowpan_nd_router.c

@@ -1,0 +1,17 @@
+module:
+    name: gnrc_rpl
+    uses:
+        - auto_init_gnrc_rpl
+        - gnrc_rpl_p2p
+        - netstats_rpl
+    sources:
+        - gnrc_rpl.c
+        - gnrc_rpl_auto_init.c
+        - gnrc_rpl_control_messages.c
+        - gnrc_rpl_dodag.c
+        - gnrc_rpl_of_manager.c
+        - gnrc_rpl_validation.c
+        - of0.c
+subdir:
+        - p2p
+        - srh

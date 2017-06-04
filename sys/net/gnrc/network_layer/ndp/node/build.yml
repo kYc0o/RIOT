@@ -1,0 +1,6 @@
+module:
+    name: gnrc_ndp_node
+    uses:
+        - fib
+    sources:
+        - gnrc_ndp_node.c

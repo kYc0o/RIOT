@@ -1,0 +1,11 @@
+module:
+    sources:
+        - iib_table.c
+        - lib_table.c
+        - nhdp.c
+        - nhdp_address.c
+        - nhdp_reader.c
+        - nhdp_writer.c
+        - nib_table.c
+    depends:
+        - xtimer

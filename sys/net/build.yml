@@ -1,2 +1,10 @@
 subdir:
-    - link_layer
+        - application_layer
+        - crosslayer
+        - gnrc
+        - link_layer
+        - netdev_test
+        - network_layer
+        - routing
+        - sock
+        - transport_layer

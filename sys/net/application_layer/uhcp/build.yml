@@ -1,0 +1,12 @@
+module:
+    name: uhcpc
+    sources:
+        - uhcp.c
+        - uhcpc.c
+    vars:
+        CFLAGS:
+            - -DUHCP_CLIENT
+
+    depends:
+        - sock_udp
+        - xtimer

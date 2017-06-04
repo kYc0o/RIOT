@@ -1,0 +1,6 @@
+module:
+    name: gnrc_udp
+    uses:
+        - gnrc_ipv6
+    sources:
+        - gnrc_udp.c

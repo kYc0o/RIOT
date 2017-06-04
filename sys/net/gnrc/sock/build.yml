@@ -1,0 +1,10 @@
+module:
+    name: gnrc_sock
+    uses:
+        - gnrc_neterr
+        - xtimer
+    sources:
+        - gnrc_sock.c
+subdir:
+        - ip
+        - udp

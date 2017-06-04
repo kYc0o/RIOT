@@ -1,0 +1,4 @@
+module:
+    name: gnrc_netapi
+    sources:
+        - gnrc_netapi.c

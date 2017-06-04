@@ -1,0 +1,4 @@
+module:
+    name: gnrc_icmpv6_error
+    sources:
+        - gnrc_icmpv6_error.c

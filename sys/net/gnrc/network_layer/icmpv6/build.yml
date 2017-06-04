@@ -1,0 +1,12 @@
+module:
+    name: gnrc_icmpv6
+    uses:
+        - gnrc_icmpv6_echo
+        - gnrc_ndp_router
+        - gnrc_sixlowpan_nd_router
+        - gnrc_ndp
+    sources:
+        - gnrc_icmpv6.c
+subdir:
+    - echo
+    - error

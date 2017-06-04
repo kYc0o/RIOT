@@ -1,0 +1,6 @@
+module:
+    name: ipv6_addr
+    sources:
+        - ipv6_addr.c
+        - ipv6_addr_from_str.c
+        - ipv6_addr_to_str.c

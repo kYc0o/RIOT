@@ -1,0 +1,4 @@
+module:
+    name: gnrc_sock_ip
+    sources:
+        - gnrc_sock_ip.c

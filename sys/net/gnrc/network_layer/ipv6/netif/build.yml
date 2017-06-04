@@ -1,0 +1,14 @@
+module:
+    name: gnrc_ipv6_netif
+    uses:
+        - 
+        - gnrc_ndp
+        - gnrc_ndp_host
+        - gnrc_ndp_router
+        - gnrc_sixlowpan
+        - gnrc_sixlowpan_nd
+        - gnrc_sixlowpan_nd_border_router
+        - gnrc_sixlowpan_nd_router
+        - netstats_ipv6
+    sources:
+        - gnrc_ipv6_netif.c

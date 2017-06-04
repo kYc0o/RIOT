@@ -1,0 +1,5 @@
+module:
+    name: gnrc_netif_hdr
+    sources:
+        - gnrc_netif_hdr.c
+        - gnrc_netif_hdr_print.c

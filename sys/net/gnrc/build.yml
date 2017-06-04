@@ -1,0 +1,15 @@
+subdir:
+        - application_layer
+        - link_layer
+        - netapi
+        - netif
+        - netreg
+        - nettest
+        - network_layer
+        - pkt
+        - pktbuf_static
+        - pktdump
+        - priority_pktqueue
+        - routing
+        - sock
+        - transport_layer

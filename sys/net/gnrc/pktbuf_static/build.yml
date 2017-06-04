@@ -1,0 +1,7 @@
+module:
+    name: gnrc_pktbuf_static
+    uses:
+        - gnrc_neterr
+        - od
+    sources:
+        - gnrc_pktbuf_static.c

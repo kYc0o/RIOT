@@ -1,0 +1,4 @@
+module:
+    name: gnrc_uhcpc
+    sources:
+        - gnrc_uhcpc.c

@@ -1,0 +1,7 @@
+module:
+    name: gnrc_ipv6_hdr
+    uses:
+        - gnrc_ipv6
+        - ipv6_addr
+    sources:
+        - gnrc_ipv6_hdr.c

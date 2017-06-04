@@ -1,0 +1,7 @@
+module:
+    name: sock_dns
+    sources:
+        - dns.c
+    depends:
+        - sock_udp
+        - sock_util

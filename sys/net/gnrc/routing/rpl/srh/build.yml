@@ -1,0 +1,4 @@
+module:
+    name: gnrc_rpl_srh
+    sources:
+        - gnrc_rpl_srh.c

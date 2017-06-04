@@ -1,0 +1,3 @@
+module:
+    sources:
+        - l2filter.c

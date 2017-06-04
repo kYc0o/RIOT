@@ -1,0 +1,5 @@
+module:
+    name: gnrc_ipv6_blacklist
+    sources:
+        - gnrc_ipv6_blacklist.c
+        - gnrc_ipv6_blacklist_print.c

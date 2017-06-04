@@ -1,0 +1,8 @@
+module:
+    sources:
+        - emcute.c
+        - emcute_str.c
+    depends:
+        - core_thread_flags
+        - sock_udp
+        - xtimer
