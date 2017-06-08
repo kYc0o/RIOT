@@ -1,5 +1,8 @@
 module:
     name: gnrc_icmpv6
+    depends:
+        - inet_csum
+        - icmpv6
     uses:
         - gnrc_icmpv6_echo
         - gnrc_ndp_router

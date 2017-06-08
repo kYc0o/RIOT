@@ -13,10 +13,14 @@ module:
           - periph_spi
       uses:
           - netstats_l2
+          - gnrc
           - gnrc_sixlowpan
+          - sixlowpan
           - at86rf212b
+          - at86rf231
+          - at86rf233
 
-      vars:
+      global_vars:
           CFLAGS:
               - -Idrivers/at86rf2xx/include
 

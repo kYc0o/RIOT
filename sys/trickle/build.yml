@@ -1,0 +1,6 @@
+module:
+    depends:
+        - xtimer
+        - random
+    sources:
+        - trickle.c

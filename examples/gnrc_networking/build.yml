@@ -1,0 +1,22 @@
+app:
+    sources:
+        - main.c
+        - udp.c
+
+    depends:
+        - auto_init_gnrc_netif
+        - gnrc_netdev_default
+        - gnrc_core
+        - gnrc_udp
+        - gnrc_ipv6
+        - gnrc_icmpv6_echo
+        - gnrc_ipv6_router_default
+        - gnrc_pktdump
+        - ipv6_addr
+        - shell
+        - shell_commands
+        - ps
+
+    global_vars:
+        CFLAGS:
+            - -DDEVELHELP

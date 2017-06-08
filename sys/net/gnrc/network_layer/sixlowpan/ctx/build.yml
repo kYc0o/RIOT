@@ -1,5 +1,4 @@
 module:
     name: gnrc_ctx_ctx
-    uses:
     sources:
         - gnrc_sixlowpan_ctx.c

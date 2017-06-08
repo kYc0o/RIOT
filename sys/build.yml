@@ -4,19 +4,36 @@ subdir:
     - bitfield
     - bloom
     - cbor
+    - checksum
+    - color
+    - cpp11-compat
     - crypto
     - div
+    - ecc
     - embunit
     - fmt
+    - fs
     - hashes
     - isrpipe
     - luid
+    - mineplex
     - net
     - newlib
+    - od
+    - phydat
     - pipe
+    - pm_layered
     - ps
+    - quad_math
     - random
+    - rtt_stdio
+    - saul_reg
+    - sema
     - shell
+    - timex
+    - trickle
     - tsrb
     - uart_stdio
+    - universal_address
+    - vfs
     - xtimer

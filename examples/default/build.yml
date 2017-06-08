@@ -3,3 +3,4 @@ app:
         - shell
         - shell_commands
         - netdev_default
+        - ?periph_rtc

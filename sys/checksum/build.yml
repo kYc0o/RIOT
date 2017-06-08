@@ -1,0 +1,6 @@
+module:
+    sources:
+        - crc16_ccitt.c
+        - fletcher16.c
+        - fletcher32.c
+        - ucrc16.c

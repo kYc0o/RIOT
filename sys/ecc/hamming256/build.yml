@@ -1,0 +1,3 @@
+module:
+    sources:
+        - hamming256.c

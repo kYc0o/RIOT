@@ -1,11 +1,13 @@
 module:
-    sources:
+    - sources:
         #- mersenne.c
         #- minstd.c
         #- musl_lcg.c
         - prng_tinymt32.c
-    depends:
-        sys/random/tinymt32
+      depends:
+        - sys/random/tinymt32
+    - name: random
+      depends: sys/random
 
 subdir:
     - tinymt32

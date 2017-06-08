@@ -4,3 +4,6 @@ module:
         - auto_init.c
     uses:
         - all
+
+subdir:
+    - netif

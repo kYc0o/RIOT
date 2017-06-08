@@ -1,8 +1,50 @@
 module:
     name: shell_commands
+    options:
+        use_optional_source_deps: True
     sources:
         - shell_commands.c
-        - sc_ps.c
         - sc_sys.c
-    depends:
+        - at30tse75x: sc_at30tse75x.c
+        - ccn-lite-utils: sc_ccnl.c
+        - cpu/x86: sc_x86_lspci.c
+        - fib: sc_fib.c
+        - gnrc_icmpv6_echo: sc_icmpv6_echo.c
+        - gnrc_ipv6_blacklist: sc_blacklist.c
+        - gnrc_ipv6_nc: sc_ipv6_nc.c
+        - gnrc_ipv6_whitelist: sc_whitelist.c
+        - gnrc_netif: sc_netif.c
+        - gnrc_rpl: sc_gnrc_rpl.c
+        - gnrc_sixlowpan_ctx,gnrc_sixlowpan_nd_border_router: sc_gnrc_6ctx.c
+        - lpc2387: sc_heap.c
+        - mci: sc_disk.c
+        - periph_rtc: sc_rtc.c
+        - ps: sc_ps.c
+        - random: sc_random.c
+        - saul_reg: sc_saul_reg.c
+        - sht11: sc_sht11.c
+        - sntp: sc_sntp.c
+        - vfs: sc_vfs.c
+
+    uses:
+        - at30tse75x
+        - ccn-lite-utils
+        - cpu/x86
+        - fib
+        - gnrc_icmpv6_echo
+        - gnrc_ipv6_blacklist
+        - gnrc_ipv6_nc
+        - gnrc_ipv6_whitelist
+        - gnrc_netif
+        - gnrc_rpl
+        - gnrc_sixlowpan_ctx
+        - gnrc_sixlowpan_nd_border_router
+        - lpc2387
+        - mci
+        - periph_rtc
         - ps
+        - random
+        - saul_reg
+        - sht11
+        - sntp
+        - vfs

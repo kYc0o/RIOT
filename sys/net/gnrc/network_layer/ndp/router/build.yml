@@ -1,5 +1,7 @@
 module:
     name: gnrc_ndp_router
+    depends:
+        - gnrc_ndp_internal
     uses:
         - gnrc_ndp_host
     sources:

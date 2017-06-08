@@ -1,5 +1,8 @@
 module:
     name: gnrc_udp
+    depends:
+        - inet_csum
+        - udp
     uses:
         - gnrc_ipv6
     sources:

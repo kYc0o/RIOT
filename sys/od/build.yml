@@ -1,4 +1,6 @@
 module:
     name: od
+    depends:
+        - fmt
     sources:
         - od.c

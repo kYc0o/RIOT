@@ -2,6 +2,11 @@ module:
     name: gnrc_ipv6
     sources:
         - gnrc_ipv6.c
+    depends:
+        - gnrc_ipv6_hdr
+        - gnrc_ipv6_nc
+        - gnrc_ipv6_netif
+        - ipv6_hdr
     uses:
         - fib
         - gnrc_icmpv6

@@ -1,8 +1,7 @@
 module:
     name: gnrc_ndp_internal
-    uses:
-        - gnrc_sixlowpan_nd
-        - gnrc_sixlowpan_nd_router
-        - gnrc_sixlowpan_ndbranch
+    depends:
+        - gnrc_ndp
+        - random
     sources:
         - gnrc_ndp_internal.c

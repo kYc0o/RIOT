@@ -1,0 +1,3 @@
+module:
+    sources:
+        - rtt_stdio.c

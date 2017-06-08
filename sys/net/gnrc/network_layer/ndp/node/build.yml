@@ -1,5 +1,7 @@
 module:
     name: gnrc_ndp_node
+    depends:
+        - gnrc_ndp_internal
     uses:
         - fib
     sources:

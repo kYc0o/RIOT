@@ -1,7 +1,9 @@
 module:
     name: gnrc_ipv6_netif
+    depends:
+        - gnrc_netif
+        - xtimer
     uses:
-        - 
         - gnrc_ndp
         - gnrc_ndp_host
         - gnrc_ndp_router
@@ -9,6 +11,7 @@ module:
         - gnrc_sixlowpan_nd
         - gnrc_sixlowpan_nd_border_router
         - gnrc_sixlowpan_nd_router
+        - ipv6_addr
         - netstats_ipv6
     sources:
         - gnrc_ipv6_netif.c

@@ -1,0 +1,4 @@
+module:
+    sources:
+        - ubjson-read.c
+        - ubjson-write.c

@@ -1,0 +1,6 @@
+module:
+    uses:
+        - fib
+        - gnrc_ipv6
+    sources:
+        - universal_address.c

@@ -1,0 +1,31 @@
+module:
+    name: auto_init_gnrc_netif
+    depends: auto_init
+    uses:
+        - at86rf2xx
+        - cc110x
+        - cc2420
+        - cc2538_rf
+        - enc28j60
+        - encx24j600
+        - ethos
+        - gnrc_slip
+        - kw2xrf
+        - mrf24j40
+        - netdev_tap
+        - w5100
+        - xbee
+    sources:
+        - auto_init_at86rf2xx.c
+        - auto_init_cc110x.c
+        - auto_init_cc2420.c
+        - auto_init_cc2538_rf.c
+        - auto_init_enc28j60.c
+        - auto_init_encx24j600.c
+        - auto_init_ethos.c
+        - auto_init_kw2xrf.c
+        - auto_init_mrf24j40.c
+        - auto_init_netdev_tap.c
+        - auto_init_slip.c
+        - auto_init_w5100.c
+        - auto_init_xbee.c

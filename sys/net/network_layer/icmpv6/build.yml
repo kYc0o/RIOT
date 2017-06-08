@@ -1,3 +1,4 @@
 module:
+    name: icmpv6
     sources:
         - icmpv6_hdr_print.c

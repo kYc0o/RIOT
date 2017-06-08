@@ -37,6 +37,7 @@ module:
       vars:
           CFLAGS:
               - -DMODULE_CORTEXM_COMMON
+              - -DMODULE_NEWLIB
 
       depends:
           - core

@@ -1,4 +1,7 @@
 module:
     name: netdev_eth
+    uses:
+        - l2filter
+        - netstats_l2
     sources:
         - netdev_eth.c

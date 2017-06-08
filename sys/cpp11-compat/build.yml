@@ -1,0 +1,8 @@
+module:
+    sources:
+        - condition_variable.cpp
+        - cppsupport.cpp
+        - mutex.cpp
+        - thread.cpp
+    depends:
+        - cpp

@@ -5,3 +5,4 @@ defaults:
 subdir:
     - default
     - hello-world
+    - gnrc_networking

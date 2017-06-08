@@ -1,5 +1,7 @@
 module:
     name: gnrc_icmpv6_echo
+    depends:
+        - gnrc_icmpv6
     uses:
         - od
     sources:

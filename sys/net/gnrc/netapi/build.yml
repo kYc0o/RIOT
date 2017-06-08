@@ -1,4 +1,6 @@
 module:
     name: gnrc_netapi
+    depends:
+        - gnrc_netreg
     sources:
         - gnrc_netapi.c
