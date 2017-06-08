@@ -13,7 +13,7 @@ module:
         - gnrc_netif
         - gnrc_netif_hdr
         - gnrc_pkt
-        - gnrc_pktbuf_static
+        - gnrc_pktbuf
 
     - name: gnrc_netdev_default
       depends:

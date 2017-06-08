@@ -1,3 +1,8 @@
+defaults:
+    module:
+        depends:
+          - core
+
 subdir:
     - auto_init
     - base64
@@ -18,7 +23,7 @@ subdir:
     - luid
     - mineplex
     - net
-    - newlib
+    - newlib_syscalls_default
     - od
     - phydat
     - pipe

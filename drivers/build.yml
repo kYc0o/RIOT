@@ -1,3 +1,7 @@
+defaults:
+    module:
+        uses:
+            - core
 module:
     - name: netdev_default
       depends:
