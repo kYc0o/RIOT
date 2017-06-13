@@ -10,9 +10,9 @@
 #define THREAD_FLAG_EVENT   0x1
 #define EVENT_LOOP_EXIT     (0x0-1)
 
+#define EVENT_QUEUE_INIT    { .waiter=(thread_t *)sched_active_thread }
+
 typedef struct event event_t;
-typedef struct event_source event_source_t;
-typedef struct event_tap event_tap_t;
 typedef void(*event_cb_t)(event_t*);
 
 struct event {
@@ -25,26 +25,9 @@ typedef struct {
     thread_t *waiter;
 } event_queue_t;
 
-struct event_tap {
-    clist_node_t list_node;
-    event_tap_t *next;
-    event_queue_t *queue;
-};
-
-struct event_source {
-    clist_node_t tap_list;
-    event_tap_t *list;
-};
-
-typedef struct {
-    event_tap_t tap;
-    event_t event;
-} _event_tap_t;
-
+void event_queue_init(event_queue_t *queue);
 void event_post(event_queue_t *queue, event_t *event);
 event_t *event_wait(event_queue_t *queue);
-
-void event_source_attach(event_source_t *source, event_queue_t *queue, event_tap_t *tap);
-void event_source_trigger(event_source_t *source);
+void event_loop(event_queue_t *queue);
 
 #endif /* EVENT_H */

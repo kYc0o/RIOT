@@ -1,7 +1,17 @@
 #include <assert.h>
 
+#include <string.h>
+
 #include "event.h"
 #include "clist.h"
+#include "thread.h"
+
+void event_queue_init(event_queue_t *queue)
+{
+    assert(queue);
+    memset(queue, '\0', sizeof(*queue));
+    queue->waiter = (thread_t *)sched_active_thread;
+}
 
 void event_post(event_queue_t *queue, event_t *event)
 {
@@ -20,27 +30,18 @@ event_t *event_wait(event_queue_t *queue)
     thread_flags_wait_any(THREAD_FLAG_EVENT);
     unsigned state = irq_disable();
     event_t *result = (event_t *) clist_lpop(&queue->event_list);
-    result->list_node.next = NULL;
+    if (clist_rpeek(&queue->event_list)) {
+        queue->waiter->flags |= THREAD_FLAG_EVENT;
+    }
     irq_restore(state);
+    result->list_node.next = NULL;
     return result;
 }
 
-void event_source_attach(event_source_t *source, event_queue_t *queue, event_tap_t *tap)
+void event_loop(event_queue_t *queue)
 {
-    _event_tap_t *_tap = (_event_tap_t *) tap;
-    unsigned state = irq_disable();
-    clist_rpush(&source->tap_list, &tap->list_node);
-    _tap->tap.queue = queue;
-    irq_restore(state);
-}
-
-void event_source_trigger(event_source_t *source)
-{
-    _event_tap_t *_tap;
-
-    unsigned state = irq_disable();
-    while ((_tap = (_event_tap_t *)clist_lpop(&source->tap_list))) {
-        event_post(_tap->tap.queue, &_tap->event);
+    event_t *event;
+    while((event = event_wait(queue))) {
+        event->callback(event);
     }
-    irq_restore(state);
 }
