@@ -114,6 +114,39 @@ static inline void cortexm_isr_end(void)
     }
 }
 
+/**
+ * @brief   Jumps to another image in flash
+ *
+ * This function is supposed to be called by a bootloader application.
+ *
+ * @param[in]   image_address   address in flash of other image
+ */
+static inline void cpu_jump_to_image(uint32_t image_address)
+{
+    /* Disable IRQ */
+    __disable_irq();
+
+    /* set PSP */
+    __set_PSP(*(uint32_t*)image_address);
+
+    /* skip stack pointer */
+    image_address += 4;
+
+    /* load the images reset_vector address */
+    uint32_t destination_address = *(uint32_t*)image_address;
+
+    /* Make sure the Thumb State bit is set. */
+    destination_address |= 0x1;
+
+    /* Branch execution */
+    __asm("BX %0" :: "r" (destination_address));
+}
+
+static inline unsigned cpu_get_image_baseaddr(void)
+{
+    return (unsigned)SCB->VTOR;
+}
+
 #ifdef __cplusplus
 }
 #endif
