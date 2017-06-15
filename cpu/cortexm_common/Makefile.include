@@ -2,6 +2,10 @@
 INCLUDES += -I$(RIOTCPU)/cortexm_common/include
 INCLUDES += -I$(RIOTCPU)/cortexm_common/include/vendor
 
+# Configure bootloader and slot lengths
+RIOTBOOT_SLOT0_SIZE ?= 0x1000
+SLOT_LEN ?= $(shell echo $$((($(ROM_LEN)-$(RIOTBOOT_SLOT0_SIZE)) / 2 )))
+SLOT_LEN := $(SLOT_LEN)
 
 ROM_OFFSET ?= 0
 
