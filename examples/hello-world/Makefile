@@ -15,4 +15,6 @@ CFLAGS += -DDEVELHELP
 # Change this to 0 show compiler invocation lines by default:
 QUIET ?= 1
 
+USEMODULE += firmware
+
 include $(RIOTBASE)/Makefile.include
