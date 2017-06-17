@@ -1,4 +1,4 @@
-subdir:
+subdirs:
     - native
     - nucleo-f401
     - nucleo-f411

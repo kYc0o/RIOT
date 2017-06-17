@@ -49,5 +49,5 @@ module:
     - name: printf_float
       context: cortexm
 
-subdir:
+subdirs:
     - periph

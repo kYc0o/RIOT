@@ -19,7 +19,7 @@ defaults:
     module:
         context: cpu/native
 
-subdir:
+subdirs:
     - periph
     - netdev_tap
 

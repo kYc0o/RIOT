@@ -1,4 +1,4 @@
-subdir:
+subdirs:
         - fib
         - icmpv6
         - ipv4

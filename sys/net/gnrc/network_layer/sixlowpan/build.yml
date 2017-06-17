@@ -5,7 +5,7 @@ module:
         - gnrc_sixlowpan_iphc
     sources:
         - gnrc_sixlowpan.c
-subdir:
+subdirs:
         - ctx
         - frag
         - iphc

@@ -5,6 +5,6 @@ module:
         - xtimer
     sources:
         - gnrc_sock.c
-subdir:
+subdirs:
         - ip
         - udp

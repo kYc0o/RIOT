@@ -7,5 +7,5 @@ module:
         - gnrc_sixlowpan_nd_router
     sources:
         - gnrc_sixlowpan_nd.c
-subdir:
+subdirs:
         - router

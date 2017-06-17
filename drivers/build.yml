@@ -8,7 +8,7 @@ module:
           - ?at86rf233
           - ?netdev_tap
 
-subdir:
+subdirs:
     - at86rf2xx
     - netdev_eth
     - netdev_ieee802154

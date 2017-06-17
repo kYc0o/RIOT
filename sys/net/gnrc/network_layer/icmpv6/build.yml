@@ -10,6 +10,6 @@ module:
         - gnrc_ndp
     sources:
         - gnrc_icmpv6.c
-subdir:
+subdirs:
     - echo
     - error

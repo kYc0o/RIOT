@@ -9,5 +9,5 @@ module:
         CFLAGS:
             - -DRIOT_CHACHA_PRNG_DEFAULT=0x12345678
 
-subdir:
+subdirs:
     - modes

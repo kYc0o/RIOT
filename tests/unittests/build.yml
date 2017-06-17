@@ -6,7 +6,7 @@ module:
         - board
     uses:
         - xtimer
-subdir:
+subdirs:
     - tests-base64
     - tests-bitfield
     - tests-bloom

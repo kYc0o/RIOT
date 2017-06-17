@@ -5,5 +5,5 @@ module:
     uses:
         - all
 
-subdir:
+subdirs:
     - netif

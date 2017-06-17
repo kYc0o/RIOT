@@ -25,7 +25,7 @@ module:
         - gnrc_sixlowpan_nd_router
         - netstats_ipv6
 
-subdir:
+subdirs:
         - blacklist
         - ext
         - hdr

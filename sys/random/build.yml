@@ -9,5 +9,5 @@ module:
     - name: random
       depends: sys/random
 
-subdir:
+subdirs:
     - tinymt32

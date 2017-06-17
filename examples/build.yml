@@ -3,7 +3,7 @@ defaults:
         sources: main.c
         depends: board
 
-subdir:
+subdirs:
     - default
     - hello-world
     - gnrc_networking

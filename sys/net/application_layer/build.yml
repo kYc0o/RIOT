@@ -1,4 +1,4 @@
-subdir:
+subdirs:
         - coap
         - dns
         - emcute

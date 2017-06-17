@@ -7,5 +7,5 @@ module:
     uses:
         - gnrc_ipv4_netif
         - gnrc_ipv6_netif
-subdir:
+subdirs:
     - hdr

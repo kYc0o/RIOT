@@ -6,5 +6,5 @@ module:
         - newlib
         - shell_commands
 
-subdir:
+subdirs:
     - commands

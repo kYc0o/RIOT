@@ -1,4 +1,4 @@
-subdir:
+subdirs:
     - semaphore
     - pthread
     - sockets

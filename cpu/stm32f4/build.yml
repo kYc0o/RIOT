@@ -26,5 +26,5 @@ module:
         - stm32_common
         - periph_common
 
-subdir:
+subdirs:
     - periph

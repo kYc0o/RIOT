@@ -9,7 +9,7 @@ module:
     sources:
         - gnrc_ndp.c
 
-subdir:
+subdirs:
         - host
         - internal
         - node

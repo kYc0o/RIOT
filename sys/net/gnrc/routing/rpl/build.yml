@@ -12,6 +12,6 @@ module:
         - gnrc_rpl_of_manager.c
         - gnrc_rpl_validation.c
         - of0.c
-subdir:
+subdirs:
         - p2p
         - srh

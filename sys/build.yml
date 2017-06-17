@@ -3,7 +3,7 @@ defaults:
         depends:
           - core
 
-subdir:
+subdirs:
     - auto_init
     - base64
     - bitfield

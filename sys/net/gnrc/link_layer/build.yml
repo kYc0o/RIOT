@@ -1,4 +1,4 @@
-subdir:
+subdirs:
         - gnrc_mac
         - netdev
         - slip

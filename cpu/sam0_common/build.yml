@@ -7,5 +7,5 @@ context:
         LINKFLAGS:
             - -Lcpu/sam0_common/ldscripts
 
-subdir:
+subdirs:
     - periph

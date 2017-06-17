@@ -20,4 +20,4 @@ module:
         - cpu/native
         - core
 
-subdir: drivers
+subdirs: drivers

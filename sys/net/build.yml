@@ -1,4 +1,4 @@
-subdir:
+subdirs:
         - application_layer
         - crosslayer
         - gnrc

@@ -1,4 +1,4 @@
-subdir:
+subdirs:
     - native
     - cortexm_common
     - sam0_common

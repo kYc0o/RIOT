@@ -4,7 +4,7 @@ defaults:
             - main.c
         depends:
             - board
-subdir:
+subdirs:
     - bitarithm_timings
     - bloom_bytes
     - fault_handler
@@ -59,7 +59,7 @@ subdir:
     - xtimer_reset
     - xtimer_usleep
 ---
-subdir:
+subdirs:
     - unittests
 ---
 ignore:
