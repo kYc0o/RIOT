@@ -5,7 +5,13 @@ ifeq ($(QUIET), 0)
 	NINJA_ARGS += -v
 endif
 
-all: | clean
+ifneq ($(filter $(MAKECMDGOALS),clean),)
+	CLEAN=clean
+endif
+
+.PHONY: clean all
+
+all: | $(CLEAN)
 	ninja -C $(RIOTBASE) $(NINJA_ARGS) $(NINJA_TARGET)
 
 clean:
