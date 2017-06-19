@@ -1,0 +1,6 @@
+module:
+    name: pir
+    sources:
+        - pir.c
+    depends:
+        - periph_gpio

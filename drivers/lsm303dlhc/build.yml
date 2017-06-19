@@ -1,0 +1,10 @@
+module:
+    name: lsm303dlhc
+    sources:
+        - lsm303dlhc.c
+        - saul: lsm303dlhc_saul.c
+    depends:
+        - periph_i2c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/lsm303dlhc/include

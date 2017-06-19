@@ -1,0 +1,14 @@
+module:
+    name: encx24j600
+    depends:
+        - div
+        - netdev_eth
+        - periph_timer
+        - xtimer
+    uses:
+        - netstats_l2
+    sources:
+        - encx24j600.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/encx24j600/include

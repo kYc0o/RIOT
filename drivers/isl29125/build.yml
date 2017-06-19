@@ -1,0 +1,7 @@
+module:
+    name: isl29125
+    sources:
+        - isl29125.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/isl29125/include

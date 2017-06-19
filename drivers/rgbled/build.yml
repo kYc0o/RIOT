@@ -1,0 +1,6 @@
+module:
+    name: rgbled
+    depends:
+        - color
+    sources:
+        - rgbled.c

@@ -1,0 +1,7 @@
+module:
+    name: srf08
+    depends:
+        - xtimer
+        - periph_i2c
+    sources:
+        - srf08.c

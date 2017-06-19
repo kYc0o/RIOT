@@ -1,0 +1,11 @@
+module:
+    name: dht
+    depends:
+        - periph_gpio
+        - xtimer
+    sources:
+        - dht.c
+        - saul: dht_saul.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/dht/include

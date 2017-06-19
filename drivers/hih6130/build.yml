@@ -1,0 +1,7 @@
+module:
+    name: hih6130
+    depends:
+        - div
+        - xtimer
+    sources:
+        - hih6130.c

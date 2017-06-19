@@ -1,0 +1,10 @@
+module:
+    name: lpd8808
+    depends:
+        - color
+        - periph_gpio
+    sources:
+        - lpd8808.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/lpd8808/include

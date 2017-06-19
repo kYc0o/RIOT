@@ -1,0 +1,8 @@
+module:
+    name: isl29020
+    sources:
+        - isl29020.c
+        - isl29020_saul.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/isl29020/include

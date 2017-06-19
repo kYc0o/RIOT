@@ -1,0 +1,8 @@
+module:
+    name: nvram_spi
+    depends:
+        - nvram
+        - xtimer
+        - periph_spi
+    sources:
+        - nvram-spi.c

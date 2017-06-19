@@ -1,0 +1,10 @@
+module:
+    name: mag3110
+    sources:
+        - mag3110.c
+        - saul: mag3110_saul.c
+    depends:
+        - periph_i2c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/mag3110/include

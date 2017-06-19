@@ -1,0 +1,19 @@
+module:
+    - name: pn532_core
+      sources:
+        - pn532.c
+      depends:
+        - periph_gpio
+
+    - name: pn532_i2c
+      depends:
+        - pn532_core
+        - periph_i2c
+
+    - name: pn532_spi
+      depends:
+        - pn532_core
+        - periph_spi
+
+
+

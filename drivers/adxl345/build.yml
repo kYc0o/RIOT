@@ -1,0 +1,10 @@
+module:
+    name: adxl345
+    depends:
+        - periph_i2c
+    sources:
+        - adxl345.c
+        - adxl345_saul.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/adxl345/include

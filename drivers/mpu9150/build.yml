@@ -1,0 +1,10 @@
+module:
+    name: mpu9150
+    depends:
+        - periph_i2c
+        - xtimer
+    sources:
+        - mpu9150.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/mpu9150/include

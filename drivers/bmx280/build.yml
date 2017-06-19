@@ -1,0 +1,18 @@
+module:
+    - name: bmx280
+      depends:
+          - periph_i2c
+          - saul
+          - xtimer
+      uses:
+          - bme280
+      sources:
+          - bmx280.c
+          - bmx280_saul.c
+      global_vars:
+          CFLAGS:
+              - -Idrivers/bmx280/include
+
+    - name: bme280
+      depends:
+          - bmx280

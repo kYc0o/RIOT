@@ -1,0 +1,10 @@
+module:
+    name: jc42
+    depends:
+        - periph_i2c
+    sources:
+        - jc42.c
+        - jc42_saul.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/jc42/include

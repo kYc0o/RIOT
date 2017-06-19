@@ -1,0 +1,16 @@
+module:
+    name: gnrc_cc110x
+    depends:
+        - gnrc
+        - gnrc_netapi
+        - gnrc_netif
+        - gnrc_netif_hdr
+        - gnrc_netreg
+        - gnrc_pkt
+        - gnrc_pktbuf
+        - gnrc_pktbuf_static
+    uses:
+        - gnrc_sixlowpan
+        - od
+    sources:
+        - gnrc_netdev_cc110x.c

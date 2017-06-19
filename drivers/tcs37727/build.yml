@@ -1,0 +1,10 @@
+module:
+    name: tcs37727
+    sources:
+        - tcs37727.c
+        - saul: tcs37727_saul.c
+    depends:
+        - periph_i2c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/tcs37727/include

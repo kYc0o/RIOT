@@ -1,0 +1,11 @@
+module:
+    name: dsp0401
+    depends:
+        - periph_gpio
+        - periph_pwm
+        - xtimer
+    sources:
+        - dsp0401.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/dsp0401/include

@@ -1,0 +1,6 @@
+module:
+    name: tmp006
+    sources:
+        - tmp006.c
+    depends:
+        - periph_i2c

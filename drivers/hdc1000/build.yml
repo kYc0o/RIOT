@@ -1,0 +1,12 @@
+module:
+    name: hdc1000
+    depends:
+        - div
+        - periph_timer
+        - xtimer
+    sources:
+        - hdc1000.c
+        - saul: hdc1000_saul.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/hdc1000/include

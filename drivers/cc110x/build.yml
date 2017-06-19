@@ -1,0 +1,21 @@
+module:
+    name: cc110x
+    depends:
+        - div
+        - ieee802154
+        - luid
+        - periph_timer
+        - xtimer
+    uses:
+        - cc110x_hooks
+        - gnrc_netif
+        - gnrc_sixlowpan
+    sources:
+        - cc110x-defaultsettings.c
+        - cc110x-netdev.c
+        - cc110x-rxtx.c
+        - cc110x-spi.c
+        - cc110x.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/cc110x/include

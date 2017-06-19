@@ -1,0 +1,7 @@
+module:
+    name: at30tse75x
+    depends:
+        - div
+        - xtimer
+    sources:
+        - at30tse75x.c

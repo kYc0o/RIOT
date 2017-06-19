@@ -1,0 +1,16 @@
+module:
+    name: feetech
+    depends:
+        - div
+        - periph_gpio
+        - periph_timer
+        - periph_uart
+        - uart_half_duplex
+        - xtimer
+    sources:
+        - feetech.c
+        - reader.c
+        - writer.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/feetech/include

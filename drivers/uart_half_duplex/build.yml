@@ -1,0 +1,13 @@
+module:
+    name: uart_half_duplex
+    depends:
+        - div
+        - periph_gpio
+        - periph_timer
+        - periph_uart
+        - xtimer
+    sources:
+        - uart_half_duplex.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/uart_half_duplex/include

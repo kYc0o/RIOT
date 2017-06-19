@@ -1,0 +1,7 @@
+module:
+    name: sht11
+    depends:
+        - div
+        - xtimer
+    sources:
+        - sht11.c

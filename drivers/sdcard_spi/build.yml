@@ -1,0 +1,13 @@
+module:
+    name: sdcard_spi
+    depends:
+        - div
+        - periph_gpio
+        - periph_spi
+        - periph_timer
+        - xtimer
+    sources:
+        - sdcard_spi.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/sdcard_spi/include

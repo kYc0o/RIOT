@@ -1,0 +1,9 @@
+module:
+    name: mtd_spi_nor
+    depends:
+        - mtd
+    uses:
+        - xtimer
+    sources:
+        - mtd_spi_nor.c
+        - mtd_spi_nor_configs.c

@@ -1,0 +1,10 @@
+module:
+    name: ethos
+    depends:
+        - netdev_eth
+        - prng_tinymt32
+        - random
+        - tinymt32
+        - tsrb
+    sources:
+        - ethos.c

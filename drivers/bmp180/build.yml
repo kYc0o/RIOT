@@ -1,0 +1,11 @@
+module:
+    name: bmp180
+    depends:
+        - periph_i2c
+        - xtimer
+    sources:
+        - bmp180.c
+        - bmp180_saul.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/bmp180/include

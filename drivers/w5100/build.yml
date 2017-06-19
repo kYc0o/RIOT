@@ -1,0 +1,10 @@
+module:
+    name: w5100
+    depends:
+        - luid
+        - netdev_eth
+    sources:
+        - w5100.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/w5100/include

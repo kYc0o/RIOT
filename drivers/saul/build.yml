@@ -1,0 +1,10 @@
+module:
+    name: saul
+    depends:
+        - fmt
+        - phydat
+    sources:
+        - adc_saul.c
+        - gpio_saul.c
+        - saul.c
+        - saul_str.c

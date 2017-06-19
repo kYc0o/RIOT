@@ -1,0 +1,11 @@
+module:
+    name: pcd8544
+    depends:
+        - periph_gpio
+        - periph_spi
+        - xtimer
+    sources:
+        - pcd8544.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/pcd8544/include

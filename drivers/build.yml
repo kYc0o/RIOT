@@ -9,7 +9,67 @@ module:
           - ?netdev_tap
 
 subdirs:
+    - adt7310
+    - adxl345
+    - at30tse75x
     - at86rf2xx
+    - bh1750fvi
+    - bmp180
+    - bmx280
+    - cc110x
+    - cc2420
+    - dht
+    - dsp0401
+    - dynamixel
+    - enc28j60
+    - encx24j600
+    - ethos
+    - feetech
+    - hd44780
+    - hdc1000
+    - hih6130
+    - ina220
+    - io1_xplained
+    - isl29020
+    - isl29125
+    - jc42
+    - kw2xrf
+    - l3g4200d
+    - lis3dh
+    - lis3mdl
+    - lpd8808
+    - lps331ap
+    - lsm303dlhc
+    - lsm6dsl
+    - mag3110
+    - mma8x5x
+    - mpl3115a2
+    - mpu9150
+    - mq3
+    - mrf24j40
+    - mtd
+    - mtd_spi_nor
     - netdev_eth
     - netdev_ieee802154
+    - nrf24l01p
+    - nvram
+    - nvram_spi
+    - pcd8544
     - periph_common
+    - pir
+    - pn532
+    - rgbled
+    - saul
+    - sdcard_spi
+    - servo
+    - sht11
+    - si70xx
+    - srf02
+    - srf08
+    - tcs37727
+    - tmp006
+    - tsl2561
+    - uart_half_duplex
+    - veml6070
+    - w5100
+    - xbee

@@ -1,0 +1,7 @@
+module:
+    name: mtd
+    uses:
+        - vfs
+    sources:
+        - mtd-vfs.c
+        - mtd.c

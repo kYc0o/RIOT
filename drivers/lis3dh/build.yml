@@ -1,0 +1,11 @@
+module:
+    name: lis3dh
+    depends:
+        - periph_gpio
+        - periph_spi
+    sources:
+        - lis3dh.c
+        - lis3dh_saul.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/lis3dh/include

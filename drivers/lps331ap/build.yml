@@ -1,0 +1,10 @@
+module:
+    name: lps331ap
+    sources:
+        - lps331ap.c
+        - saul: lps331ap_saul.c
+    depends:
+        - periph_i2c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/lps331ap/include

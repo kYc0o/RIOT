@@ -1,0 +1,15 @@
+module:
+    name: io1_xplained
+    depends:
+        - at30tse75x
+        - div
+        - periph_gpio
+        - periph_i2c
+        - periph_timer
+        - xtimer
+    sources:
+        - io1_xplained.c
+        - io1_xplained_saul.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/io1_xplained/include

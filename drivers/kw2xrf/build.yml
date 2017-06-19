@@ -1,0 +1,22 @@
+module:
+    name: kw2xrf
+    depends:
+        - ieee802154
+        - luid
+        - netdev_ieee802154
+        - netif
+    uses:
+        - gnrc
+        - gnrc_sixlowpan
+        - netstats_l2
+        - sixlowpan
+    sources:
+        - kw2xrf.c
+        - kw2xrf_getset.c
+        - kw2xrf_intern.c
+        - kw2xrf_netdev.c
+        - kw2xrf_spi.c
+        - kw2xrf_tm.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/kw2xrf/include

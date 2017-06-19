@@ -1,0 +1,17 @@
+module:
+    name: dynamixel
+    depends:
+        - div
+        - periph_gpio
+        - periph_timer
+        - periph_uart
+        - uart_half_duplex
+        - xtimer
+    sources:
+        - crc.c
+        - dynamixel.c
+        - reader.c
+        - writer.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/dynamixel/include

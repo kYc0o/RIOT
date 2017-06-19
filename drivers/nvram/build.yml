@@ -1,0 +1,6 @@
+module:
+    name: nvram
+    uses:
+        - vfs
+    sources:
+        - nvram-vfs.c

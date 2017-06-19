@@ -1,0 +1,10 @@
+module:
+    name: mma8x5x
+    sources:
+        - mma8x5x.c
+        - saul: mma8x5x_saul.c
+    depends:
+        - periph_i2c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/mma8x5x/include

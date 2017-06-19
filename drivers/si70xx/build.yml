@@ -1,0 +1,11 @@
+module:
+    name: si70xx
+    depends:
+        - periph_i2c
+        - xtimer
+    sources:
+        - si70xx.c
+        - saul: si70xx_saul.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/si70xx/include

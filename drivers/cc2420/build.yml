@@ -1,0 +1,25 @@
+module:
+    name: cc2420
+    depends:
+        - div
+        - ieee802154
+        - luid
+        - netdev_ieee802154
+        - netif
+        - periph_gpio
+        - periph_spi
+        - periph_timer
+        - xtimer
+    uses:
+        - gnrc
+        - gnrc_sixlowpan
+        - netstats_l2
+        - sixlowpan
+    sources:
+        - cc2420.c
+        - cc2420_getset.c
+        - cc2420_internal.c
+        - cc2420_netdev.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/cc2420/include

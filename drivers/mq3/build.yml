@@ -1,0 +1,6 @@
+module:
+    name: mq3
+    sources:
+        - mq3.c
+    depends:
+        - periph_adc

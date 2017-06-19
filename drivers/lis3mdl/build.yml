@@ -1,0 +1,9 @@
+module:
+    name: lis3mdl
+    sources:
+        - lis3mdl.c
+    depends:
+        - periph_i2c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/lis3mdl/include

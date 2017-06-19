@@ -1,0 +1,15 @@
+module:
+    name: enc28j60
+    depends:
+        - div
+        - luid
+        - netdev_eth
+        - periph_timer
+        - xtimer
+    uses:
+        - netstats_l2
+    sources:
+        - enc28j60.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/enc28j60/include

@@ -1,0 +1,23 @@
+module:
+    name: mrf24j40
+    depends:
+        - div
+        - ieee802154
+        - luid
+        - netdev_ieee802154
+        - netif
+        - periph_timer
+        - xtimer
+    uses:
+        - gnrc
+        - gnrc_sixlowpan
+        - netstats_l2
+        - sixlowpan
+    sources:
+        - mrf24j40.c
+        - mrf24j40_getset.c
+        - mrf24j40_internal.c
+        - mrf24j40_netdev.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/mrf24j40/include

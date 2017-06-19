@@ -1,0 +1,7 @@
+module:
+    name: ina220
+    sources:
+        - ina220.c
+    global_vars:
+        CFLAGS:
+            - -Idrivers/ina220/include
