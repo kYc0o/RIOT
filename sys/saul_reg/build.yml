@@ -1,3 +1,6 @@
 module:
-    sources:
-        - saul_reg.c
+    - name: saul_reg
+      depends:
+          - phydat
+      sources:
+          - saul_reg.c

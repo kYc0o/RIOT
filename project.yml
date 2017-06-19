@@ -44,5 +44,5 @@ context:
       #          tags: host
       #      parent: default
 
-subdir:
-    [core, boards, cpu, drivers, sys, examples, tests]
+subdirs:
+    [core, boards, cpu, drivers, sys, examples, tests, pkg]

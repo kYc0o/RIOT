@@ -1,1 +1,11 @@
 app:
+    depends:
+        - lsm303dlhc
+        - xtimer
+    global_vars:
+        CFLAGS:
+            - -DTEST_LSM303DLHC_I2C="I2C_DEV(0)"
+            - -DTEST_LSM303DLHC_ACC_ADDR="25"
+            - -DTEST_LSM303DLHC_MAG_ADDR="30"
+            - -DTEST_LSM303DLHC_ACC_PIN="GPIO_PIN(0,0)"
+            - -DTEST_LSM303DLHC_MAG_PIN="GPIO_PIN(0,1)"

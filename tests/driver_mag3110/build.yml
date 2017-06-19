@@ -1,1 +1,4 @@
 app:
+    depends:
+        - mag3110
+        - xtimer

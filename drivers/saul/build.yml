@@ -1,10 +1,25 @@
 module:
-    name: saul
-    depends:
-        - fmt
-        - phydat
-    sources:
-        - adc_saul.c
-        - gpio_saul.c
-        - saul.c
-        - saul_str.c
+    - name: saul
+      depends:
+          - fmt
+          - phydat
+      sources:
+          - saul_adc: adc_saul.c
+          - saul_gpio: gpio_saul.c
+          - saul.c
+          - saul_str.c
+
+    - name: saul_adc
+      depends:
+          - saul
+
+    - name: saul_gpio
+      depends:
+          - saul
+
+    - name: saul_default
+      depends:
+          - saul
+          - saul_reg
+          - auto_init_saul
+          - ?saul_board

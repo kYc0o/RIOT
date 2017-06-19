@@ -1,1 +1,4 @@
 app:
+    depends:
+        - lsm6dsl
+        - xtimer

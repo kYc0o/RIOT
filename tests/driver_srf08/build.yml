@@ -1,1 +1,11 @@
 app:
+    depends:
+        - periph_i2c
+        - srf08
+        - xtimer
+    global_vars:
+        CFLAGS:
+            - -DTEST_SRF08_I2C="I2C_DEV(0)"
+            - -DTEST_SRF08_SPEED="I2C_SPEED_NORMAL"
+            - -DTEST_MODE="SRF08_MODE_CM"
+            - -DTEST_NUM_ECHOS="3"

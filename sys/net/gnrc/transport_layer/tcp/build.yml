@@ -1,5 +1,7 @@
 module:
     name: gnrc_tcp
+    depends:
+        - core_mbox
     uses:
         - gnrc_ipv6
     sources:

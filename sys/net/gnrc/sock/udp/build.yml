@@ -1,6 +1,12 @@
 module:
-    name: gnrc_sock_udp
-    uses:
-        - gnrc_sock_check_reuse
-    sources:
-        - gnrc_sock_udp.c
+    - name: gnrc_sock_udp
+      depends:
+          - gnrc_sock
+          - gnrc_udp
+      uses:
+          - gnrc_sock_check_reuse
+      sources:
+          - gnrc_sock_udp.c
+
+    - name: gnrc_sock_check_reuse
+

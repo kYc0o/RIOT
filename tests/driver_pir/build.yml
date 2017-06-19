@@ -1,1 +1,8 @@
 app:
+    depends:
+        - pir
+        - xtimer
+    global_vars:
+        CFLAGS:
+            - -DPIR_GPIO="GPIO_PIN(0,0)"
+            # - -DTEST_PIR_POLLING

@@ -1,1 +1,8 @@
 app:
+    depends:
+        - pthread
+        - random
+        - xtimer
+    global_vars:
+        CFLAGS:
+            - -DNATIVE_AUTO_EXIT

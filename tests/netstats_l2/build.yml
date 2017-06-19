@@ -1,1 +1,8 @@
 app:
+    depends:
+        - auto_init_gnrc_netif
+        - gnrc
+        - gnrc_netdev_default
+        - netstats_l2
+        - shell
+        - shell_commands

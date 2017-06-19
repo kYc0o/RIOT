@@ -1,5 +1,8 @@
 module:
     name: pthread
+    depends:
+        - posix
+
     global_vars:
         CFLAGS:
             - -Isys/posix/pthread/include

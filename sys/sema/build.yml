@@ -1,3 +1,6 @@
 module:
+    name: sema
+    depends:
+        - xtimer
     sources:
         - sema.c

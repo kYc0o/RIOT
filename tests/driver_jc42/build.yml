@@ -1,1 +1,9 @@
 app:
+    depends:
+        - jc42
+        - xtimer
+    global_vars:
+        CFLAGS:
+            - -DTEST_I2C="0"
+            - -DTEST_I2C_ADDR="0x18"
+            - -DTEST_I2C_SPEED="I2C_SPEED_NORMAL"

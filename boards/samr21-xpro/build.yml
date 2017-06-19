@@ -10,9 +10,14 @@ builder:
             - -Tsamr21g18a.ld
 
 module:
-    name: board
-    context: samr21-xpro
-    sources: board.c
-    depends:
-        - cpu/samd21
-        - periph_gpio
+    - name: board
+      context: samr21-xpro
+      sources: board.c
+      depends:
+          - cpu/samd21
+          - periph_gpio
+
+    - name: saul_board
+      context: samr21-xpro
+      depends:
+          - saul_gpio

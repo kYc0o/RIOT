@@ -1,11 +1,7 @@
 app:
     depends:
-        - auto_init_gnrc_netif
-        - gnrc_netdev_default
-        - kw2xrf
-        - periph_gpio
-        - periph_spi
         - ps
+        - saul_default
         - shell
         - shell_commands
     global_vars:

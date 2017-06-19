@@ -1,1 +1,6 @@
 app:
+    depends:
+        - auto_init_storage
+        - fmt
+        - sdcard_spi
+        - shell

@@ -1,1 +1,12 @@
 app:
+    depends:
+        - gnrc
+        - gnrc_netdev
+        - gnrc_neterr
+        - gnrc_netif
+        - netdev_test
+        - od
+        - periph_timer
+    global_vars:
+        CFLAGS:
+            - -DGNRC_PKTBUF_SIZE="200"

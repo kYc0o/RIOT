@@ -1,1 +1,15 @@
 app:
+    depends:
+        - auto_init_gnrc_netif
+        - gnrc_netdev
+        - gnrc_netif
+        - gnrc_pktdump
+        - gnrc_txtsnd
+        - shell
+        - shell_commands
+        - xbee
+    global_vars:
+        CFLAGS:
+            - -DGNRC_PKTBUF_SIZE="512"
+            - -DDEVELHELP
+            - -I/home/kaspar/src/riot.laze/tests/driver_xbee

@@ -1,3 +1,6 @@
+subdirs:
+    - unittests
+---
 defaults:
     app:
         sources:
@@ -7,62 +10,6 @@ defaults:
 subdirs:
     - bitarithm_timings
     - bloom_bytes
-    - fault_handler
-    - float
-    - fmt_print
-    - irq
-    - leds
-    - malloc
-    - minimal
-    - mpu_stack_guard
-    - msg_avail
-    - msg_send_receive
-    - msg_try_receive
-    - mutex_order
-    - mutex_unlock_and_sleep
-    - od
-    - pipe
-    - periph_adc
-    - periph_cpuid
-    - periph_dac
-    - periph_flashpage
-    - periph_gpio
-    - periph_hwrng
-    - periph_i2c
-    - periph_pwm
-    - periph_rtc
-    - periph_rtt
-    - periph_spi
-    - periph_timer
-    - periph_uart
-    - ps_schedstatistics
-    - shell
-    - sizeof_tcb
-    - thread_basic
-    - thread_cooperation
-    - thread_exit
-    - thread_flags
-    - thread_flags_xtimer
-    - thread_flood
-    - thread_msg
-    - thread_msg_block_wo_queue
-    - thread_msg_block_w_queue
-    - thread_msg_seq
-    - xtimer_drift
-    - xtimer_hang
-    - xtimer_longterm
-    - xtimer_msg
-    - xtimer_msg_receive_timeout
-    - xtimer_now64_continuity
-    - xtimer_periodic_wakeup
-    - xtimer_remove
-    - xtimer_reset
-    - xtimer_usleep
----
-subdirs:
-    - unittests
----
-ignore:
     - board_calliope-mini
     - board_microbit
     - cpp11_condition_variable
@@ -73,9 +20,10 @@ ignore:
     - driver_at30tse75x
     - driver_at86rf2xx
     - driver_bh1750
-    - driver_bme280
     - driver_bmp180
+    - driver_bmx280
     - driver_dht
+    - driver_dsp0401
     - driver_dynamixel
     - driver_enc28j60
     - driver_encx24j600
@@ -116,7 +64,10 @@ ignore:
     - driver_tsl2561
     - driver_veml6070
     - driver_xbee
-    - emb6
+      #- emb6
+    - fault_handler
+    - float
+    - fmt_print
     - gnrc_ipv6_ext
     - gnrc_sixlowpan
     - gnrc_sock_dns
@@ -124,28 +75,54 @@ ignore:
     - gnrc_sock_udp
     - gnrc_tcp_client
     - gnrc_tcp_server
-    - libfixmath
-    - libfixmath_unittests
-    - lwip
-    - lwip_sock_ip
-    - lwip_sock_tcp
-    - lwip_sock_udp
+    - irq
+    - leds
+      #- libfixmath
+      #- libfixmath_unittests
+      #- lwip
+      #- lwip_sock_ip
+      #- lwip_sock_tcp
+      #- lwip_sock_udp
+    - malloc
+    - minimal
+    - mpu_stack_guard
+    - msg_avail
+    - msg_send_receive
+    - msg_try_receive
+    - mutex_order
+    - mutex_unlock_and_sleep
     - netdev_test
     - netstats_l2
     - nhdp
-    - pkg_aversiveplusplus
-    - pkg_cmsis-dsp
-    - pkg_jsmn
-    - pkg_libcoap
-    - pkg_micro-ecc
-    - pkg_micro-ecc-with-hwrng
-    - pkg_oonf_api
-    - pkg_tiny-asn1
-    - pkg_u8g2
+    - od
+    - periph_adc
+    - periph_cpuid
+    - periph_dac
+    - periph_flashpage
+    - periph_gpio
+    - periph_hwrng
+    - periph_i2c
+    - periph_pwm
+    - periph_rtc
+    - periph_rtt
+    - periph_spi
+    - periph_timer
+    - periph_uart
+    - pipe
+      #- pkg_aversiveplusplus
+      #- pkg_cmsis-dsp
+      #- pkg_jsmn
+      #- pkg_libcoap
+      #- pkg_micro-ecc
+      #- pkg_micro-ecc-with-hwrng
+      #- pkg_oonf_api
+      #- pkg_tiny-asn1
+      #- pkg_u8g2
     - posix_semaphore
     - posix_sleep
-    - pthread
+    - ps_schedstatistics
     - pthread_barrier
+    - pthread
     - pthread_cleanup
     - pthread_condition_variable
     - pthread_cooperation
@@ -154,8 +131,29 @@ ignore:
     - rmutex
     - saul
     - sched_testing
+    - shell
+    - sizeof_tcb
     - slip
     - sntp
     - struct_tm_utility
-    - unittests
+    - thread_basic
+    - thread_cooperation
+    - thread_exit
+    - thread_flags
+    - thread_flags_xtimer
+    - thread_flood
+    - thread_msg_block_wo_queue
+    - thread_msg_block_w_queue
+    - thread_msg
+    - thread_msg_seq
     - warn_conflict
+    - xtimer_drift
+    - xtimer_hang
+    - xtimer_longterm
+    - xtimer_msg
+    - xtimer_msg_receive_timeout
+    - xtimer_now64_continuity
+    - xtimer_periodic_wakeup
+    - xtimer_remove
+    - xtimer_reset
+    - xtimer_usleep

@@ -1,1 +1,10 @@
 app:
+    depends:
+        - tsl2561
+        - xtimer
+    global_vars:
+        CFLAGS:
+            - -DTEST_I2C="I2C_DEV(0)"
+            - -DTEST_ADDR="TSL2561_ADDR_FLOAT"
+            - -DTEST_GAIN="TSL2561_GAIN_1X"
+            - -DTEST_INTEGRATION_TIME="TSL2561_INTEGRATIONTIME_402MS"

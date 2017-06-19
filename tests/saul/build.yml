@@ -1,1 +1,4 @@
 app:
+    depends:
+        - saul_default
+        - xtimer

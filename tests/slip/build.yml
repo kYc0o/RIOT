@@ -1,1 +1,13 @@
 app:
+    depends:
+        - auto_init_gnrc_netif
+        - gnrc
+        - gnrc_pktdump
+        - gnrc_slip
+        - shell
+        - shell_commands
+    global_vars:
+        CFLAGS:
+            - -DSLIP_UART="UART_DEV(UART_NUMOF-1)"
+            - -DSLIP_BAUDRATE="115200"
+            - -I/home/kaspar/src/riot.laze/tests/slip

@@ -1,1 +1,11 @@
 app:
+    depends:
+        - bmp180
+        - printf_float
+        - xtimer
+    global_vars:
+        CFLAGS:
+            - -DTEST_I2C="I2C_DEV(0)"
+            - -DTEST_MEASURE_OVERSAMPLING="BMP180_ULTRALOWPOWER"
+            # altitude altitude in Polytechnique School campus
+            - -DTEST_ALTITUDE="158"

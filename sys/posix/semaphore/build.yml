@@ -1,4 +1,7 @@
 module:
     name: posix_semaphore
+    depends:
+        - sema
+        - posix
     sources:
         - posix_semaphore.c

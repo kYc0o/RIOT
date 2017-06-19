@@ -1,6 +1,19 @@
 module:
-    name: gnrc_netapi
-    depends:
-        - gnrc_netreg
-    sources:
-        - gnrc_netapi.c
+    - name: gnrc_netapi
+      depends:
+          - gnrc_netreg
+      uses:
+          - gnrc_netapi_callbacks
+          - gnrc_netapi_mbox
+      sources:
+          - gnrc_netapi.c
+
+    - name: gnrc_netapi_mbox
+      depends:
+          - gnrc_netapi
+      uses:
+          - core_mbox
+
+    - name: gnrc_netapi_callbacks
+      depends:
+          - gnrc_netapi

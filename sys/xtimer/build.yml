@@ -6,5 +6,5 @@ module:
         - xtimer_posix.c
     depends:
         - auto_init
-        - sys/div
+        - div
         - periph_timer

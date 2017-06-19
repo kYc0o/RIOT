@@ -1,0 +1,6 @@
+app:
+    depends:
+        - bme280
+        - xtimer
+    uses:
+        - bme280

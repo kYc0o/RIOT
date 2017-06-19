@@ -1,4 +1,6 @@
 module:
     name: gnrc_sock_ip
+    depends:
+        - gnrc_sock
     sources:
         - gnrc_sock_ip.c

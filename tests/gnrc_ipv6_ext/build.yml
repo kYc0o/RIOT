@@ -1,1 +1,13 @@
 app:
+    depends:
+        - auto_init_gnrc_netif
+        - gnrc_ipv6_ext
+        - gnrc_ipv6_router_default
+        - gnrc_netdev_default
+        - gnrc_rpl_srh
+        - gnrc_sixlowpan_iphc_nhc
+        - gnrc_udp
+        - ps
+    global_vars:
+        CFLAGS:
+            - -DDEVELHELP

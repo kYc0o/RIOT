@@ -1,1 +1,10 @@
 app:
+    depends:
+        - auto_init_gnrc_netif
+        - gnrc_netdev_default
+        - gnrc_pktdump
+        - gnrc_sixlowpan_default
+        - gnrc_udp
+    global_vars:
+        CFLAGS:
+            - -DDEVELHELP

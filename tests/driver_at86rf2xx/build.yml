@@ -1,1 +1,16 @@
 app:
+    depends:
+        - at86rf233
+        - od
+        - periph_gpio
+        - periph_spi
+        - ps
+        - shell
+        - shell_commands
+    sources:
+        - addr.c
+        - cmd.c
+        - recv.c
+    global_vars:
+        CFLAGS:
+            - -DDEVELHELP

@@ -39,6 +39,7 @@ module:
         - gnrc_rpl
         - gnrc_sixlowpan_ctx
         - gnrc_sixlowpan_nd_border_router
+        - ipv6_addr
         - lpc2387
         - mci
         - periph_rtc

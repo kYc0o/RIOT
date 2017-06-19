@@ -9,6 +9,8 @@ builder:
             - -Iboards/nucleo-common/include
         LINKFLAGS:
             - -Tstm32f411re.ld
+    disable_modules:
+        - periph_adc
 
 module:
     - name: board

@@ -1,1 +1,9 @@
 app:
+    depends:
+        - at30tse75x
+        - periph_i2c
+        - shell
+        - shell_commands
+    global_vars:
+        CFLAGS:
+            - -DDEVELHELP

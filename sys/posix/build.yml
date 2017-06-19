@@ -5,6 +5,9 @@ subdirs:
 
 module:
     name: posix
+    depends:
+        - xtimer
+        - timex
     global_vars:
         CFLAGS:
-            - -Isys/posix/pthread/include
+            - -Isys/posix/include

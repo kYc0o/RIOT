@@ -1,1 +1,15 @@
 app:
+    depends:
+        - gnrc_ipv6
+        - gnrc_sock_check_reuse
+        - gnrc_sock_udp
+        - ps
+    uses:
+        - gnrc_sock_check_reuse
+    sources:
+        - stack.c
+    global_vars:
+        CFLAGS:
+            - -DDEVELHELP
+            - -DGNRC_PKTBUF_SIZE="400"
+            - -DTEST_SUITES

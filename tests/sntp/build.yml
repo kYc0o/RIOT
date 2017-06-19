@@ -1,1 +1,12 @@
 app:
+    depends:
+        - auto_init_gnrc_netif
+        - gnrc_ipv6_default
+        - gnrc_netdev_default
+        - gnrc_sock_udp
+        - shell
+        - shell_commands
+        - sntp
+    global_vars:
+        CFLAGS:
+            - -DDEVELHELP

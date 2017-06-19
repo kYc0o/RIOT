@@ -7,3 +7,4 @@ subdirs:
     - default
     - hello-world
     - gnrc_networking
+    - saul

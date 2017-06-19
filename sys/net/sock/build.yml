@@ -1,4 +1,14 @@
 module:
-    name: sock_util
-    sources:
+    - name: sock
+      uses:
+        - gnrc_sock
+
+    - name: sock_udp
+      depends: sock
+
+    - name: sock_util
+      sources:
         - sock_util.c
+      depends:
+          - posix
+          - sock

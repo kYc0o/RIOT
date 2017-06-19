@@ -1,1 +1,10 @@
 app:
+    depends:
+        - nvram_spi
+        - xtimer
+    global_vars:
+        CFLAGS:
+            - -DTEST_NVRAM_SPI_DEV="SPI_DEV(0)"
+            - -DTEST_NVRAM_SPI_CS="GPIO_PIN(0,0)"
+            - -DTEST_NVRAM_SPI_SIZE="64"
+            - -DTEST_NVRAM_SPI_ADDRESS_COUNT="1"

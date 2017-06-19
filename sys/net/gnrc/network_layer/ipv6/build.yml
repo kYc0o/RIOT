@@ -7,6 +7,7 @@ module:
         - gnrc_ipv6_nc
         - gnrc_ipv6_netif
         - ipv6_hdr
+        - ipv6_addr
     uses:
         - fib
         - gnrc_icmpv6
