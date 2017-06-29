@@ -12,7 +12,7 @@ endif
 .PHONY: clean all
 
 all: | $(CLEAN)
-	LAZE_WHITELIST=$(BOARD) ninja -C $(RIOTBASE) $(NINJA_ARGS) $(NINJA_TARGET)
+	LAZE_WHITELIST=$(BOARD) LAZE_APPS=$(APPDIR_REL) ninja -C $(RIOTBASE) $(NINJA_ARGS) $(NINJA_TARGET)
 
 clean:
 	ninja -C $(RIOTBASE) -t clean $(NINJA_TARGET)
