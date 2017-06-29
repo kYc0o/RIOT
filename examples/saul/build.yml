@@ -7,3 +7,4 @@ app:
     global_vars:
         CFLAGS:
             - -DDEVELHELP
+            - -DLOG_LEVEL=LOG_DEBUG
