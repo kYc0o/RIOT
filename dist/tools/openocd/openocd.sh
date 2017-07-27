@@ -179,6 +179,36 @@ do_flash() {
     echo 'Done flashing'
 }
 
+do_flash_bin() {
+    test_config
+    test_binfile
+    if [ -n "${PRE_FLASH_CHECK_SCRIPT}" ]; then
+        sh -c "${PRE_FLASH_CHECK_SCRIPT} '${HEXFILE}'"
+        RETVAL=$?
+        if [ $RETVAL -ne 0 ]; then
+            echo "pre-flash checks failed, status=$RETVAL"
+            exit $RETVAL
+        fi
+    fi
+    # flash device
+    sh -c "${OPENOCD} -f '${OPENOCD_CONFIG}' \
+            ${OPENOCD_EXTRA_INIT} \
+            -c 'tcl_port 0' \
+            -c 'telnet_port 0' \
+            -c 'gdb_port 0' \
+            -c 'init' \
+            -c 'targets' \
+            -c 'reset halt' \
+            ${OPENOCD_PRE_FLASH_CMDS} \
+            -c 'program \"${BINFILE}\" \"${FLASH_ADDR}\"' \
+            -c 'reset halt' \
+            ${OPENOCD_PRE_VERIFY_CMDS} \
+            -c 'verify_image \"${BINFILE}\" \"${FLASH_ADDR}\" bin' \
+            -c 'reset run' \
+            -c 'shutdown'" &&
+    echo 'Done flashing'
+}
+
 do_debug() {
     test_config
     test_elffile
@@ -259,6 +289,10 @@ case "${ACTION}" in
   flash)
     echo "### Flashing Target ###"
     do_flash
+    ;;
+  flash-bin)
+    echo "### Flashing Target ###"
+    do_flash_bin "$@"
     ;;
   debug)
     echo "### Starting Debugging ###"
