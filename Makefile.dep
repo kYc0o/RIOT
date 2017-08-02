@@ -656,6 +656,13 @@ ifneq (,$(filter firmware,$(USEMODULE)))
   USEPKG += tweetnacl
 endif
 
+ifneq (,$(filter ota,$(USEMODULE)))
+  USEMODULE += gnrc_tftp
+  USEMODULE += firmware
+  USEMODULE += hashes
+  FEATURES_REQUIRED += periph_flashpage
+endif
+
 # include package dependencies
 -include $(USEPKG:%=$(RIOTPKG)/%/Makefile.dep)
 
