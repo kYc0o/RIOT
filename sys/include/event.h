@@ -27,6 +27,7 @@ typedef struct {
 
 void event_queue_init(event_queue_t *queue);
 void event_post(event_queue_t *queue, event_t *event);
+void event_cancel(event_queue_t *queue, event_t *event);
 event_t *event_wait(event_queue_t *queue);
 void event_loop(event_queue_t *queue);
 

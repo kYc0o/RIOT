@@ -15,14 +15,25 @@ void event_queue_init(event_queue_t *queue)
 
 void event_post(event_queue_t *queue, event_t *event)
 {
-    assert(!event->next);
+    assert(!event->list_node.next);
+    assert(queue->waiter);
+
     unsigned state = irq_disable();
     clist_rpush(&queue->event_list, &event->list_node);
     irq_restore(state);
 
-    if (queue->waiter) {
-        thread_flags_set(queue->waiter, THREAD_FLAG_EVENT);
-    }
+    thread_flags_set(queue->waiter, THREAD_FLAG_EVENT);
+}
+
+void event_cancel(event_queue_t *queue, event_t *event)
+{
+    assert(queue);
+    assert(event);
+
+    unsigned state = irq_disable();
+    clist_remove(&queue->event_list, &event->list_node);
+    event->list_node.next = NULL;
+    irq_restore(state);
 }
 
 event_t *event_wait(event_queue_t *queue)
