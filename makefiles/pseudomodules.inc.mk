@@ -56,6 +56,7 @@ PSEUDOMODULES += printf_float
 PSEUDOMODULES += prng
 PSEUDOMODULES += prng_%
 PSEUDOMODULES += saul_adc
+PSEUDOMODULES += saul_pwm
 PSEUDOMODULES += saul_default
 PSEUDOMODULES += saul_gpio
 PSEUDOMODULES += schedstatistics
