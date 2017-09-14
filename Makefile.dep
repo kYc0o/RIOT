@@ -636,6 +636,10 @@ ifneq (,$(filter sock_dns,$(USEMODULE)))
   USEMODULE += sock_util
 endif
 
+ifneq (,$(filter event,$(USEMODULE)))
+  USEMODULE += core_thread_flags
+endif
+
 ifneq (,$(filter spiffs,$(USEMODULE)))
   USEPKG += spiffs
   USEMODULE += vfs
@@ -650,6 +654,14 @@ endif
 ifneq (,$(filter gcoap,$(USEMODULE)))
 USEPKG += nanocoap
 USEMODULE += gnrc_sock_udp
+endif
+
+ifneq (,$(filter js,$(USEMODULE)))
+  USEPKG += jerryscript
+  USEMODULE += xtimer
+  USEMODULE += event
+  USEMODULE += saul_reg
+  USEMODULE += saul_default
 endif
 
 # include package dependencies
