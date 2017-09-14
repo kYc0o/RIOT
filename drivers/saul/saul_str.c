@@ -36,6 +36,7 @@ const char *saul_class_to_str(const uint8_t class_id)
         case SAUL_ACT_MOTOR:    return "ACT_MOTOR";
         case SAUL_ACT_SWITCH:   return "ACT_SWITCH";
         case SAUL_ACT_DIMMER:   return "ACT_DIMMER";
+        case SAUL_ACT_BUZZER:   return "ACT_BUZZER";
         case SAUL_SENSE_ANY:    return "SENSE_ANY";
         case SAUL_SENSE_BTN:    return "SENSE_BTN";
         case SAUL_SENSE_TEMP:   return "SENSE_TEMP";
