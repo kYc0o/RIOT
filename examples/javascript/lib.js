@@ -4,7 +4,7 @@ timer.setInterval = function (callback, interval) {
     var next = timer.now() + interval;
     var interval_handler = function () {
         var res = callback();
-        if (res == true) {
+        if (res != false) {
             next += interval;
             next_interval = next - timer.now();
             timer.setTimeout(interval_handler, next_interval);
