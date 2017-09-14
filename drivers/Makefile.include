@@ -82,6 +82,9 @@ endif
 ifneq (,$(filter tsl2561,$(USEMODULE)))
     USEMODULE_INCLUDES += $(RIOTBASE)/drivers/tsl2561/include
 endif
+ifneq (,$(filter buzzer,$(USEMODULE)))
+    USEMODULE_INCLUDES += $(RIOTBASE)/drivers/buzzer/include
+endif
 ifneq (,$(filter cc2420,$(USEMODULE)))
     USEMODULE_INCLUDES += $(RIOTBASE)/drivers/cc2420/include
 endif
