@@ -5,8 +5,11 @@ timer.setInterval = function (callback, interval) {
     var interval_handler = function () {
         var res = callback();
         if (res != false) {
-            next += interval;
-            next_interval = next - timer.now();
+            now = timer.now();
+            while (next < now) {
+                next += interval;
+            }
+            next_interval = next - now;
             timer.setTimeout(interval_handler, next_interval);
         }
     }
@@ -72,16 +75,15 @@ saul.set_methods = function(saul_object) {
                         trigger = (val > threshold);
                         break;
                 }
+
                 if (trigger && wait_flank) {
-                        wait_flank = false;
-                        return callback();
+                    wait_flank = false;
+                    return callback();
                 } else {
-                    if (wait_flank) {
-                        return true;
-                    } else {
+                    if (! (trigger || wait_flank)) {
                         wait_flank = true;
-                        return true;
                     }
+                    return true;
                 }
             }
 

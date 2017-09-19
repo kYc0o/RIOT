@@ -15,23 +15,19 @@ var process_1 = new function() {
     this.start = function () {
         var handler;
         var callback = function () {
-            print("light on");
             self.activity2();
-            print("return true");
             return true;
         }
-        self.brightness_1.on_threshold(900, callback, saul.op.LT);
+        self.brightness_1.on_threshold(100.0, callback);
     };
     
     this.activity2 = function () {
-        print("sampling sound");
-        self.sound_level = self.sound_1.sample(6000);
-        print("sampling sound done");
+        self.sound_level = self.sound_1.sample(60000);
         self.split_xor3();
     };
     
     this.split_xor3 = function () {
-        if (self.sound_level.max > 1000) {
+        if (self.sound_level.max > 10.0) {
             self.activity5();
         } else {
             self.activity4();
@@ -42,7 +38,7 @@ var process_1 = new function() {
     };
     
     this.activity5 = function () {
-        self.buzzer_1.write(500);
+        self.buzzer_1.set_value(30.0);
         self.activity6();
     };
     
@@ -52,15 +48,16 @@ var process_1 = new function() {
     };
     
     this.await7 = function () {
+        var handler;
         var callback = function () {
             self.activity8();
             return false;
         }
-        coap.register_handler("cancel alarm", "PUT", callback);
+        coap.register_handler("cancel alarm",PUT, callback);
     };
     
     this.activity8 = function () {
-        self.buzzer_1.write(0);
+        self.buzzer_1.set_value(0.0);
         self.activity9();
     };
     

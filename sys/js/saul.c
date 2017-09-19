@@ -61,12 +61,18 @@ static JS_EXTERNAL_HANDLER(saul_reg_write)
         goto error;
     }
 
-    if (!jerry_value_is_number(args_p[0])) {
-        puts("saul_write(): arg 0 not a number");
-        goto error;
+    phydat_t phydat;
+    memset(&phydat, '\0', sizeof(phydat));
+
+    for (unsigned i = 0; i < args_cnt; i++) {
+        if (jerry_value_is_number(args_p[i])) {
+            phydat.val[i] = jerry_get_number_value(args_p[i]);
+        } else {
+            printf("saul_write(): arg %i is not a number!", i);
+            goto error;
+        }
     }
 
-    phydat_t phydat = { .val={[0] = jerry_get_number_value(args_p[0])}};
     saul_reg_write(saul_reg, &phydat);
 
 error:

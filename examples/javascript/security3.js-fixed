@@ -24,14 +24,12 @@ var process_1 = new function() {
     };
     
     this.activity2 = function () {
-        print("sampling sound");
         self.sound_level = self.sound_1.sample(6000);
-        print("sampling sound done");
         self.split_xor3();
     };
     
     this.split_xor3 = function () {
-        if (self.sound_level.max > 1000) {
+        if (self.sound_level.max > 10.0) {
             self.activity5();
         } else {
             self.activity4();
@@ -52,6 +50,7 @@ var process_1 = new function() {
     };
     
     this.await7 = function () {
+        var handler;
         var callback = function () {
             self.activity8();
             return false;
