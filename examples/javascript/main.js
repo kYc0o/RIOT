@@ -7,6 +7,7 @@ var process_1 = new function() {
     this.brightness_1 = saul.get_by_name("brightness");
     this.sound_1 = saul.get_by_name("sound");
     this.buzzer_1 = saul.get_by_name("buzzer");
+    this.led_1 = saul.get_by_name("led");
     
     this.sound_level;
     
@@ -14,6 +15,7 @@ var process_1 = new function() {
     
     this.start = function () {
         var handler;
+        self.led_1.write(0);
         var callback = function () {
             print("light on");
             self.activity2();
@@ -43,6 +45,7 @@ var process_1 = new function() {
     
     this.activity5 = function () {
         self.buzzer_1.write(500);
+        self.led_1.write(1);
         self.activity6();
     };
     
@@ -61,6 +64,7 @@ var process_1 = new function() {
     
     this.activity8 = function () {
         self.buzzer_1.write(0);
+        self.led_1.write(0);
         self.activity9();
     };
     
