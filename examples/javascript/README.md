@@ -3,7 +3,9 @@
 This example shows how to write IoT applications using javascript.
 
 ### Acknowledgement
-This example is based on [Jerryscript](https://github.com/jerryscript-project/jerryscript) which does all the heavy lifting, providing full ECMAScript 5.1 profile on your IoT device (kudos guys!).
+This example is based on [Jerryscript](https://github.com/jerryscript-project/jerryscript)
+which does all the heavy lifting, providing full ECMAScript 5.1 profile on
+your IoT device (kudos guys!).
 
 ### Caveats
 
