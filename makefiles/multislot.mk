@@ -77,7 +77,7 @@ $(BOOTLOADER_BIN):
 	@env -i PATH=$(PATH) BOARD=$(BOARD) make -C $(RIOTBASE)/bootloader bootloader
 
 $(FIRMWARE):
-	$(Q)env -i CFLAGS+=-DFIRMWARE_METADATA_SIZE=$(FIRMWARE_METADATA_SIZE) \
+	$(Q)env -i PATH=$(PATH) CFLAGS+=-DFIRMWARE_METADATA_SIZE=$(FIRMWARE_METADATA_SIZE) \
 	make clean all -C $(FIRMWARE_TOOLS)
 
 $(SECKEY) $(PUBKEY): $(FIRMWARE)
@@ -134,7 +134,7 @@ verify: $(FIRMWARE) $(PUBKEY)
 	$(Q)$(VERIFY) $(IMAGE_SLOT2) $(PUBKEY)
 
 clean-firmware-tools:
-	$(Q)env -i make clean -C $(FIRMWARE_TOOLS)
+	$(Q)env -i PATH=$(PATH) make clean -C $(FIRMWARE_TOOLS)
 
 clean-bootloader:
 	@env -i PATH=$(PATH) BOARD=$(BOARD) make clean -C $(RIOTBASE)/bootloader
