@@ -1,0 +1,10 @@
+These makefiles aims to compile bootloader + slots which contain firmware
+
+Here are the makefiles needed :
+
+bootonslot.mk   =>  Entry points of the following Makefiles. This makefiles must be include in $(RIOTBASE)/Makefile.include
+variables.mk    =>  Variables needed by the following Makefiles :
+bootloader.mk   =>  To compile the bootloader
+multislot.mk    =>  To compile a bootloader + 2 slots
+singleslot.mk   =>  To compile a bootloader + 1 slots
+
