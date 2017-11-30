@@ -4,7 +4,7 @@ app:
         - periph_gpio
         - periph_spi
         - xtimer
-    global_vars:
+    export_vars:
         CFLAGS:
             - -DTEST_ADT7310_SPI="SPI_DEV(0)"
             - -DTEST_ADT7310_CS="GPIO_PIN(0,0)"

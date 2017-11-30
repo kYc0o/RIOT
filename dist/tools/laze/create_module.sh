@@ -20,7 +20,7 @@ laze create --type=module --auto-sources --name=${MODULE_NAME} $(arglist --depen
 
 [ -d "include" ] && {
     {
-        echo "    global_vars:"
+        echo "    export_vars:"
         echo "        CFLAGS:"
         echo "            - -I$(realpath --relative-to=${RIOTBASE} include)"
     } >> build.yml

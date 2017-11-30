@@ -14,7 +14,7 @@ module:
       - TextOutputter.c
       - TextUIRunner.c
       - XMLOutputter.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Isys/include/embUnit
 

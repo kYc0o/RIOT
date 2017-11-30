@@ -3,13 +3,15 @@ app:
         - pn532_i2c
           #- pn532_spi
         - xtimer
-    global_vars:
+    export_vars:
         CFLAGS:
             - -DTEST_PN532_I2C="I2C_DEV(0)"
             - -DTEST_PN532_RESET="GPIO_PIN(0,0)"
             - -DTEST_PN532_IRQ="GPIO_PIN(0,1)"
             - -DTEST_PN532_SPI="SPI_DEV(0)"
             - -DTEST_PN532_NSS="GPIO_PIN(0,2)"
+    global_vars:
+        CFLAGS:
             - -DPN532_SUPPORT_I2C
 #            - -DPN532_SUPPORT_SPI
             - -I/home/kaspar/src/riot.laze/tests/driver_pn532

@@ -2,7 +2,7 @@ app:
     depends:
         - si70xx
         - xtimer
-    global_vars:
+    export_vars:
         CFLAGS:
             - -DTEST_I2C="0"
             - -DTEST_I2C_ADDR="0x80"

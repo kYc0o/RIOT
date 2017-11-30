@@ -5,6 +5,6 @@ module:
         - netdev_eth
     sources:
         - w5100.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/w5100/include

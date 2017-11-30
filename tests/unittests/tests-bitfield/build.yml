@@ -8,3 +8,5 @@ app:
     global_vars:
         CFLAGS:
             - -DTEST_SUITES=bitfield
+        testsuites:
+            - bitfield

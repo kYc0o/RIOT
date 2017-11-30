@@ -20,6 +20,6 @@ module:
         - cc2420_getset.c
         - cc2420_internal.c
         - cc2420_netdev.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/cc2420/include

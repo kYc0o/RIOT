@@ -3,7 +3,7 @@ app:
         - isl29020
         - periph_i2c
         - xtimer
-    global_vars:
+    export_vars:
         CFLAGS:
             - -DTEST_ISL29020_I2C="I2C_DEV(0)"
             - -DTEST_ISL29020_ADDR="68"

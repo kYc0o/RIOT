@@ -17,6 +17,6 @@ module:
         - kw2xrf_netdev.c
         - kw2xrf_spi.c
         - kw2xrf_tm.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/kw2xrf/include

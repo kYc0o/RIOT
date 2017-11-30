@@ -11,6 +11,6 @@ module:
         - xbee_encryption
     sources:
         - xbee.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/xbee/include

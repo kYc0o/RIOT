@@ -6,6 +6,6 @@ module:
         - xtimer
     sources:
         - bh1750fvi.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/bh1750fvi/include

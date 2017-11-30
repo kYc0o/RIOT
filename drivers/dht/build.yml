@@ -6,6 +6,6 @@ module:
     sources:
         - dht.c
         - saul: dht_saul.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/dht/include

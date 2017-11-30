@@ -4,6 +4,6 @@ module:
         - nrf24l01p.c
     depends:
         - periph_spi
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/nrf24l01p/include

@@ -6,5 +6,5 @@ app:
         - sys/embunit
         - unittests-base
     global_vars:
-        CFLAGS:
-            - -DTEST_SUITES=bloom
+        testsuites:
+            - bloom

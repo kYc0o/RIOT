@@ -10,7 +10,7 @@ module:
     sources:
         - gnrc_sock.c
 
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Isys/net/gnrc/sock/include
             - -DSOCK_HAS_IPV6

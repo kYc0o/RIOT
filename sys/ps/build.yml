@@ -4,4 +4,3 @@ module:
     uses:
         - schedstatistics
         - tlsf
-        - xtimer

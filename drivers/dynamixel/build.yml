@@ -12,6 +12,6 @@ module:
         - dynamixel.c
         - reader.c
         - writer.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/dynamixel/include

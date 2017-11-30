@@ -20,7 +20,7 @@ module:
           - at86rf231
           - at86rf233
 
-      global_vars:
+      export_vars:
           CFLAGS:
               - -Idrivers/at86rf2xx/include
 

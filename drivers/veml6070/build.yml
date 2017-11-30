@@ -5,6 +5,6 @@ module:
     sources:
         - veml6070.c
         - veml6070_saul.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/veml6070/include

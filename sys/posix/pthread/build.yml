@@ -3,7 +3,7 @@ module:
     depends:
         - posix
 
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Isys/posix/pthread/include
     sources:

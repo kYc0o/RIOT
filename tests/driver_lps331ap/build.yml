@@ -2,7 +2,7 @@ app:
     depends:
         - lps331ap
         - xtimer
-    global_vars:
+    export_vars:
         CFLAGS:
             - -DTEST_LPS331AP_I2C="I2C_DEV(0)"
             - -DTEST_LPS331AP_ADDR="92"

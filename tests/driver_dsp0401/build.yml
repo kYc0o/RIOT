@@ -1,6 +1,6 @@
 app:
     depends:
         - dsp0401
-    global_vars:
+    vars:
         CFLAGS:
             - -DLOOPS="3"

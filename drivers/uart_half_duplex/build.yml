@@ -8,6 +8,6 @@ module:
         - xtimer
     sources:
         - uart_half_duplex.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/uart_half_duplex/include

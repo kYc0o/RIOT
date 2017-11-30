@@ -6,6 +6,6 @@ module:
         - xtimer
     sources:
         - pcd8544.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/pcd8544/include

@@ -6,6 +6,6 @@ module:
     sources:
         - bmp180.c
         - bmp180_saul.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/bmp180/include

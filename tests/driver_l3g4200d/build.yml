@@ -2,7 +2,7 @@ app:
     depends:
         - l3g4200d
         - xtimer
-    global_vars:
+    export_vars:
         CFLAGS:
             - -DTEST_L3G4200D_I2C="I2C_DEV(0)"
             - -DTEST_L3G4200D_ADDR="104"

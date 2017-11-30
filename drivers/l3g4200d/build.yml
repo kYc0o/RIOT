@@ -5,6 +5,6 @@ module:
         - saul: l3g4200d_saul.c
     depends:
         - periph_i2c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/l3g4200d/include

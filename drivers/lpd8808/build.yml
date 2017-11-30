@@ -5,6 +5,6 @@ module:
         - periph_gpio
     sources:
         - lpd8808.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/lpd8808/include

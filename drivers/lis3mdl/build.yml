@@ -4,6 +4,6 @@ module:
         - lis3mdl.c
     depends:
         - periph_i2c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/lis3mdl/include

@@ -5,6 +5,6 @@ module:
     sources:
         - jc42.c
         - jc42_saul.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/jc42/include

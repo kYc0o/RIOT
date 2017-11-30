@@ -4,6 +4,6 @@ module:
         - mpl3115a2.c
     depends:
         - periph_i2c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/mpl3115a2/include

@@ -18,6 +18,6 @@ module:
         - mrf24j40_getset.c
         - mrf24j40_internal.c
         - mrf24j40_netdev.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/mrf24j40/include

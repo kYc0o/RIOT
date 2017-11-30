@@ -10,6 +10,6 @@ module:
     sources:
         - io1_xplained.c
         - io1_xplained_saul.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/io1_xplained/include

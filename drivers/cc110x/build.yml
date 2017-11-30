@@ -16,6 +16,6 @@ module:
         - cc110x-rxtx.c
         - cc110x-spi.c
         - cc110x.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/cc110x/include

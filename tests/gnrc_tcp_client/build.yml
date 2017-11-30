@@ -4,7 +4,7 @@ app:
         - gnrc_ipv6_default
         - gnrc_netdev_default
         - gnrc_tcp
-    global_vars:
+    export_vars:
         CFLAGS:
             - -DTARGET_ADDR=\"fe80::affe\"
             - -DTARGET_PORT="80"

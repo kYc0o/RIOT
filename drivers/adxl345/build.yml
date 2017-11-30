@@ -5,6 +5,6 @@ module:
     sources:
         - adxl345.c
         - adxl345_saul.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/adxl345/include

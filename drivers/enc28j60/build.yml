@@ -10,6 +10,6 @@ module:
         - netstats_l2
     sources:
         - enc28j60.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/enc28j60/include

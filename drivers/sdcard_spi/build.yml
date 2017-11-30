@@ -8,6 +8,6 @@ module:
         - xtimer
     sources:
         - sdcard_spi.c
-    global_vars:
+    export_vars:
         CFLAGS:
             - -Idrivers/sdcard_spi/include
