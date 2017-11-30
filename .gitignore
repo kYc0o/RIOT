@@ -51,3 +51,4 @@ Makefile.local
 __pycache__
 .ninja_*
 build.ninja
+.laze_args
