@@ -17,5 +17,5 @@ place).
 ## How to try
 
 1. install ninja using the package manager of your choice
-2. get laze from https://github.com/kaspar030/laze, install somewhere in path
+2. get laze from https://github.com/kaspar030/laze, link it's "laze.py" so it is available as "laze" in PATH
 3. in examples/hello-world, run "LAZE=1 BOARD=samr21-xpro make all"
