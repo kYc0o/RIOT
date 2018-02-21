@@ -10,6 +10,8 @@ module:
             - -DNATIVE_INCLUDES
             - -DCPU_NATIVE
             - -Icpu/native/include
+            - -D_XOPEN_SOURCE=600
+            - -D_DARWIN_C_SOURCE
     depends:
         - core
         - periph_uart
