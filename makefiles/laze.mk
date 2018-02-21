@@ -9,6 +9,13 @@ ifneq ($(filter $(MAKECMDGOALS),clean),)
 	CLEAN=clean
 endif
 
+ifeq ($(shell uname -s),Darwin)
+  CFLAGS += -D_XOPEN_SOURCE=600 -D_DARWIN_C_SOURCE
+  MD5 = md5
+else
+  MD5 = md5sum
+endif
+
 .PHONY: clean all $(RIOTBASE)/.laze_args
 
 export LAZE_WHITELIST=$(BOARD)
@@ -21,10 +28,10 @@ $(RIOTBASE)/build.ninja: $(RIOTBASE)/.laze_args
 
 $(RIOTBASE)/.laze_args:
 	@if [ ! -f $(RIOTBASE)/.laze_args \
-		-o "$$(cat $(RIOTBASE)/.laze_args)" != "$$(echo "$(LAZE_APPS) $(LAZE_WHITELIST)" | md5sum)" ]; \
+		-o "$$(cat $(RIOTBASE)/.laze_args)" != "$$(echo "$(LAZE_APPS) $(LAZE_WHITELIST)" | "$(MD5)")" ]; \
 		then \
 		echo "laze: rebuilding build files" ; \
-		echo "$(LAZE_APPS) $(LAZE_WHITELIST)" | md5sum > $@ ; \
+		echo "$(LAZE_APPS) $(LAZE_WHITELIST)" | $(MD5) > $@ ; \
 		cd $(RIOTBASE) && laze generate project.yml ;\
 	fi
 
