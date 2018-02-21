@@ -61,8 +61,10 @@ MAKEOVERRIDES += $(foreach v,${__DIRECTORY_VARIABLES},${v}=${${v}})
 # Path to the current directory relative to RIOTPROJECT
 BUILDRELPATH ?= ${PWD:${RIOTPROJECT}/%=%}/
 
+OS := $(shell uname)
+
 ifeq ($(LAZE),1)
-include $(RIOTBASE)/makefiles/laze.mk
+  include $(RIOTBASE)/makefiles/laze.mk
 else
 
 # Include Docker settings near the top because we need to build the environment
@@ -348,7 +350,7 @@ include $(RIOTBASE)/drivers/Makefile.include
 
 # The `clean` needs to be serialized before everything else.
 ifneq (, $(filter clean, $(MAKECMDGOALS)))
-    all $(BASELIBS) $(USEPKG:%=$(RIOTPKG)/%/Makefile.include) $(RIOTBUILD_CONFIG_HEADER_C) pkg-prepare: clean
+  all $(BASELIBS) $(USEPKG:%=$(RIOTPKG)/%/Makefile.include) $(RIOTBUILD_CONFIG_HEADER_C) pkg-prepare: clean
 endif
 
 # include Makefile.includes for packages in $(USEPKG)
@@ -596,3 +598,4 @@ CFLAGS := $(patsubst -D%,,$(CFLAGS))
 CFLAGS := $(patsubst -U%,,$(CFLAGS))
 CFLAGS += -include '$(RIOTBUILD_CONFIG_HEADER_C)'
 endif # LAZE=0
+endif
