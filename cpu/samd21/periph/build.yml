@@ -1,11 +1,9 @@
 template:
     "%NAME%":
-        - gpio
         - pm
         - pwm
         - rtt
         - timer
-        - uart
 
 module:
     context: samd21
