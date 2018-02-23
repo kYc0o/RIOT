@@ -7,7 +7,11 @@ builder:
             - -DCPU_MODEL_SAMR21G18A
             - -Iboards/samr21-xpro/include
         LINKFLAGS:
-            - -Tsamr21g18a.ld
+            - -Wl,--defsym=_rom_start_addr=0x00000000
+            - -Wl,--defsym=_ram_start_addr=0x20000000
+            - -Wl,--defsym=_rom_length=0x40000
+            - -Wl,--defsym=_ram_length=0x8000
+            - -Tcortexm.ld
 
 module:
     - name: board
