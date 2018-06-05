@@ -19,25 +19,21 @@ APP_ID  ?= 0
 APP_VER ?= 0
 
 $(BINDIR)/$(APPLICATION)-%.elf: link
-	$(Q) \
-		$(_LINK) \
-			$(LINKFLAGPREFIX)--defsym=_rom_offset=$(OFFSET) \
-			$(LINKFLAGPREFIX)--defsym=_rom_length=$(LENGTH) \
-			-o $@
+	$(Q)$(_LINK) -o $@
 
 # slot 1 targets
 SLOT1_OFFSET := $$(($(RIOTBOOT_SLOT0_SIZE) + $(RIOTBOOT_HDR_LEN)))
 SLOT1_LENGTH := $$(($(RIOTBOOT_SLOT0_SIZE) + $(RIOTBOOT_FW_SLOT_SIZE)))
 
-$(BINDIR)/$(APPLICATION)-slot1.elf: OFFSET=$(SLOT1_OFFSET)
-$(BINDIR)/$(APPLICATION)-slot1.elf: LENGTH=$(SLOT1_LENGTH)
+$(BINDIR)/$(APPLICATION)-slot1.elf: ROM_OFFSET=$(SLOT1_OFFSET)
+$(BINDIR)/$(APPLICATION)-slot1.elf: ROM_LEN=$(SLOT1_LENGTH)
 
 # slot 2 targets
 SLOT2_OFFSET := $$(($(RIOTBOOT_SLOT0_SIZE) + $(RIOTBOOT_FW_SLOT_SIZE) + $(RIOTBOOT_HDR_LEN)))
 SLOT2_LENGTH := $$(($(RIOTBOOT_SLOT0_SIZE) + 2 * $(RIOTBOOT_FW_SLOT_SIZE)))
 
-$(BINDIR)/$(APPLICATION)-slot2.elf: OFFSET=$(SLOT2_OFFSET)
-$(BINDIR)/$(APPLICATION)-slot2.elf: LENGTH=$(SLOT2_LENGTH)
+$(BINDIR)/$(APPLICATION)-slot2.elf: ROM_OFFSET=$(SLOT2_OFFSET)
+$(BINDIR)/$(APPLICATION)-slot2.elf: ROM_LEN=$(SLOT2_LENGTH)
 
 # create signed binary target
 %.signed.bin: %.sig %.bin
