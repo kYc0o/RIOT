@@ -75,3 +75,9 @@ else
     CFLAGS += -DIEEE802154_DEFAULT_CHANNEL=$(DEFAULT_CHANNEL)
   endif
 endif
+
+$(RIOTBUILD_CONFIG_HEADER_C): keys.h
+keys.h: $(RIOTTOOLS)/firmware/pub.key
+	cp $< pubkey
+	xxd -i pubkey $@
+	rm pubkey
