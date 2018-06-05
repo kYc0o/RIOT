@@ -10,3 +10,6 @@ DISABLE_MODULE += auto_init
 RIOTBASE ?= $(CURDIR)/../..
 
 include $(RIOTBASE)/Makefile.include
+
+# limit bootloader size
+ROM_LEN := $(RIOTBOOT_SLOT0_SIZE)
