@@ -39,19 +39,17 @@ SLOT2_LENGTH := $$(($(RIOTBOOT_SLOT0_SIZE) + 2 * $(RIOTBOOT_FW_SLOT_SIZE)))
 $(BINDIR)/$(APPLICATION)-slot2.elf: OFFSET=$(SLOT2_OFFSET)
 $(BINDIR)/$(APPLICATION)-slot2.elf: LENGTH=$(SLOT2_LENGTH)
 
-# signing targets
-$(BINDIR)/$(APPLICATION)-%.bin:
+# create signed binary target
+%.signed.bin: %.sig %.bin
 	@echo "creating $@..."
-	$(Q) $(OBJCOPY) -Obinary $< $@.tmp
-	$(Q) $(FIRMWARE_TOOL) sign $@.tmp $(APP_VER) $(APP_ID) $(OFFSET) $(RIOTBOOT_SECKEY) - > $@
-	$(Q) cat $@.tmp >> $@
-	$(Q) rm $@.tmp
+	cat $^ > $@
 
-$(BINDIR)/$(APPLICATION)-slot1.bin: OFFSET=$(SLOT1_OFFSET)
-$(BINDIR)/$(APPLICATION)-slot1.bin: $(BINDIR)/$(APPLICATION)-slot1.elf
+.PRECIOUS: %.bin
+%.sig: %.bin FORCE
+	$(Q) $(FIRMWARE_TOOL) sign $< $(APP_VER) $(APP_ID) $(OFFSET) $(RIOTBOOT_SECKEY) - > $@
 
-$(BINDIR)/$(APPLICATION)-slot2.bin: OFFSET=$(SLOT2_OFFSET)
-$(BINDIR)/$(APPLICATION)-slot2.bin: $(BINDIR)/$(APPLICATION)-slot2.elf
+$(BINDIR)/$(APPLICATION)-slot1.sig: OFFSET=$(SLOT1_OFFSET)
+$(BINDIR)/$(APPLICATION)-slot2.sig: OFFSET=$(SLOT2_OFFSET)
 
 # creating pubkey header file
 $(RIOTBUILD_CONFIG_HEADER_C): $(BINDIR)/riotbuild/ota_pubkey.h
@@ -63,11 +61,13 @@ $(BINDIR)/riotbuild/ota_pubkey.h: $(RIOTBOOT_PUBKEY)
 		echo "};"; \
 		} > $@
 
-riotboot: $(BINDIR)/$(APPLICATION)-slot1.bin $(BINDIR)/$(APPLICATION)-slot2.bin $(BINDIR)/riotbuild/ota_pubkey.h
+riotboot: $(BINDIR)/$(APPLICATION)-slot1.signed.bin \
+          $(BINDIR)/$(APPLICATION)-slot2.signed.bin \
+          $(BINDIR)/riotbuild/ota_pubkey.h
 
 riotboot/verify-image:
-	$(FIRMWARE_TOOL) verify $(BINDIR)/$(APPLICATION)-slot1.bin $(RIOTBOOT_PUBKEY)
-	$(FIRMWARE_TOOL) verify $(BINDIR)/$(APPLICATION)-slot2.bin $(RIOTBOOT_PUBKEY)
+	$(FIRMWARE_TOOL) verify $(BINDIR)/$(APPLICATION)-slot1.signed.bin $(RIOTBOOT_PUBKEY)
+	$(FIRMWARE_TOOL) verify $(BINDIR)/$(APPLICATION)-slot2.signed.bin $(RIOTBOOT_PUBKEY)
 
 riotboot/flash-bootloader:
 	$(Q)/usr/bin/env -i \
@@ -75,13 +75,13 @@ riotboot/flash-bootloader:
 			make --no-print-directory -C $(RIOTBASE)/dist/riotboot flash
 
 riotboot/flash-slot1: FLASH_ADDR=$(RIOTBOOT_SLOT0_SIZE)
-riotboot/flash-slot1: HEXFILE=$(BINDIR)/$(APPLICATION)-slot1.bin
-riotboot/flash-slot1: $(BINDIR)/$(APPLICATION)-slot1.bin riotboot/flash-bootloader
+riotboot/flash-slot1: HEXFILE=$(BINDIR)/$(APPLICATION)-slot1.signed.bin
+riotboot/flash-slot1: $(BINDIR)/$(APPLICATION)-slot1.signed.bin riotboot/flash-bootloader
 	$(FLASHER) $(FFLAGS)
 
 riotboot/flash-slot2: FLASH_ADDR=$$(($(RIOTBOOT_SLOT0_SIZE) + $(RIOTBOOT_FW_SLOT_SIZE)))
-riotboot/flash-slot2: HEXFILE=$(BINDIR)/$(APPLICATION)-slot2.bin
-riotboot/flash-slot2: $(BINDIR)/$(APPLICATION)-slot2.bin riotboot/flash-bootloader
+riotboot/flash-slot2: HEXFILE=$(BINDIR)/$(APPLICATION)-slot2.signed.bin
+riotboot/flash-slot2: $(BINDIR)/$(APPLICATION)-slot2.signed.bin riotboot/flash-bootloader
 	$(FLASHER) $(FFLAGS)
 
 riotboot/flash: riotboot/flash-slot1
