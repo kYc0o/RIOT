@@ -25,7 +25,7 @@ _rom_offset = DEFINED( _rom_offset ) ? _rom_offset : 0x0 ;
 
 MEMORY
 {
-    rom (rx)    : ORIGIN = _rom_start_addr + _rom_offset, LENGTH = _rom_length
+    rom (rx)    : ORIGIN = _rom_start_addr + _rom_offset, LENGTH = _rom_length - _rom_offset
     ram (w!rx)  : ORIGIN = _ram_start_addr,               LENGTH = _ram_length
 }
 
