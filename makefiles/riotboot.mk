@@ -67,6 +67,7 @@ riotboot/verify-image:
 
 riotboot/flash-bootloader:
 	$(Q)/usr/bin/env -i \
+		QUIET=$(QUIET)\
 		PATH=$(PATH) BOARD=$(BOARD) \
 			make --no-print-directory -C $(RIOTBASE)/dist/riotboot flash
 
@@ -87,4 +88,4 @@ riotboot:
 	$(Q)echo "error: riotboot feature not selected! (try FEATURES_REQUIRED += riotboot)"
 	$(Q)false
 
-endif # RIOTBOOT_SLOT0_SIZE
+endif # (,$(filter riotboot,$(FEATURES_USED)))
