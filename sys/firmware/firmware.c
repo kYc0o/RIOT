@@ -58,7 +58,7 @@ uint32_t firmware_metadata_checksum(firmware_metadata_t *metadata)
 static const unsigned _firmware_slot_start[] = {
     CPU_FLASH_BASE,
     CPU_FLASH_BASE + SLOT0_SIZE,
-    CPU_FLASH_BASE + SLOT0_SIZE + SLOT1_SIZE
+    CPU_FLASH_BASE + SLOT0_SIZE + SLOT_SIZE,
 };
 
 const unsigned firmware_num_slots = sizeof(_firmware_slot_start) / sizeof(unsigned);
