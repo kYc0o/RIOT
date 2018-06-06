@@ -12,4 +12,5 @@ RIOTBASE ?= $(CURDIR)/../..
 include $(RIOTBASE)/Makefile.include
 
 # limit bootloader size
+# HACK: FIXME it does not work if there is an existing board bootlader
 ROM_LEN := $(RIOTBOOT_SLOT0_SIZE)
