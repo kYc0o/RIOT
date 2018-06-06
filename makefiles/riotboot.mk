@@ -1,7 +1,7 @@
 ifneq (,$(filter riotboot,$(FEATURES_USED)))
 
 .PHONY: riotboot/flash riotboot/flash-bootloader riotboot/flash-slot1 riotboot/flash-slot2 \
-        riotboot/verify-image
+        riotboot/verify-image riotboot/bootloader/%
 
 RIOTBOOT ?= $(RIOTBASE)/tools/riotboot/bin/$(BOARD)/riotboot.elf
 CFLAGS += -I$(BINDIR)/riotbuild
@@ -63,11 +63,12 @@ riotboot/verify-image:
 	$(FIRMWARE_TOOL) verify $(BINDIR)/$(APPLICATION)-slot1.signed.bin $(RIOTBOOT_PUBKEY)
 	$(FIRMWARE_TOOL) verify $(BINDIR)/$(APPLICATION)-slot2.signed.bin $(RIOTBOOT_PUBKEY)
 
-riotboot/flash-bootloader:
+riotboot/flash-bootloader: riotboot/bootloader/flash
+riotboot/bootloader/%:
 	$(Q)/usr/bin/env -i \
 		QUIET=$(QUIET)\
 		PATH=$(PATH) BOARD=$(BOARD) \
-			make --no-print-directory -C $(RIOTBASE)/dist/riotboot flash
+			make --no-print-directory -C $(RIOTBASE)/dist/riotboot $*
 
 riotboot/flash-slot1: FLASH_ADDR=$(RIOTBOOT_SLOT0_SIZE)
 riotboot/flash-slot1: HEXFILE=$(BINDIR)/$(APPLICATION)-slot1.signed.bin
