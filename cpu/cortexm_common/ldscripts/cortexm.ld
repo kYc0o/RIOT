@@ -22,10 +22,15 @@
  */
 
 _rom_offset = DEFINED( _rom_offset ) ? _rom_offset : 0x0 ;
+/* By default _fw_rom_length is calculated from the rom length with the _rom_offset
+ * removed. It allows transparently handling boards with an existing bootloader.
+ * It can also be set explicitely by defining _fw_rom_length.
+ */
+_fw_rom_length = DEFINED( _fw_rom_length ) ? _fw_rom_length : _rom_length - _rom_offset;
 
 MEMORY
 {
-    rom (rx)    : ORIGIN = _rom_start_addr + _rom_offset, LENGTH = _rom_length - _rom_offset
+    rom (rx)    : ORIGIN = _rom_start_addr + _rom_offset, LENGTH = _fw_rom_length
     ram (w!rx)  : ORIGIN = _ram_start_addr,               LENGTH = _ram_length
 }
 
