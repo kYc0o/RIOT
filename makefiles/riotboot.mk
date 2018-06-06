@@ -15,6 +15,10 @@ RIOTBOOT_HDR_LEN ?= 0x100
 # compilation options
 CFLAGS += -DFIRMWARE_METATADA_SIZE=$(RIOTBOOT_HDR_LEN)
 
+# export variables for 'firmware'
+export RIOTBOOT_SLOT0_SIZE
+export RIOTBOOT_FW_SLOT_SIZE
+
 APP_ID  ?= 0
 APP_VER ?= 0
 
