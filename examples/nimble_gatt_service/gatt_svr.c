@@ -26,8 +26,19 @@
 #include "bleprph.h"
 #include "random.h"
 
+#include "st_util.h"
+#include "irtempservice.h"
+
 #define ENABLE_DEBUG    (0)
 #include "debug.h"
+
+#define HI_UINT16(a) (((a) >> 8) & 0xFF)
+#define LO_UINT16(a) ((a) & 0xFF)
+
+// TI Base 128-bit UUID: F000XXXX-0451-4000-B000-000000000000
+#define TI_BASE_UUID_128( uuid )  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xB0, \
+                                  0x00, 0x40, 0x51, 0x04, LO_UINT16( uuid ), HI_UINT16( uuid ), 0x00, 0xF0
+
 
 /**
  * The vendor specific security test service consists of two characteristics:
@@ -53,22 +64,51 @@ static const ble_uuid128_t gatt_svr_chr_sec_test_static_uuid =
         BLE_UUID128_INIT(0xf7, 0x6d, 0xc9, 0x07, 0x71, 0x00, 0x16, 0xb0,
                          0xe1, 0x45, 0x7e, 0x89, 0x9e, 0x65, 0x3a, 0x5c);
 
-static uint8_t gatt_svr_sec_test_static_val;
+static uint8_t gatt_svr_temperature_static_val;
 
 static int gatt_svr_chr_access_sec_test(uint16_t conn_handle, uint16_t attr_handle,
                              struct ble_gatt_access_ctxt *ctxt,
                              void *arg);
 
+/* Service configuration values */
+#define SENSOR_SERVICE_UUID     IRTEMPERATURE_SERV_UUID
+static const ble_uuid16_t gatt_svr_svc_temperature_uuid =
+        BLE_UUID16_INIT(SENSOR_SERVICE_UUID);
+
+#define SENSOR_DATA_UUID        IRTEMPERATURE_DATA_UUID
+static const ble_uuid16_t gatt_svr_svc_temperature_data_uuid =
+        BLE_UUID16_INIT(SENSOR_DATA_UUID);
+
+
+#define SENSOR_CONFIG_UUID      IRTEMPERATURE_CONF_UUID
+static const ble_uuid16_t gatt_svr_svc_temperature_conf_uuid =
+        BLE_UUID16_INIT(SENSOR_CONFIG_UUID);
+
+#define SENSOR_PERIOD_UUID      IRTEMPERATURE_PERI_UUID
+static const ble_uuid16_t gatt_svr_svc_temperature_peri_uuid =
+        BLE_UUID16_INIT(SENSOR_PERIOD_UUID);
+
+#define SENSOR_SERVICE          IRTEMPERATURE_SERVICE
+#define SENSOR_DATA_LEN         IRTEMPERATURE_DATA_LEN
+
+#define SENSOR_DATA_DESCR       "Temp. Data"
+#define SENSOR_CONFIG_DESCR     "Temp. Conf."
+#define SENSOR_PERIOD_DESCR     "Temp. Period"
+
+// The temperature sensor does not support the 100 ms update rate
+#undef SENSOR_MIN_UPDATE_PERIOD
+#define SENSOR_MIN_UPDATE_PERIOD  300 // Minimum 300 milliseconds
+
 static const struct ble_gatt_svc_def gatt_svr_svcs[] = {
     {
         /*** Service: Security test. */
         .type = BLE_GATT_SVC_TYPE_PRIMARY,
-        .uuid = &gatt_svr_svc_sec_test_uuid.u,
+        .uuid = &gatt_svr_svc_temperature_uuid.u,
         .characteristics = (struct ble_gatt_chr_def[]) { {
-            /*** Characteristic: Random number generator. */
-            .uuid = &gatt_svr_chr_sec_test_rand_uuid.u,
-            .access_cb = gatt_svr_chr_access_sec_test,
-            .flags = BLE_GATT_CHR_F_READ | BLE_GATT_CHR_F_READ_ENC,
+            /*** Characteristic: Data (Random number generator). */
+            .uuid = &gatt_svr_svc_temperature_data_uuid,
+            .access_cb = gatt_svr_chr_access_temperature,
+            .flags = BLE_GATT_CHR_F_READ,
         }, {
             /*** Characteristic: Static value. */
             .uuid = &gatt_svr_chr_sec_test_static_uuid.u,
@@ -104,7 +144,7 @@ static int gatt_svr_chr_write(struct os_mbuf *om, uint16_t min_len, uint16_t max
     return 0;
 }
 
-static int gatt_svr_chr_access_sec_test(uint16_t conn_handle, uint16_t attr_handle,
+static int gatt_svr_chr_access_temperature(uint16_t conn_handle, uint16_t attr_handle,
                                         struct ble_gatt_access_ctxt *ctxt,
                                         void *arg)
 {
@@ -119,10 +159,10 @@ static int gatt_svr_chr_access_sec_test(uint16_t conn_handle, uint16_t attr_hand
     uuid = ctxt->chr->uuid;
 
     /* Determine which characteristic is being accessed by examining its
-     * 128-bit UUID.
+     * 16-bit UUID.
      */
 
-    if (ble_uuid_cmp(uuid, &gatt_svr_chr_sec_test_rand_uuid.u) == 0) {
+    if (ble_uuid_cmp(uuid, &gatt_svr_svc_temperature_data_uuid.u) == 0) {
         assert(ctxt->op == BLE_GATT_ACCESS_OP_READ_CHR);
 
         /* Respond with a 32-bit random number. */
@@ -131,18 +171,18 @@ static int gatt_svr_chr_access_sec_test(uint16_t conn_handle, uint16_t attr_hand
         return rc == 0 ? 0 : BLE_ATT_ERR_INSUFFICIENT_RES;
     }
 
-    if (ble_uuid_cmp(uuid, &gatt_svr_chr_sec_test_static_uuid.u) == 0) {
+    if (ble_uuid_cmp(uuid, &gatt_svr_svc_temperature_data_uuid.u) == 0) {
         switch (ctxt->op) {
         case BLE_GATT_ACCESS_OP_READ_CHR:
-            rc = os_mbuf_append(ctxt->om, &gatt_svr_sec_test_static_val,
-                                sizeof gatt_svr_sec_test_static_val);
+            rc = os_mbuf_append(ctxt->om, &gatt_svr_temperature_static_val,
+                                sizeof gatt_svr_temperature_static_val);
             return rc == 0 ? 0 : BLE_ATT_ERR_INSUFFICIENT_RES;
 
         case BLE_GATT_ACCESS_OP_WRITE_CHR:
             rc = gatt_svr_chr_write(ctxt->om,
-                                    sizeof gatt_svr_sec_test_static_val,
-                                    sizeof gatt_svr_sec_test_static_val,
-                                    &gatt_svr_sec_test_static_val, NULL);
+                                    sizeof gatt_svr_temperature_static_val,
+                                    sizeof gatt_svr_temperature_static_val,
+                                    &gatt_svr_temperature_static_val, NULL);
             return rc;
 
         default:
