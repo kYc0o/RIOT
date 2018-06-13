@@ -33,6 +33,13 @@ extern "C" {
 #endif
 
 /**
+ * @brief   Define the stack used for NimBLE's controller thread
+ */
+#ifndef NIMBLE_STACK_SIZE
+#define NIMBLE_STACK_SIZE           THREAD_STACKSIZE_DEFAULT
+#endif
+
+/**
  * @brief   Starts a thread running NimBLE's controller
  */
 void nimble_riot_controller_init(void);

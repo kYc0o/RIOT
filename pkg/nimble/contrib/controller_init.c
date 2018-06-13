@@ -27,7 +27,7 @@
 #include "nrf_clock.h"
 #endif
 
-static char stack[THREAD_STACKSIZE_DEFAULT];
+static char stack[NIMBLE_STACK_SIZE];
 
 void nimble_riot_controller_init(void)
 {
