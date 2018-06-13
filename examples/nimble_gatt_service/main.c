@@ -259,10 +259,10 @@ static int bleprph_gap_event(struct ble_gap_event *event, void *arg)
     return 0;
 }
 
-static void bleprph_on_reset(int reason)
-{
-    printf("Resetting state; reason=%d\n", reason);
-}
+// static void bleprph_on_reset(int reason)
+// {
+//     printf("Resetting state; reason=%d\n", reason);
+// }
 
 static void put_ad(uint8_t ad_type, uint8_t ad_len, const void *ad, uint8_t *buf,
                    uint8_t *len)
@@ -316,6 +316,7 @@ static void start_advertise(void)
     advp.disc_mode = BLE_GAP_DISC_MODE_GEN;
     rc = ble_gap_adv_start(own_addr_type, NULL, BLE_HS_FOREVER,
                            &advp, gap_event_cb, NULL);
+    printf("adv_start: %i\n", rc);
     assert(rc == 0);
 }
 
@@ -333,7 +334,7 @@ static void app_ble_sync_cb(void)
     update_ad();
 
     /* Begin advertising. */
-    bleprph_advertise();
+    // bleprph_advertise();
     start_advertise();
 }
 
@@ -346,15 +347,16 @@ int main(void)
 
     /* register the synchronization callback that is triggered once the host has
      * finished its initialization */
-    ble_hs_cfg.reset_cb = bleprph_on_reset;
+    // ble_hs_cfg.reset_cb = bleprph_on_reset;
     ble_hs_cfg.sync_cb = app_ble_sync_cb;
-    ble_hs_cfg.gatts_register_cb = gatt_svr_register_cb;
-    ble_hs_cfg.store_status_cb = ble_store_util_status_rr;
+    // ble_hs_cfg.gatts_register_cb = gatt_svr_register_cb;
+    // ble_hs_cfg.store_status_cb = ble_store_util_status_rr;
 
     /* initialize NimBLE porting layer and the default GATT and GAP services*/
     nimble_port_init();
     ble_svc_gap_init();
     ble_svc_gatt_init();
+    gatt_svr_init();
 
     /* set the device name */
     ble_svc_gap_device_name_set(device_name);
