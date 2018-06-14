@@ -26,8 +26,8 @@
 #include "bleprph.h"
 #include "random.h"
 
-#include "st_util.h"
-#include "irtempservice.h"
+//#include "st_util.h"
+//#include "irtempservice.h"
 
 #define ENABLE_DEBUG    (0)
 #include "debug.h"
@@ -49,15 +49,15 @@
  *       but can only be written over an encrypted connection.
  */
 
-/* 59462f12-9543-9999-12c8-58b459a2712d */
-static const ble_uuid128_t gatt_svr_svc_sec_test_uuid =
-    BLE_UUID128_INIT(0x2d, 0x71, 0xa2, 0x59, 0xb4, 0x58, 0xc8, 0x12,
-                     0x99, 0x99, 0x43, 0x95, 0x12, 0x2f, 0x46, 0x59);
-
-/* 5c3a659e-897e-45e1-b016-007107c96df6 */
-static const ble_uuid128_t gatt_svr_chr_sec_test_rand_uuid =
-        BLE_UUID128_INIT(0xf6, 0x6d, 0xc9, 0x07, 0x71, 0x00, 0x16, 0xb0,
-                         0xe1, 0x45, 0x7e, 0x89, 0x9e, 0x65, 0x3a, 0x5c);
+///* 59462f12-9543-9999-12c8-58b459a2712d */
+//static const ble_uuid128_t gatt_svr_svc_sec_test_uuid =
+//    BLE_UUID128_INIT(0x2d, 0x71, 0xa2, 0x59, 0xb4, 0x58, 0xc8, 0x12,
+//                     0x99, 0x99, 0x43, 0x95, 0x12, 0x2f, 0x46, 0x59);
+//
+///* 5c3a659e-897e-45e1-b016-007107c96df6 */
+//static const ble_uuid128_t gatt_svr_chr_sec_test_rand_uuid =
+//        BLE_UUID128_INIT(0xf6, 0x6d, 0xc9, 0x07, 0x71, 0x00, 0x16, 0xb0,
+//                         0xe1, 0x45, 0x7e, 0x89, 0x9e, 0x65, 0x3a, 0x5c);
 
 /* 5c3a659e-897e-45e1-b016-007107c96df7 */
 static const ble_uuid128_t gatt_svr_chr_sec_test_static_uuid =
@@ -66,9 +66,18 @@ static const ble_uuid128_t gatt_svr_chr_sec_test_static_uuid =
 
 static uint8_t gatt_svr_temperature_static_val;
 
-static int gatt_svr_chr_access_sec_test(uint16_t conn_handle, uint16_t attr_handle,
-                             struct ble_gatt_access_ctxt *ctxt,
-                             void *arg);
+static int gatt_svr_chr_access_temperature(uint16_t conn_handle, uint16_t attr_handle,
+                                        struct ble_gatt_access_ctxt *ctxt,
+                                        void *arg);
+
+//static int gatt_svr_chr_access_sec_test(uint16_t conn_handle, uint16_t attr_handle,
+//                             struct ble_gatt_access_ctxt *ctxt,
+//                             void *arg);
+// Service UUID
+#define IRTEMPERATURE_SERV_UUID         0xAA00
+#define IRTEMPERATURE_DATA_UUID         0xAA01
+#define IRTEMPERATURE_CONF_UUID         0xAA02
+#define IRTEMPERATURE_PERI_UUID         0xAA03
 
 /* Service configuration values */
 #define SENSOR_SERVICE_UUID     IRTEMPERATURE_SERV_UUID
@@ -80,13 +89,13 @@ static const ble_uuid16_t gatt_svr_svc_temperature_data_uuid =
         BLE_UUID16_INIT(SENSOR_DATA_UUID);
 
 
-#define SENSOR_CONFIG_UUID      IRTEMPERATURE_CONF_UUID
-static const ble_uuid16_t gatt_svr_svc_temperature_conf_uuid =
-        BLE_UUID16_INIT(SENSOR_CONFIG_UUID);
-
-#define SENSOR_PERIOD_UUID      IRTEMPERATURE_PERI_UUID
-static const ble_uuid16_t gatt_svr_svc_temperature_peri_uuid =
-        BLE_UUID16_INIT(SENSOR_PERIOD_UUID);
+//#define SENSOR_CONFIG_UUID      IRTEMPERATURE_CONF_UUID
+//static const ble_uuid16_t gatt_svr_svc_temperature_conf_uuid =
+//        BLE_UUID16_INIT(SENSOR_CONFIG_UUID);
+//
+//#define SENSOR_PERIOD_UUID      IRTEMPERATURE_PERI_UUID
+//static const ble_uuid16_t gatt_svr_svc_temperature_peri_uuid =
+//        BLE_UUID16_INIT(SENSOR_PERIOD_UUID);
 
 #define SENSOR_SERVICE          IRTEMPERATURE_SERVICE
 #define SENSOR_DATA_LEN         IRTEMPERATURE_DATA_LEN
@@ -103,16 +112,16 @@ static const struct ble_gatt_svc_def gatt_svr_svcs[] = {
     {
         /*** Service: Security test. */
         .type = BLE_GATT_SVC_TYPE_PRIMARY,
-        .uuid = &gatt_svr_svc_temperature_uuid.u,
+        .uuid = (ble_uuid_t*)&gatt_svr_svc_temperature_uuid.u,
         .characteristics = (struct ble_gatt_chr_def[]) { {
             /*** Characteristic: Data (Random number generator). */
-            .uuid = &gatt_svr_svc_temperature_data_uuid,
+            .uuid = (ble_uuid_t*)&gatt_svr_svc_temperature_data_uuid,
             .access_cb = gatt_svr_chr_access_temperature,
             .flags = BLE_GATT_CHR_F_READ,
         }, {
             /*** Characteristic: Static value. */
-            .uuid = &gatt_svr_chr_sec_test_static_uuid.u,
-            .access_cb = gatt_svr_chr_access_sec_test,
+            .uuid = (ble_uuid_t*)&gatt_svr_chr_sec_test_static_uuid.u,
+            .access_cb = gatt_svr_chr_access_temperature,
             .flags = BLE_GATT_CHR_F_READ |
                      BLE_GATT_CHR_F_WRITE | BLE_GATT_CHR_F_WRITE_ENC,
         }, {
