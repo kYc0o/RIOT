@@ -13,7 +13,7 @@
 #include "net/nanocoap_sock.h"
 #include "firmware/manifest.h"
 
-#define COAP_INBUF_SIZE     (256U)
+#define COAP_INBUF_SIZE     (512U)
 #define STACKSIZE           (2 * THREAD_STACKSIZE_DEFAULT)
 #define PRIO                (THREAD_PRIORITY_MAIN)
 #define TNAME               "coap"
