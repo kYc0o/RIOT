@@ -706,6 +706,7 @@ ssize_t coap_opt_finish(coap_pkt_t *pkt, uint16_t flags)
     }
 
     return pkt->payload - (uint8_t *)pkt->hdr;
+}
 
 size_t coap_block2_init(uint8_t* buf, uint16_t lastonum, coap_pkt_t *pkt, coap_blockhelper_t *blk)
 {
