@@ -18,6 +18,6 @@ CoAP.
 
     $ BOARD=samr21-xpro APP_VER=$(date +%s) make -j4 clean riotboot
 
-- send upate via coap, e.g.,
+- send update via coap, e.g. using libcoap example client,
 
-    $ coap-cli -m put coap://[<node-ip-address]/firmware -b 64 -f bin/samr21-xpro/ota_example-slot2.bin
+    $ coap-client -m put coap://[<node-ip-address>]/firmware -b 64 -f bin/samr21-xpro/ota_example-slot2.signed.bin
