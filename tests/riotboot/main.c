@@ -21,6 +21,32 @@
 #include <stdio.h>
 
 #include "slot_util.h"
+#include "shell.h"
+
+static int cmd_print_slot_nr(int argc, char **argv)
+{
+    (void)argc;
+    (void)argv;
+
+    printf("Current slot=%d\n", slot_util_current_slot());
+    return 0;
+}
+
+static int cmd_print_slot_hdr(int argc, char **argv)
+{
+    (void)argc;
+    (void)argv;
+
+    int current_slot = slot_util_current_slot();
+    slot_util_print_slot_hdr(current_slot);
+    return 0;
+}
+
+static const shell_command_t shell_commands[] = {
+    { "curslotnr", "Print current slot number", cmd_print_slot_nr },
+    { "curslothdr", "Print current slot header", cmd_print_slot_hdr },
+    { NULL, NULL, NULL }
+};
 
 int main(void)
 {
@@ -41,5 +67,8 @@ int main(void)
         printf("[FAILED] You're not running riotboot\n");
     }
 
+    /* run the shell */
+    char line_buf[SHELL_DEFAULT_BUFSIZE];
+    shell_run(shell_commands, line_buf, SHELL_DEFAULT_BUFSIZE);
     return 0;
 }

@@ -16,3 +16,6 @@ This test should foremost give you an overview how to use riotboot:
 
 In this test two modules `riot_hdr` and `slot_util` are used to showcase
 the access to riotboot shared functions.
+
+  - `make test` can be executed to run the automatic Python test that checks
+  basic functionalities of riotboot
