@@ -16,7 +16,7 @@
  *
  * - "RIOT" as magic number
  * - the application version
- * - the address where to find the RIOT firmware
+ * - the address where the RIOT firmware is found
  * - the checksum of the three previous fields
  *
  * @file
@@ -48,10 +48,10 @@ extern "C" {
  * @{
  */
 typedef struct {
-    uint32_t magic_number;     /**< header magic_number (always "RIOT")              */
-    uint32_t version;          /**< Integer representing the partition version       */
-    uint32_t start_addr;       /**< Address after the allocated space for the header */
-    uint32_t chksum;           /**< checksum of riotboot_hdr                             */
+    uint32_t magic_number;      /**< Header magic number (always "RIOT")              */
+    uint32_t version;           /**< Integer representing the partition version       */
+    uint32_t start_addr;        /**< Address after the allocated space for the header */
+    uint32_t chksum;            /**< Checksum of riotboot_hdr                         */
 } riotboot_hdr_t;
 /** @} */
 
@@ -69,6 +69,7 @@ void riotboot_hdr_print(const riotboot_hdr_t *riotboot_hdr);
  * @param[in] riotboot_hdr  ptr to image header
  *
  * @returns 0 if OK
+ * @returns -1 if not OK
  */
 int riotboot_hdr_validate(const riotboot_hdr_t *riotboot_hdr);
 
