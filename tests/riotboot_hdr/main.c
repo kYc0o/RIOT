@@ -45,24 +45,28 @@ const riotboot_hdr_t riotboot_hdr_bad_chksum = {
 static void test_riotboot_hdr_01(void)
 {
     int ret = riotboot_hdr_validate(&riotboot_hdr_good);
+
     TEST_ASSERT_EQUAL_INT(0, ret);
 }
 
 static void test_riotboot_hdr_02(void)
 {
     int ret = riotboot_hdr_validate(&riotboot_hdr_bad_magic);
+
     TEST_ASSERT_EQUAL_INT(-1, ret);
 }
 
 static void test_riotboot_hdr_03(void)
 {
     int ret = riotboot_hdr_validate(&riotboot_hdr_bad_chksum);
+
     TEST_ASSERT_EQUAL_INT(-1, ret);
 }
 
 static void test_riotboot_hdr_04(void)
 {
     uint32_t chksum = riotboot_hdr_checksum(&riotboot_hdr_good);
+
     TEST_ASSERT_EQUAL_INT(0x02eda672, chksum);
 }
 
