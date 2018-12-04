@@ -26,6 +26,16 @@ def testfunc(child):
     child.expect("Header chksum: 0x[0-9a-fA-F]{8}")
     child.expect('>')
 
+    # Ask for address of slot 0
+    child.sendline("getslotaddr 0")
+    child.expect("Slot 0 address=0x[0-9a-fA-F]{8}")
+    child.expect('>')
+
+    # Ask for data of all slots
+    child.sendline("dumpaddrs")
+    child.expect("slot 0: metadata: 0x[0-9a-fA-F]{1,8} image: 0x[0-9a-fA-F]{8}")
+    child.expect('>')
+
 
 if __name__ == "__main__":
     sys.exit(run(testfunc))

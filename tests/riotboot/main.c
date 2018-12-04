@@ -19,6 +19,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "slot_util.h"
 #include "shell.h"
@@ -42,9 +43,29 @@ static int cmd_print_slot_hdr(int argc, char **argv)
     return 0;
 }
 
+static int cmd_print_slot_addr(int argc, char **argv)
+{
+    (void)argc;
+
+    int reqslot=atoi(argv[1]);
+    printf("Slot %d address=0x%08lx\n", reqslot, slot_util_get_image_startaddr(reqslot));
+    return 0;
+}
+
+static int cmd_dumpaddrs(int argc, char **argv)
+{
+    (void)argc;
+    (void)argv;
+
+    slot_util_dump_addrs();
+    return 0;
+}
+
 static const shell_command_t shell_commands[] = {
     { "curslotnr", "Print current slot number", cmd_print_slot_nr },
     { "curslothdr", "Print current slot header", cmd_print_slot_hdr },
+    { "getslotaddr", "Print address of requested slot", cmd_print_slot_addr },
+    { "dumpaddrs", "Prints all slot data in header", cmd_dumpaddrs },
     { NULL, NULL, NULL }
 };
 
