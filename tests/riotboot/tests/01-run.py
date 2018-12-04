@@ -18,8 +18,8 @@ def testfunc(child):
 
     # Ask for current slot header info and checks for basic output integrity
     child.sendline("curslothdr")
-    # Magic number is "RIOT", check for little and big endian
-    child.expect_exact(["Image magic_number: 0x52494f54", "Image magic_number: 0x544f4952"])
+    # Magic number is "RIOT" (always in little endian)
+    child.expect_exact("Image magic_number: 0x544f4952")
     # Other info is hardware/app dependant so we just check basic compliance
     child.expect("Image Version: 0x[0-9a-fA-F]{8}")
     child.expect("Image start address: 0x[0-9a-fA-F]{8}")
