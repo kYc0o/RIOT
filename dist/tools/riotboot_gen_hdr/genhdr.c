@@ -105,7 +105,7 @@ int genhdr(int argc, char *argv[])
     if (!to_file(argv[5], hdr_buf, hdr_len)) {
         fprintf(stderr, "Error: cannot write output\n");
         free(hdr_buf);
-        return(1);
+        return 1;
     }
 
     free(hdr_buf);
