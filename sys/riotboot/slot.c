@@ -72,13 +72,9 @@ void riotboot_slot_dump_addrs(void)
     for (unsigned slot = 0; slot < riotboot_slot_numof; slot++) {
         const riotboot_hdr_t *hdr = riotboot_slot_get_hdr(slot);
 
-        if (hdr != NULL) {
-            printf("slot %u: metadata: %p image: 0x%08" PRIx32 "\n", slot,
-                   hdr,
-                   hdr->start_addr);
-        } else {
-            printf("[riotboot_slot]: No riotboot_hdr found at %p\n", hdr);
-        }
+        printf("slot %u: metadata: %p image: 0x%08" PRIx32 "\n", slot,
+               hdr,
+               hdr->start_addr);
     }
 }
 
