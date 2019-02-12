@@ -70,20 +70,46 @@ extern "C" {
 #endif
 
 /**
+ * @name    SX127X device radio LoRa defaults
+ * @{
+ */
+#define SX127X_CHANNEL_LORA        (868300000UL)          /**< Default LoRa frequency, 868.3MHz (Europe) */
+#define SX127X_HF_CHANNEL_LORA     (868000000UL)          /**< Use to calibrate RX chain for LF and HF bands */
+/** @} */
+
+/**
+ * @name    SX127X device radio FSK defaults
+ * @{
+ */
+#define SX127X_CHANNEL_FSK         (868950000UL)             /**< Default FSK frequency, 868.95MHz (Europe) */
+#define SX127X_HF_CHANNEL_FSK      (860000000UL)             /**< Use to calibrate RX chain for LF and HF bands */
+#define SX127X_BITRATE_FSK         (100000UL)                /**< Bitrate at 100kpbs */
+#define SX127X_FREQ_DEV_FSK        (50000UL)                 /**< Frequency deviation */
+#define SX127X_BANDWIDTH_FSK       (SX127X_BITRATE_FSK + 2 \
+                                    * SX127X_FREQ_DEV_FSK)   /**< Bandwidth calculation */
+/** @} */
+
+/**
  * @name    SX127X device default configuration
  * @{
  */
-#define SX127X_MODEM_DEFAULT             (SX127X_MODEM_LORA)    /**< Use LoRa as default modem */
-#define SX127X_CHANNEL_DEFAULT           (868300000UL)          /**< Default channel frequency, 868.3MHz (Europe) */
-#define SX127X_HF_CHANNEL_DEFAULT        (868000000UL)          /**< Use to calibrate RX chain for LF and HF bands */
-#define SX127X_RF_MID_BAND_THRESH        (525000000UL)          /**< Mid-band threshold */
-#define SX127X_XTAL_FREQ                 (32000000UL)           /**< Internal oscillator frequency, 32MHz */
-#define SX127X_RADIO_WAKEUP_TIME         (1000U)                /**< In microseconds [us] */
+#ifndef SX127X_MODEM_DEFAULT
+#define SX127X_MODEM_DEFAULT             (SX127X_MODEM_LORA)       /**< Use LoRa as default modem */
+#endif
+#ifndef SX127X_CHANNEL_DEFAULT
+#define SX127X_CHANNEL_DEFAULT           (SX127X_CHANNEL_LORA)     /**< Default channel frequency, 868.3MHz (Europe) */
+#endif
+#ifndef SX127X_HF_CHANNEL_DEFAULT
+#define SX127X_HF_CHANNEL_DEFAULT        (SX127X_HF_CHANNEL_LORA)  /**< Use to calibrate RX chain for LF and HF bands */
+#endif
+#define SX127X_RF_MID_BAND_THRESH        (525000000UL)             /**< Mid-band threshold */
+#define SX127X_XTAL_FREQ                 (32000000UL)              /**< Internal oscillator frequency, 32MHz */
+#define SX127X_RADIO_WAKEUP_TIME         (1000U)                   /**< In microseconds [us] */
 
-#define SX127X_TX_TIMEOUT_DEFAULT        (1000U * 1000U * 30UL) /**< TX timeout, 30s */
-#define SX127X_RX_SINGLE                 (false)                /**< Single byte receive mode => continuous by default */
-#define SX127X_RX_BUFFER_SIZE            (256)                  /**< RX buffer size */
-#define SX127X_RADIO_TX_POWER            (14U)                  /**< Radio power in dBm */
+#define SX127X_TX_TIMEOUT_DEFAULT        (1000U * 1000U * 30UL)    /**< TX timeout, 30s */
+#define SX127X_RX_SINGLE                 (false)                   /**< Single byte receive mode => continuous by default */
+#define SX127X_RX_BUFFER_SIZE            (256)                     /**< RX buffer size */
+#define SX127X_RADIO_TX_POWER            (14U)                     /**< Radio power in dBm */
 
 #define SX127X_EVENT_HANDLER_STACK_SIZE  (2048U) /**< Stack size event handler */
 #define SX127X_IRQ_DIO0                  (1<<0)  /**< DIO0 IRQ */
@@ -166,9 +192,6 @@ enum {
  * @brief   LoRa configuration structure.
  */
 typedef struct {
-    uint16_t preamble_len;             /**< Length of preamble header */
-    int8_t power;                      /**< Signal power */
-    uint8_t bandwidth;                 /**< Signal bandwidth */
     uint8_t datarate;                  /**< Spreading factor rate, e.g datarate */
     uint8_t coderate;                  /**< Error coding rate */
     uint8_t freq_hop_period;           /**< Frequency hop period */
@@ -178,13 +201,33 @@ typedef struct {
 } sx127x_lora_settings_t;
 
 /**
+ * @brief   FSK configuration structure.
+ */
+typedef struct
+{
+    uint32_t bitrate;                  /**< Signal bitrate */
+    uint32_t freq_dev;                 /**< Frequency deviation */
+    uint32_t bandwidth_afc;            /**< Automatic Frequency Correction Bandwidth */
+    int8_t rssi_offset;                /**< Signed RSSI offset */
+    uint8_t mod_shaping;               /**< Modulation shaping */
+    bool afc_on;                       /**< Automatic Frequency Correction */
+} sx127x_fsk_settings_t;
+
+/**
  * @brief   Radio settings.
  */
 typedef struct {
     uint32_t channel;                  /**< Radio channel */
     uint8_t state;                     /**< Radio state */
     uint8_t modem;                     /**< Driver model (FSK or LoRa) */
-    sx127x_lora_settings_t lora;       /**< LoRa settings */
+    uint16_t preamble_len;             /**< Length of preamble header */
+    int8_t power;                      /**< Signal power */
+    uint32_t bandwidth;                /**< Signal bandwidth */
+    uint8_t lna;                       /**< Low Noise Amplifier value */
+    union {
+        sx127x_lora_settings_t lora;   /**< LoRa settings */
+        sx127x_fsk_settings_t fsk;     /**< FSK settings */
+    }
 } sx127x_radio_settings_t;
 
 /**
@@ -665,6 +708,40 @@ void sx127x_set_iq_invert(sx127x_t *dev, bool iq_invert);
  * @param[in] freq_hop_on              The LoRa frequency hopping mode
  */
 void sx127x_set_freq_hop(sx127x_t *dev, bool freq_hop_on);
+
+/**
+ * @brief   Sets the SX127X FSK/OOK modulation shaping (4.2.2.3 p48)
+ *
+ * @param[in] dev                      The sx127x device descriptor
+ * @param[in] mode                     The modulation shaping
+ */
+void sx127x_set_fsk_mod_shaping(sx127x_t *dev, uint8_t mode);
+
+/**
+ * @brief   Gets the SX127X FSK/OOK modulation shaping (4.2.2.3 p48)
+ *
+ * @param[in] dev                      The sx127x device descriptor
+ *
+ * @return the FSK/OOK modulation shaping
+ */
+uint8_t sx127x_get_fsk_mod_shaping(sx127x_t *dev);
+
+void sx127x_set_lna(sx127x_t *dev, uint8_t value);
+uint8_t sx127x_get_lna(sx127x_t *dev);
+void sx127x_set_syncconfig(sx127x_t *dev, uint8_t autorestart_rx_mode,
+                           uint8_t preamble_polarity, uint8_t sync,
+                           uint8_t sync_size);
+void sx127x_set_packetconfig1(sx127x_t *dev, uint8_t packet_format, uint8_t dcfree,
+                              uint8_t crc_autoclear, uint8_t addrs_filtering,
+                              uint8_t crc_whitening_type);
+void sx127x_set_packetconfig2(sx127x_t *dev, uint8_t wmbus_crc_enable, uint8_t data_mode,
+                              uint8_t io_home, uint8_t beacon);
+
+void sx127x_set_bitrate(sx127x_t *dev, uint32_t bitrate);
+uint32_t sx127x_get_bitrate(void);
+void sx127x_set_freqdev(sx127x_t *dev, uint32_t freq_dev);
+uint32_t sx127x_get_freqdev(sx127x_t *dev);
+
 
 #ifdef __cplusplus
 }
