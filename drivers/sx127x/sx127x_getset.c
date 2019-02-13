@@ -27,6 +27,7 @@
 #include <inttypes.h>
 
 #include "net/lora.h"
+#include "net/fsk.h"
 
 #include "sx127x.h"
 #include "sx127x_registers.h"
@@ -147,7 +148,7 @@ void sx127x_set_modem(sx127x_t *dev, uint8_t modem)
         case SX127X_MODEM_FSK:
             sx127x_reg_write(dev, SX127X_REG_OPMODE,
                              (sx127x_reg_read(dev, SX127X_REG_OPMODE) &
-                             SX127X_RF_OPMODE_MODULATIONTYPE_FSK);
+                             SX127X_RF_OPMODE_MODULATIONTYPE_FSK));
 
             sx127x_reg_write(dev, SX127X_REG_DIOMAPPING1, 0x00);
             sx127x_reg_write(dev, SX127X_REG_DIOMAPPING2, 0x30);
@@ -224,7 +225,7 @@ uint32_t sx127x_get_time_on_air(const sx127x_t *dev, uint8_t pkt_len)
                     bw = 500e3;
                     break;
                 default:
-                    DEBUG("Invalid bandwith: %d\n", dev->settings.bandwidth);
+                    DEBUG("Invalid bandwith: %ld\n", dev->settings.bandwidth);
                     break;
             }
 
@@ -494,7 +495,7 @@ uint8_t sx127x_get_max_payload_len(const sx127x_t *dev)
 {
     switch (dev->settings.modem) {
         case SX127X_MODEM_FSK:
-            return sx127x_reg_read(dev, SX127X_REG_PAYLOADLENGTH);
+            return sx127x_reg_read(dev, SX127X_RF_PAYLOADLENGTH_LENGTH);
 
         case SX127X_MODEM_LORA:
             return sx127x_reg_read(dev, SX127X_REG_LR_PAYLOADMAXLENGTH);
@@ -510,7 +511,14 @@ void sx127x_set_max_payload_len(const sx127x_t *dev, uint8_t maxlen)
 
     switch (dev->settings.modem) {
         case SX127X_MODEM_FSK:
-            sx127x_reg_write(dev, SX127X_REG_PAYLOADLENGTH, maxlen);
+            if((sx127x_get_packetconfig1(dev) & SX127X_RF_PACKETCONFIG1_PACKETFORMAT_MASK)
+               == SX127X_RF_PACKETCONFIG1_PACKETFORMAT_FIXED) {
+                   DEBUG("[sx127x] Can't set max payload on fixed mode\n");
+                   break;
+            }
+            else {
+                sx127x_reg_write(dev, SX127X_REG_PAYLOADLENGTH, maxlen);
+            }
             break;
 
         case SX127X_MODEM_LORA:
@@ -616,7 +624,7 @@ static void _update_bandwidth(const sx127x_t *dev)
         config1_reg |=  SX1276_RF_LORA_MODEMCONFIG1_BW_500_KHZ;
         break;
     default:
-        DEBUG("[sx127x] Unsupported bandwidth, %d\n",
+        DEBUG("[sx127x] Unsupported bandwidth, %ld\n",
               dev->settings.bandwidth);
         break;
     }
@@ -981,7 +989,7 @@ void sx127x_set_freq_hop(sx127x_t *dev, bool freq_hop_on)
 
 void sx127x_set_fsk_mod_shaping(sx127x_t *dev, uint8_t mode)
 {
-    dev->settings->fsk->mod_shaping = mode;
+    dev->settings.fsk.mod_shaping = mode;
     sx127x_reg_write(dev, SX127X_REG_LR_PARAMP,
                      (sx127x_reg_read(dev, SX127X_REG_LR_PARAMP) &
                       SX127X_RF_PARAMP_MODULATIONSHAPING_MASK) | mode);
@@ -989,12 +997,12 @@ void sx127x_set_fsk_mod_shaping(sx127x_t *dev, uint8_t mode)
 
 uint8_t sx127x_get_fsk_mod_shaping(sx127x_t *dev)
 {
-    return dev->settings->fsk->mod_shaping;
+    return dev->settings.fsk.mod_shaping;
 }
 
 void sx127x_set_lna(sx127x_t *dev, uint8_t value)
 {
-    dev->settings->lna = value;
+    dev->settings.lna = value;
     sx127x_reg_write(dev, SX127X_REG_LR_LNA,
                      (sx127x_reg_read(dev, SX127X_REG_LR_LNA) &
                       SX127X_RF_LNA_GAIN_MASK) | value);
@@ -1020,25 +1028,29 @@ void sx127x_set_syncconfig(sx127x_t *dev, uint8_t autorestart_rx_mode,
 }
 
 void sx127x_set_packetconfig1(sx127x_t *dev, uint8_t packet_format, uint8_t dcfree,
-                              uint8_t crc_autoclear, uint8_t addrs_filtering,
+                              uint8_t crc, uint8_t crc_autoclear, uint8_t addrs_filtering,
                               uint8_t crc_whitening_type)
 {
-    /* TODO: maybe add it to settings? */
-    (void)dev;
+    dev->settings.fsk.pktconfig1 = sx127x_reg_read(dev, SX127X_REG_PACKETCONFIG1) &
+                                                   SX127X_RF_PACKETCONFIG1_PACKETFORMAT_MASK &
+                                                   SX127X_RF_PACKETCONFIG1_DCFREE_MASK &
+                                                   SX127X_RF_PACKETCONFIG1_CRC_MASK &
+                                                   SX127X_RF_PACKETCONFIG1_CRCAUTOCLEAR_MASK &
+                                                   SX127X_RF_PACKETCONFIG1_ADDRSFILTERING_MASK &
+                                                   SX127X_RF_PACKETCONFIG1_CRCWHITENINGTYPE_MASK) |
+                                                   packet_format |
+                                                   dcfree |
+                                                   crc |
+                                                   crc_autoclear |
+                                                   addrs_filtering |
+                                                   crc_whitening_type;
 
-    sx127x_reg_write(dev, SX127X_REG_PACKETCONFIG1,
-                     (sx127x_reg_read(dev, SX127X_REG_PACKETCONFIG1) &
-                       SX127X_RF_PACKETCONFIG1_PACKETFORMAT_MASK &
-                       SX127X_RF_PACKETCONFIG1_DCFREE_MASK &
-                       SX127X_RF_PACKETCONFIG1_CRC_MASK &
-                       SX127X_RF_PACKETCONFIG1_CRCAUTOCLEAR_MASK &
-                       SX127X_RF_PACKETCONFIG1_ADDRSFILTERING_MASK &
-                       SX127X_RF_PACKETCONFIG1_CRCWHITENINGTYPE_MASK) |
-                       packet_format |
-                       dcfree |
-                       crc_autoclear |
-                       addrs_filtering |
-                       crc_whitening_type);
+    sx127x_reg_write(dev, SX127X_REG_PACKETCONFIG1, dev->settings.fsk.pktconfig1);
+}
+
+uint8_t sx127x_get_packetconfig1(sx127x_t *dev)
+{
+    return dev->settings.fsk.pktconfig1;
 }
 
 void sx127x_set_packetconfig2(sx127x_t *dev, uint8_t wmbus_crc_enable, uint8_t data_mode,
@@ -1084,20 +1096,20 @@ void sx127x_set_freqdev(sx127x_t *dev, uint32_t freq_dev)
 
 uint32_t sx127x_get_freqdev(sx127x_t *dev)
 {
-    dev->settings.fsk.freq_dev = freq_dev;
+    return dev->settings.fsk.freq_dev;
 }
 
 void sx127x_set_rxbw(sx127x_t *dev, uint32_t value, uint32_t rx_bw_value)
 {
     dev->settings.bandwidth = (uint8_t)value & 0x60;
 
-    _compute_bandwidth(dev, &dev->settings.bandwidth, rx_bw_value)
+    _compute_bandwidth(dev, &dev->settings.bandwidth, rx_bw_value);
 
     sx127x_reg_write(dev, SX127X_REG_RXBW, dev->settings.bandwidth);
     dev->settings.bandwidth = rx_bw_value;
 }
 
-void sx127x_set_afcbw(sx127x_t *dev, uint32_t value, uint32_t afc_bw_value)
+void sx127x_set_afcbw(sx127x_t *dev, uint32_t afc_bw_value)
 {
     dev->settings.fsk.bandwidth_afc = 0;
 
@@ -1124,5 +1136,5 @@ void sx127x_fsk_set_rssi_offset(sx127x_t *dev, int8_t offset)
 
 int8_t sx127x_fsk_get_rssi_offset(sx127x_t *dev)
 {
-    return dev->settings.fsk.rssi_offset = offset;
+    return dev->settings.fsk.rssi_offset;
 }

@@ -210,6 +210,7 @@ typedef struct
     uint32_t bandwidth_afc;            /**< Automatic Frequency Correction Bandwidth */
     int8_t rssi_offset;                /**< Signed RSSI offset */
     uint8_t mod_shaping;               /**< Modulation shaping */
+    uint8_t pktconfig1;                /**< RegPacketConfig1 */
     bool afc_on;                       /**< Automatic Frequency Correction */
 } sx127x_fsk_settings_t;
 
@@ -227,7 +228,7 @@ typedef struct {
     union {
         sx127x_lora_settings_t lora;   /**< LoRa settings */
         sx127x_fsk_settings_t fsk;     /**< FSK settings */
-    }
+    };
 } sx127x_radio_settings_t;
 
 /**
@@ -307,11 +308,18 @@ int sx127x_reset(const sx127x_t *dev);
 int sx127x_init(sx127x_t *dev);
 
 /**
- * @brief   Initialize radio settings with default values
+ * @brief   Initialize LoRa settings with default values
  *
  * @param[in] dev                      The sx127x device pointer
  */
-void sx127x_init_radio_settings(sx127x_t *dev);
+void sx127x_init_lora_settings(sx127x_t *dev);
+
+/**
+ * @brief   Initialize FSK settings with default values
+ *
+ * @param[in] dev                      The sx127x device pointer
+ */
+void sx127x_init_fsk_settings(sx127x_t *dev);
 
 /**
  * @brief   Generates 32 bits random value based on the RSSI readings
@@ -732,15 +740,19 @@ void sx127x_set_syncconfig(sx127x_t *dev, uint8_t autorestart_rx_mode,
                            uint8_t preamble_polarity, uint8_t sync,
                            uint8_t sync_size);
 void sx127x_set_packetconfig1(sx127x_t *dev, uint8_t packet_format, uint8_t dcfree,
-                              uint8_t crc_autoclear, uint8_t addrs_filtering,
+                              uint8_t crc, uint8_t crc_autoclear, uint8_t addrs_filtering,
                               uint8_t crc_whitening_type);
 void sx127x_set_packetconfig2(sx127x_t *dev, uint8_t wmbus_crc_enable, uint8_t data_mode,
                               uint8_t io_home, uint8_t beacon);
 
 void sx127x_set_bitrate(sx127x_t *dev, uint32_t bitrate);
-uint32_t sx127x_get_bitrate(void);
+uint32_t sx127x_get_bitrate(sx127x_t *dev);
 void sx127x_set_freqdev(sx127x_t *dev, uint32_t freq_dev);
 uint32_t sx127x_get_freqdev(sx127x_t *dev);
+void sx127x_set_rxbw(sx127x_t *dev, uint32_t value, uint32_t rx_bw_value);
+void sx127x_set_afcbw(sx127x_t *dev, uint32_t afc_bw_value);
+void sx127x_fsk_set_rssi_offset(sx127x_t *dev, int8_t offset);
+int8_t sx127x_fsk_get_rssi_offset(sx127x_t *dev);
 
 
 #ifdef __cplusplus

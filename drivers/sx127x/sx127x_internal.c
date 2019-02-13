@@ -187,6 +187,7 @@ void sx127x_start_cad(sx127x_t *dev)
 {
     switch (dev->settings.modem) {
         case SX127X_MODEM_FSK:
+            DEBUG("[sx127x] No CAD in FSK mode\n");
             break;
         case SX127X_MODEM_LORA:
             /* Disable all interrupts except CAD-related */
