@@ -39,6 +39,7 @@
 #include "sx127x_internal.h"
 #include "sx127x_params.h"
 #include "sx127x_netdev.h"
+#include "sx127x_registers.h"
 
 #define SX127X_LORA_MSG_QUEUE   (16U)
 #define SX127X_STACKSIZE        (THREAD_STACKSIZE_DEFAULT)
@@ -56,39 +57,9 @@ int fsk_init_cmd(int argc, char **argv)
     (void)argc;
     (void)argv;
 
-    sx127x_set_modem(sx127x, SX127X_MODEM_FSK);
-    sx1272_set_fsk_mod_shaping(sx127x, SX127X_RF_PARAMP_MODULATIONSHAPING_01);
-    sx127x_set_lna(sx127x, SX127X_RF_LORA_LNA_GAIN_G1);
-    sx127x_set_syncconfig_fsk(sx127x, SX127X_RF_SYNCCONFIG_AUTORESTARTRXMODE_WAITPLL_OFF,
-                              SX127X_RF_SYNCCONFIG_PREAMBLEPOLARITY_AA,
-                              SX127X_RF_SYNCCONFIG_SYNC_ON,
-                              SX127X_RF_SYNCCONFIG_SYNCSIZE_3);
-    sx127x_set_packetconfig1(sx127x, SX127X_RF_PACKETCONFIG1_PACKETFORMAT_VARIABLE,
-                             SX127X_RF_PACKETCONFIG1_DCFREE_OFF,
-                             SX127X_RF_PACKETCONFIG1_CRC_ON,
-                             SX127X_RF_PACKETCONFIG1_CRCAUTOCLEAR_ON,
-                             SX127X_RF_PACKETCONFIG1_ADDRSFILTERING_OFF,
-                             SX127X_RF_PACKETCONFIG1_CRCWHITENINGTYPE_CCITT);
-    sx127x_set_packetconfig2(sx127x, SX127X_RF_PACKETCONFIG2_WMBUS_CRC_DISABLE,
-                             RF_PACKETCONFIG2_DATAMODE_CONTINUOUS,
-                             SX127X_RF_PACKETCONFIG2_IOHOME_OFF,
-                             SX127X_RF_PACKETCONFIG2_BEACON_OFF);
-    sx127x_set_tx(sx127x);
-    sx127x_set_channel(sx127x, SX127X_CHANNEL_FSK);
-    sx127x_set_bitrate(SX127X_BITRATE_FSK);
-    sx127x_set_freqdev(SX127X_FREQ_DEV_FSK);
-    sx127x_set_rxbw(sx127x, 0, SX127X_BANDWIDTH_FSK);
-    sx127x_set_afcbw(sx127x, 0, 200000);
-    sx127x_fsk_set_rssi_offset(sx127x, 0);
-#if defined(MODULE_SX1276)
-    sx127x_set_tx_power(sx127x, 20);
-#else /* MODULE_SX1272 */
-    sx127x_set_tx_power(sx127x, 14);
-#endif
-    sx127x_set_standby(sx127x);
-#if defined(MODULE_SX1276)
-    sx1276_rx_chain_calibration(sx127x, SX127X_HF_CHANNEL_FSK);
-#endif
+    sx127x_init_fsk_settings(&sx127x);
+
+    return 0;
 }
 
 int lora_setup_cmd(int argc, char **argv) {
