@@ -119,7 +119,12 @@ int sx127x_init(sx127x_t *dev)
     sx127x_reset(dev);
 
 #if defined(MODULE_SX1276)
-    sx1276_rx_chain_calibration(dev);
+    if(dev->modem == SX127X_MODEM_LORA) {
+        sx1276_rx_chain_calibration(dev, SX127X_HF_CHANNEL_LORA);
+    }
+    else {
+        sx1276_rx_chain_calibration(dev, SX127X_HF_CHANNEL_FSK);
+    }
 #endif
     sx127x_set_op_mode(dev, SX127X_RF_OPMODE_SLEEP);
 
