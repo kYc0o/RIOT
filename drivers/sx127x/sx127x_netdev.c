@@ -225,7 +225,12 @@ static int _init(netdev_t *netdev)
         return -1;
     }
 
-    sx127x_init_radio_settings(sx127x);
+    if (sx127x->settings.modem == SX127X_MODEM_FSK) {
+        sx127x_init_fsk_settings(sx127x);
+    }
+    else {
+        sx127x_init_lora_settings(sx127x);
+    }
     /* Put chip into sleep */
     sx127x_set_sleep(sx127x);
 
