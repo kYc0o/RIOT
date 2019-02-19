@@ -995,7 +995,7 @@ void sx127x_set_fsk_mod_shaping(sx127x_t *dev, uint8_t mode)
                       SX127X_RF_PARAMP_MODULATIONSHAPING_MASK) | mode);
 }
 
-uint8_t sx127x_get_fsk_mod_shaping(sx127x_t *dev)
+uint8_t sx127x_get_fsk_mod_shaping(const sx127x_t *dev)
 {
     return dev->settings.fsk.mod_shaping;
 }
@@ -1031,7 +1031,7 @@ void sx127x_set_packetconfig1(sx127x_t *dev, uint8_t packet_format, uint8_t dcfr
                               uint8_t crc, uint8_t crc_autoclear, uint8_t addrs_filtering,
                               uint8_t crc_whitening_type)
 {
-    dev->settings.fsk.pktconfig1 = sx127x_reg_read(dev, SX127X_REG_PACKETCONFIG1) &
+    dev->settings.fsk.pktconfig1 = (sx127x_reg_read(dev, SX127X_REG_PACKETCONFIG1) &
                                                    SX127X_RF_PACKETCONFIG1_PACKETFORMAT_MASK &
                                                    SX127X_RF_PACKETCONFIG1_DCFREE_MASK &
                                                    SX127X_RF_PACKETCONFIG1_CRC_MASK &
@@ -1048,7 +1048,7 @@ void sx127x_set_packetconfig1(sx127x_t *dev, uint8_t packet_format, uint8_t dcfr
     sx127x_reg_write(dev, SX127X_REG_PACKETCONFIG1, dev->settings.fsk.pktconfig1);
 }
 
-uint8_t sx127x_get_packetconfig1(sx127x_t *dev)
+uint8_t sx127x_get_packetconfig1(const sx127x_t *dev)
 {
     return dev->settings.fsk.pktconfig1;
 }
@@ -1056,19 +1056,22 @@ uint8_t sx127x_get_packetconfig1(sx127x_t *dev)
 void sx127x_set_packetconfig2(sx127x_t *dev, uint8_t wmbus_crc_enable, uint8_t data_mode,
                               uint8_t io_home, uint8_t beacon)
 {
-    /* TODO: maybe add it to settings? */
-    (void)dev;
+    dev->settings.fsk.pktconfig2 = (sx127x_reg_read(dev, SX127X_REG_PACKETCONFIG2) &
+                                    SX127X_RF_PACKETCONFIG2_WMBUS_CRC_ENABLE_MASK &
+                                    SX127X_RF_PACKETCONFIG2_DATAMODE_MASK &
+                                    SX127X_RF_PACKETCONFIG2_IOHOME_MASK &
+                                    SX127X_RF_PACKETCONFIG2_BEACON_MASK) |
+                                    wmbus_crc_enable |
+                                    data_mode |
+                                    io_home |
+                                    beacon;
 
-    sx127x_reg_write(dev, SX127X_REG_PACKETCONFIG2,
-                     (sx127x_reg_read(dev, SX127X_REG_PACKETCONFIG2) &
-                       SX127X_RF_PACKETCONFIG2_WMBUS_CRC_ENABLE_MASK &
-                       SX127X_RF_PACKETCONFIG2_DATAMODE_MASK &
-                       SX127X_RF_PACKETCONFIG2_IOHOME_MASK &
-                       SX127X_RF_PACKETCONFIG2_BEACON_MASK) |
-                       wmbus_crc_enable |
-                       data_mode |
-                       io_home |
-                       beacon);
+    sx127x_reg_write(dev, SX127X_REG_PACKETCONFIG2, dev->settings.fsk.pktconfig2);
+}
+
+uint8_t sx127x_get_packetconfig2(const sx127x_t *dev)
+{
+    return dev->settings.fsk.pktconfig2;
 }
 
 void sx127x_set_bitrate(sx127x_t *dev, uint32_t bitrate)
@@ -1080,7 +1083,7 @@ void sx127x_set_bitrate(sx127x_t *dev, uint32_t bitrate)
     sx127x_reg_write(dev, SX127X_REG_BITRATELSB, (uint8_t)(bitrate & 0xFF));
 }
 
-uint32_t sx127x_get_bitrate(sx127x_t *dev)
+uint32_t sx127x_get_bitrate(const sx127x_t *dev)
 {
     return dev->settings.fsk.bitrate;
 }
@@ -1094,7 +1097,7 @@ void sx127x_set_freqdev(sx127x_t *dev, uint32_t freq_dev)
     sx127x_reg_write(dev, SX127X_REG_FDEVLSB, (uint8_t)((freq_dev & 0xFF)));
 }
 
-uint32_t sx127x_get_freqdev(sx127x_t *dev)
+uint32_t sx127x_get_freqdev(const sx127x_t *dev)
 {
     return dev->settings.fsk.freq_dev;
 }
@@ -1134,7 +1137,7 @@ void sx127x_fsk_set_rssi_offset(sx127x_t *dev, int8_t offset)
                        (uint8_t)((offset & 0x1F) << 3));
 }
 
-int8_t sx127x_fsk_get_rssi_offset(sx127x_t *dev)
+int8_t sx127x_fsk_get_rssi_offset(const sx127x_t *dev)
 {
     return dev->settings.fsk.rssi_offset;
 }
