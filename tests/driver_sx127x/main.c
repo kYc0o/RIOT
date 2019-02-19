@@ -136,7 +136,12 @@ int random_cmd(int argc, char **argv)
            (unsigned int) sx127x_random((sx127x_t*) netdev));
 
     /* reinit the transceiver to default values */
-    sx127x_init_radio_settings((sx127x_t*) netdev);
+    if (sx127x.settings.modem == SX127X_MODEM_FSK) {
+        sx127x_init_fsk_settings((sx127x_t*) netdev);
+    }
+    else {
+        sx127x_init_lora_settings((sx127x_t*) netdev);
+    }
 
     return 0;
 }
