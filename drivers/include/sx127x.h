@@ -211,6 +211,7 @@ typedef struct
     int8_t rssi_offset;                /**< Signed RSSI offset */
     uint8_t mod_shaping;               /**< Modulation shaping */
     uint8_t pktconfig1;                /**< RegPacketConfig1 */
+    uint8_t pktconfig2;                /**< RegPacketConfig2 */
     bool afc_on;                       /**< Automatic Frequency Correction */
 } sx127x_fsk_settings_t;
 
@@ -732,27 +733,28 @@ void sx127x_set_fsk_mod_shaping(sx127x_t *dev, uint8_t mode);
  *
  * @return the FSK/OOK modulation shaping
  */
-uint8_t sx127x_get_fsk_mod_shaping(sx127x_t *dev);
+uint8_t sx127x_get_fsk_mod_shaping(const sx127x_t *dev);
 
 void sx127x_set_lna(sx127x_t *dev, uint8_t value);
-uint8_t sx127x_get_lna(sx127x_t *dev);
+uint8_t sx127x_get_lna(const sx127x_t *dev);
 void sx127x_set_syncconfig(sx127x_t *dev, uint8_t autorestart_rx_mode,
                            uint8_t preamble_polarity, uint8_t sync,
                            uint8_t sync_size);
 void sx127x_set_packetconfig1(sx127x_t *dev, uint8_t packet_format, uint8_t dcfree,
                               uint8_t crc, uint8_t crc_autoclear, uint8_t addrs_filtering,
                               uint8_t crc_whitening_type);
+uint8_t sx127x_get_packetconfig1(const sx127x_t *dev);
 void sx127x_set_packetconfig2(sx127x_t *dev, uint8_t wmbus_crc_enable, uint8_t data_mode,
                               uint8_t io_home, uint8_t beacon);
-
+uint8_t sx127x_get_packetconfig2(const sx127x_t *dev);
 void sx127x_set_bitrate(sx127x_t *dev, uint32_t bitrate);
-uint32_t sx127x_get_bitrate(sx127x_t *dev);
+uint32_t sx127x_get_bitrate(const sx127x_t *dev);
 void sx127x_set_freqdev(sx127x_t *dev, uint32_t freq_dev);
-uint32_t sx127x_get_freqdev(sx127x_t *dev);
+uint32_t sx127x_get_freqdev(const sx127x_t *dev);
 void sx127x_set_rxbw(sx127x_t *dev, uint32_t value, uint32_t rx_bw_value);
 void sx127x_set_afcbw(sx127x_t *dev, uint32_t afc_bw_value);
 void sx127x_fsk_set_rssi_offset(sx127x_t *dev, int8_t offset);
-int8_t sx127x_fsk_get_rssi_offset(sx127x_t *dev);
+int8_t sx127x_fsk_get_rssi_offset(const sx127x_t *dev);
 
 
 #ifdef __cplusplus
