@@ -33,10 +33,35 @@ extern "C" {
  * @ingroup  config
  * @{
  */
+/**
+ * @name    FSK defaults
+ * @{
+ */
+
 /** @brief Frequency step in Hz */
-#ifndef FSK_FREQ_STEP
-#define FSK_FREQ_STEP                          (61.03515625)
+#ifndef FSK_FREQ_STEP_DEFAULT
+#define FSK_FREQ_STEP_DEFAULT      (61.03515625)              /**< Step frequency between channels */
 #endif
+#ifndef FSK_CHANNEL_DEFAULT
+#define FSK_CHANNEL_DEFAULT        (868950000UL)              /**< Default FSK frequency, 868.95MHz (Europe) */
+#endif
+#ifndef FSK_HF_CHANNEL_DEFAULT
+#define FSK_HF_CHANNEL_DEFAULT     (860000000UL)              /**< Use to calibrate RX chain for LF and HF bands */
+#endif
+#ifndef FSK_BITRATE_DEFAULT
+#define FSK_BITRATE_DEFAULT        (100000UL)                 /**< Bitrate at 100kpbs */
+#endif
+#ifndef FSK_FREQ_DEV_DEFAULT
+#define FSK_FREQ_DEV_DEFAULT       (50000UL)                  /**< 50KHz frequency deviation */
+#endif
+#ifndef FSK_BANDWIDTH_DEFAULT
+#define FSK_BANDWIDTH_DEFAULT      (FSK_BITRATE_DEFAULT + 2 \
+		                             * FSK_FREQ_DEV_DEFAULT)  /**< Bandwidth calculation */
+#endif
+#ifndef FSK_AFC_BANDWIDTH_DEFAULT
+#define FSK_AFC_BANDWIDTH_DEFAULT  (200000UL)                 /**< 20KHz AFC Bandwidth */
+#endif
+/** @} */
 
 #ifdef __cplusplus
 }

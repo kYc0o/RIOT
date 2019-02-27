@@ -31,13 +31,14 @@
 #include "periph/spi.h"
 
 #include "net/lora.h"
+#include "net/fsk.h"
 
 #include "sx127x.h"
 #include "sx127x_internal.h"
 #include "sx127x_registers.h"
 #include "sx127x_netdev.h"
 
-#define ENABLE_DEBUG (0)
+#define ENABLE_DEBUG (1)
 #include "debug.h"
 
 /* Internal functions */
@@ -123,7 +124,7 @@ int sx127x_init(sx127x_t *dev)
         sx1276_rx_chain_calibration(dev, SX127X_HF_CHANNEL_LORA);
     }
     else {
-        sx1276_rx_chain_calibration(dev, SX127X_HF_CHANNEL_FSK);
+        sx1276_rx_chain_calibration(dev, FSK_HF_CHANNEL_DEFAULT);
     }
 #endif
     sx127x_set_op_mode(dev, SX127X_RF_OPMODE_SLEEP);
@@ -160,7 +161,7 @@ void sx127x_init_lora_settings(sx127x_t *dev)
 void sx127x_init_fsk_settings(sx127x_t *dev)
 {
     DEBUG("[sx127x] initializing FSK settings\n");
-    sx127x_set_channel(dev, SX127X_CHANNEL_FSK);
+    sx127x_set_channel(dev, FSK_CHANNEL_DEFAULT);
     sx127x_set_modem(dev, SX127X_MODEM_FSK);
 #if defined(MODULE_SX1276)
     sx127x_set_tx_power(dev, 20);
@@ -168,7 +169,7 @@ void sx127x_init_fsk_settings(sx127x_t *dev)
     sx127x_set_tx_power(dev, 14);
 #endif
     sx127x_set_fsk_mod_shaping(dev, SX127X_RF_PARAMP_MODULATIONSHAPING_01);
-    sx127x_set_lna(dev, SX127X_RF_LORA_LNA_GAIN_G1);
+    sx127x_set_lna(dev, SX127X_RF_LNA_GAIN_G1);
     sx127x_set_syncconfig(dev, SX127X_RF_SYNCCONFIG_AUTORESTARTRXMODE_WAITPLL_OFF,
                               SX127X_RF_SYNCCONFIG_PREAMBLEPOLARITY_AA,
                               SX127X_RF_SYNCCONFIG_SYNC_ON,
@@ -183,15 +184,15 @@ void sx127x_init_fsk_settings(sx127x_t *dev)
                              SX127X_RF_PACKETCONFIG2_DATAMODE_CONTINUOUS,
                              SX127X_RF_PACKETCONFIG2_IOHOME_OFF,
                              SX127X_RF_PACKETCONFIG2_BEACON_OFF);
-    sx127x_set_tx(dev);
-    sx127x_set_bitrate(dev, SX127X_BITRATE_FSK);
-    sx127x_set_freqdev(dev, SX127X_FREQ_DEV_FSK);
-    sx127x_set_rxbw(dev, 0, SX127X_BANDWIDTH_FSK);
-    sx127x_set_afcbw(dev, 200000);
+    sx127x_set_rx(dev);
+    sx127x_set_bitrate(dev, FSK_BITRATE_DEFAULT);
+    sx127x_set_freqdev(dev, FSK_FREQ_DEV_DEFAULT);
+    sx127x_set_rxbw(dev, 0, FSK_BANDWIDTH_DEFAULT);
+    sx127x_set_afcbw(dev, FSK_AFC_BANDWIDTH_DEFAULT);
     sx127x_fsk_set_rssi_offset(dev, 0);
     sx127x_set_standby(dev);
 #if defined(MODULE_SX1276)
-    sx1276_rx_chain_calibration(dev, SX127X_HF_CHANNEL_FSK);
+    sx1276_rx_chain_calibration(dev, FSK_HF_CHANNEL_DEFAULT);
 #endif
 }
 

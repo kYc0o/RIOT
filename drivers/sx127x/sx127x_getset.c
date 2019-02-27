@@ -33,7 +33,7 @@
 #include "sx127x_registers.h"
 #include "sx127x_internal.h"
 
-#define ENABLE_DEBUG (0)
+#define ENABLE_DEBUG (1)
 #include "debug.h"
 
 /**
@@ -293,7 +293,7 @@ void sx127x_set_rx(sx127x_t *dev)
     switch (dev->settings.modem) {
         case SX127X_MODEM_FSK:
         {
-            if (dev->settings.fsk.afc_on) {
+            if (dev->settings.fsk.flags & SX127X_AFC_ON_FLAG) {
                 sx127x_reg_write(dev, SX127X_REG_RXCONFIG,
                                  ((sx127x_reg_read(dev, SX127X_REG_RXCONFIG) &
                                    SX127X_RF_RXCONFIG_RESTARTRXONCOLLISION_MASK) |
@@ -320,6 +320,29 @@ void sx127x_set_rx(sx127x_t *dev)
                                  ((sx127x_reg_read(dev, SX127X_REG_RXCONFIG) &
                                    SX127X_RF_RXCONFIG_AGCAUTO_MASK) |
                                    SX127X_RF_RXCONFIG_AGCAUTO_ON));
+            }
+
+            if ((dev->settings.fsk.flags & SX127X_RX_FSK_CONTINUOUS_FLAG) == false) {
+                sx127x_reg_write(dev, SX127X_REG_DIOMAPPING1,
+                                 (sx127x_reg_read(dev, SX127X_REG_DIOMAPPING1) &
+                                 SX127X_RF_DIOMAPPING1_DIO0_MASK &
+                                 SX127X_RF_DIOMAPPING1_DIO1_MASK &
+                                 SX127X_RF_DIOMAPPING1_DIO2_MASK &
+                                 SX127X_RF_DIOMAPPING1_DIO3_MASK) |
+                                 SX127X_RF_DIOMAPPING1_DIO0_00 |  /* PayloadReady */
+                                 SX127X_RF_DIOMAPPING1_DIO1_00 |  /* FifoLevel */
+                                 SX127X_RF_DIOMAPPING1_DIO2_11 |  /* SyncAddress */
+                                 SX127X_RF_DIOMAPPING1_DIO3_00);  /* FifoEmpty */
+
+                sx127x_reg_write(dev, SX127X_REG_DIOMAPPING2,
+                                 (sx127x_reg_read(dev, SX127X_REG_DIOMAPPING2) &
+                                 SX127X_RF_DIOMAPPING2_DIO4_MASK &
+                                 SX127X_RF_DIOMAPPING2_DIO5_MASK) |
+                                 SX127X_RF_DIOMAPPING2_DIO4_11 |  /* PreambleDetect */
+                                 SX127X_RF_DIOMAPPING2_DIO5_11);  /* ModeReady */
+            }
+            else {
+                /* TODO: Implement continuous mode */
             }
 
         }
@@ -400,21 +423,21 @@ void sx127x_set_rx(sx127x_t *dev)
             sx127x_reg_write(dev, SX127X_REG_LR_FIFORXBASEADDR, 0);
             sx127x_reg_write(dev, SX127X_REG_LR_FIFOADDRPTR, 0);
         }
+
+        if (dev->settings.lora.rx_timeout != 0) {
+            xtimer_set(&(dev->_internal.rx_timeout_timer), dev->settings.lora.rx_timeout);
+        }
+
+        if (dev->settings.lora.flags & SX127X_RX_CONTINUOUS_FLAG) {
+            sx127x_set_op_mode(dev, SX127X_RF_LORA_OPMODE_RECEIVER);
+        }
+        else {
+            sx127x_set_op_mode(dev, SX127X_RF_LORA_OPMODE_RECEIVER_SINGLE);
+        }
         break;
     }
 
     sx127x_set_state(dev, SX127X_RF_RX_RUNNING);
-    if (dev->settings.lora.rx_timeout != 0) {
-        xtimer_set(&(dev->_internal.rx_timeout_timer), dev->settings.lora.rx_timeout);
-    }
-
-
-    if (dev->settings.lora.flags & SX127X_RX_CONTINUOUS_FLAG) {
-        sx127x_set_op_mode(dev, SX127X_RF_LORA_OPMODE_RECEIVER);
-    }
-    else {
-        sx127x_set_op_mode(dev, SX127X_RF_LORA_OPMODE_RECEIVER_SINGLE);
-    }
 }
 
 void sx127x_set_tx(sx127x_t *dev)
@@ -422,23 +445,28 @@ void sx127x_set_tx(sx127x_t *dev)
      switch (dev->settings.modem) {
         case SX127X_MODEM_FSK:
         {
-            sx127x_reg_write(dev, SX127X_REG_DIOMAPPING1,
-                             (sx127x_reg_read(dev, SX127X_REG_DIOMAPPING1) &
-                             SX127X_RF_DIOMAPPING1_DIO0_MASK &
-                             SX127X_RF_DIOMAPPING1_DIO1_MASK &
-                             SX127X_RF_DIOMAPPING1_DIO2_MASK &
-                             SX127X_RF_DIOMAPPING1_DIO3_MASK) |
-                             SX127X_RF_DIOMAPPING1_DIO0_11 |
-                             SX127X_RF_DIOMAPPING1_DIO1_00 |
-                             SX127X_RF_DIOMAPPING1_DIO2_00 |
-                             SX127X_RF_DIOMAPPING1_DIO3_11);
+            if ((dev->settings.fsk.flags & SX127X_RX_FSK_CONTINUOUS_FLAG) == false) {
+                sx127x_reg_write(dev, SX127X_REG_DIOMAPPING1,
+                                 (sx127x_reg_read(dev, SX127X_REG_DIOMAPPING1) &
+                                 SX127X_RF_DIOMAPPING1_DIO0_MASK &
+                                 SX127X_RF_DIOMAPPING1_DIO1_MASK &
+                                 SX127X_RF_DIOMAPPING1_DIO2_MASK &
+                                 SX127X_RF_DIOMAPPING1_DIO3_MASK) |
+                                 SX127X_RF_DIOMAPPING1_DIO0_10 | /* PacketSent */
+                                 SX127X_RF_DIOMAPPING1_DIO1_00 | /* FifoLevel */
+                                 SX127X_RF_DIOMAPPING1_DIO2_11 | /* FifoFull */
+                                 SX127X_RF_DIOMAPPING1_DIO3_00); /* FifoEmpty */
 
-            sx127x_reg_write(dev, SX127X_REG_DIOMAPPING2,
-                             (sx127x_reg_read(dev, SX127X_REG_DIOMAPPING2) &
-                             SX127X_RF_DIOMAPPING2_DIO4_MASK &
-                             SX127X_RF_DIOMAPPING2_DIO5_MASK) |
-                             SX127X_RF_DIOMAPPING2_DIO4_11 |
-                             SX127X_RF_DIOMAPPING2_DIO5_11);
+                sx127x_reg_write(dev, SX127X_REG_DIOMAPPING2,
+                                 (sx127x_reg_read(dev, SX127X_REG_DIOMAPPING2) &
+                                 SX127X_RF_DIOMAPPING2_DIO4_MASK &
+                                 SX127X_RF_DIOMAPPING2_DIO5_MASK) |
+                                 SX127X_RF_DIOMAPPING2_DIO4_00 | /* LowBat */
+                                 SX127X_RF_DIOMAPPING2_DIO5_11); /* ModeReady */
+            }
+            else {
+                /* TODO: set up continuous mode */
+            }
         }
             break;
         case SX127X_MODEM_LORA:
@@ -481,13 +509,15 @@ void sx127x_set_tx(sx127x_t *dev)
                                   SX127X_RF_LORA_DIOMAPPING1_DIO0_01);
             }
         }
+
+        sx127x_set_state(dev, SX127X_RF_RX_RUNNING);
+        if (dev->settings.lora.tx_timeout != 0) {
+            xtimer_set(&(dev->_internal.tx_timeout_timer), dev->settings.lora.tx_timeout);
+        }
+
         break;
     }
 
-    sx127x_set_state(dev, SX127X_RF_RX_RUNNING);
-    if (dev->settings.lora.tx_timeout != 0) {
-        xtimer_set(&(dev->_internal.tx_timeout_timer), dev->settings.lora.tx_timeout);
-    }
     sx127x_set_op_mode(dev, SX127X_RF_OPMODE_TRANSMITTER );
 }
 
@@ -728,11 +758,22 @@ void sx127x_set_coding_rate(sx127x_t *dev, uint8_t coderate)
 
 static inline void _set_flag(sx127x_t *dev, uint8_t flag, bool value)
 {
-    if (value) {
-        dev->settings.lora.flags |= flag;
-    }
-    else {
-        dev->settings.lora.flags &= ~flag;
+    switch (dev->settings.modem) {
+    case SX127X_MODEM_LORA:
+        if (value) {
+            dev->settings.lora.flags |= flag;
+        }
+        else {
+            dev->settings.lora.flags &= ~flag;
+        }
+        break;
+    case SX127X_MODEM_FSK:
+        if (value) {
+            dev->settings.fsk.flags |= flag;
+        }
+        else {
+            dev->settings.fsk.flags &= ~flag;
+        }
     }
 }
 
@@ -1031,6 +1072,13 @@ void sx127x_set_packetconfig1(sx127x_t *dev, uint8_t packet_format, uint8_t dcfr
                               uint8_t crc, uint8_t crc_autoclear, uint8_t addrs_filtering,
                               uint8_t crc_whitening_type)
 {
+    if (crc == SX127X_RF_PACKETCONFIG1_CRC_ON) {
+        dev->settings.fsk.flags |= SX127X_CRC_ON_FLAG;
+    }
+    else {
+        dev->settings.fsk.flags &= ~SX127X_CRC_ON_FLAG;
+    }
+
     dev->settings.fsk.pktconfig1 = (sx127x_reg_read(dev, SX127X_REG_PACKETCONFIG1) &
                                                    SX127X_RF_PACKETCONFIG1_PACKETFORMAT_MASK &
                                                    SX127X_RF_PACKETCONFIG1_DCFREE_MASK &
@@ -1092,7 +1140,7 @@ void sx127x_set_freqdev(sx127x_t *dev, uint32_t freq_dev)
 {
     dev->settings.fsk.freq_dev = freq_dev;
 
-    freq_dev = (uint16_t)((double)freq_dev / (double)FSK_FREQ_STEP);
+    freq_dev = (uint16_t)((double)freq_dev / (double)FSK_FREQ_STEP_DEFAULT);
     sx127x_reg_write(dev, SX127X_REG_FDEVMSB, (uint8_t)((freq_dev >> 8)));
     sx127x_reg_write(dev, SX127X_REG_FDEVLSB, (uint8_t)((freq_dev & 0xFF)));
 }
@@ -1140,4 +1188,9 @@ void sx127x_fsk_set_rssi_offset(sx127x_t *dev, int8_t offset)
 int8_t sx127x_fsk_get_rssi_offset(const sx127x_t *dev)
 {
     return dev->settings.fsk.rssi_offset;
+}
+
+void sx127x_fsk_set_afc(sx127x_t *dev, bool value)
+{
+    _set_flag(dev, SX127X_AFC_ON_FLAG, value);
 }

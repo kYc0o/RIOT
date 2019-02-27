@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2016 Unwired Devices <info@unwds.com>
  *               2017 Inria
+ *               2019 Kugu-home GmbH
  *
  * This file is subject to the terms and conditions of the GNU Lesser
  * General Public License v2.1. See the file LICENSE in the top level
@@ -14,7 +15,7 @@
  *
  * This module contains the driver for radio devices of the Semtech SX127x
  * series (SX1272 and SX1276).
- * Only LoRa long range modem is supported at the moment.
+ * Only LoRa long range and FSK modems are supported at the moment.
  *
  * SX127x modules are designed to be used in the ISM radio frequency (RF) band.
  * This RF band depends on different regional regulations worldwide.
@@ -55,6 +56,7 @@
  * @brief       Public interface for SX127X driver
  * @author      Eugene P. <ep@unwds.com>
  * @author      Alexandre Abadie <alexandre.abadie@inria.fr>
+ * @author      Francisco Acosta <f.acosta.ext@kugu-home.com>
  */
 
 #ifndef SX127X_H
@@ -75,18 +77,6 @@ extern "C" {
  */
 #define SX127X_CHANNEL_LORA        (868300000UL)          /**< Default LoRa frequency, 868.3MHz (Europe) */
 #define SX127X_HF_CHANNEL_LORA     (868000000UL)          /**< Use to calibrate RX chain for LF and HF bands */
-/** @} */
-
-/**
- * @name    SX127X device radio FSK defaults
- * @{
- */
-#define SX127X_CHANNEL_FSK         (868950000UL)             /**< Default FSK frequency, 868.95MHz (Europe) */
-#define SX127X_HF_CHANNEL_FSK      (860000000UL)             /**< Use to calibrate RX chain for LF and HF bands */
-#define SX127X_BITRATE_FSK         (100000UL)                /**< Bitrate at 100kpbs */
-#define SX127X_FREQ_DEV_FSK        (50000UL)                 /**< Frequency deviation */
-#define SX127X_BANDWIDTH_FSK       (SX127X_BITRATE_FSK + 2 \
-                                    * SX127X_FREQ_DEV_FSK)   /**< Bandwidth calculation */
 /** @} */
 
 /**
@@ -177,7 +167,7 @@ enum {
 };
 
 /**
- * @name    SX127X device descriptor boolean flags
+ * @name    SX127X LoRa descriptor boolean flags
  * @{
  */
 #define SX127X_LOW_DATARATE_OPTIMIZE_FLAG       (1 << 0)
@@ -186,6 +176,18 @@ enum {
 #define SX127X_CHANNEL_HOPPING_FLAG             (1 << 3)
 #define SX127X_IQ_INVERTED_FLAG                 (1 << 4)
 #define SX127X_RX_CONTINUOUS_FLAG               (1 << 5)
+/** @} */
+
+/**
+ * @name    SX127X FSK descriptor boolean flags
+ * @{
+ */
+#define SX127X_AFC_ON_FLAG                      (1 << 0) /**< Automatic Frequency Correction */
+#define SX127X_CRC_ON_FLAG                      (1 << 1) /**< CRC check ON */
+#define SX127X_FIX_LEN_FLAG                     (1 << 2) /**< Packet length fixed or variable */
+#define SX127X_PREAMBLE_DETECTED_FLAG           (1 << 3) /**< Preamble detected in packet mode */
+#define SX127X_SYNC_WORD_DETECTED_FLAG          (1 << 4) /**< Sync address detected */
+#define SX127X_RX_FSK_CONTINUOUS_FLAG           (1 << 5) /**< Continuous mode or packet mode */
 /** @} */
 
 /**
@@ -200,19 +202,29 @@ typedef struct {
     uint32_t tx_timeout;               /**< TX timeout in microseconds */
 } sx127x_lora_settings_t;
 
-/**
- * @brief   FSK configuration structure.
- */
 typedef struct
 {
-    uint32_t bitrate;                  /**< Signal bitrate */
-    uint32_t freq_dev;                 /**< Frequency deviation */
-    uint32_t bandwidth_afc;            /**< Automatic Frequency Correction Bandwidth */
-    int8_t rssi_offset;                /**< Signed RSSI offset */
-    uint8_t mod_shaping;               /**< Modulation shaping */
-    uint8_t pktconfig1;                /**< RegPacketConfig1 */
-    uint8_t pktconfig2;                /**< RegPacketConfig2 */
-    bool afc_on;                       /**< Automatic Frequency Correction */
+    uint16_t size;                     /**< Received packet size in non-fixed length mode */
+    uint16_t nb_bytes;                 /**< Number of already transferred bytes in continuous mode */
+    uint8_t fifo_thresh;               /**< FIFO threshold */
+    uint8_t chunk_size;                /**< Chunk size in continuous mode */
+    int8_t rssi_value;                 /**< RSSI from received packet */
+} sx127x_fsk_pkt_handler_t;
+
+typedef struct
+{
+    uint32_t bitrate;                       /**< Signal bitrate */
+    uint32_t freq_dev;                      /**< Frequency deviation */
+    uint32_t bandwidth_afc;                 /**< Automatic Frequency Correction Bandwidth */
+    uint32_t datarate;                      /**< FSK data rate */
+    int8_t rssi_offset;                     /**< Signed RSSI offset */
+    uint8_t mod_shaping;                    /**< Modulation shaping */
+    uint8_t pktconfig1;                     /**< RegPacketConfig1 */
+    uint8_t pktconfig2;                     /**< RegPacketConfig2 */
+    int32_t afc_value;                      /**< Automatic Frequency Correction value */
+    uint8_t rx_gain;                        /**< RX gain */
+    uint8_t flags;                          /**< Boolean flags on FSK mode */
+    sx127x_fsk_pkt_handler_t pkt_handler;   /**< FSK packet handler */
 } sx127x_fsk_settings_t;
 
 /**
@@ -755,6 +767,7 @@ void sx127x_set_rxbw(sx127x_t *dev, uint32_t value, uint32_t rx_bw_value);
 void sx127x_set_afcbw(sx127x_t *dev, uint32_t afc_bw_value);
 void sx127x_fsk_set_rssi_offset(sx127x_t *dev, int8_t offset);
 int8_t sx127x_fsk_get_rssi_offset(const sx127x_t *dev);
+void sx127x_fsk_set_afc(sx127x_t *dev, bool value);
 
 
 #ifdef __cplusplus
