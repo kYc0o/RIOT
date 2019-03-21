@@ -46,6 +46,7 @@ extern "C" {
 #define SX127X_PARAM_DIO1                   GPIO_PIN(PORT_B, 1)
 #define SX127X_PARAM_DIO2                   GPIO_PIN(PORT_B, 0)
 #define SX127X_PARAM_DIO3                   GPIO_PIN(PORT_C, 13)
+#define SX127X_PARAM_DIO4                   GPIO_PIN(PORT_A, 5)
 
 #define RADIO_TCXO_VCC_PIN                  GPIO_PIN(PORT_A, 12)
 /** @} */

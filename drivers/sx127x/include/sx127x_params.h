@@ -77,6 +77,7 @@ extern "C" {
                                     .dio1_pin  = SX127X_PARAM_DIO1,         \
                                     .dio2_pin  = SX127X_PARAM_DIO2,         \
                                     .dio3_pin  = SX127X_PARAM_DIO3,         \
+                                    .dio4_pin  = SX127X_PARAM_DIO4,         \
                                     .dio_multi_pin = SX127X_PARAM_DIO_MULTI,\
                                     .paselect  = SX127X_PARAM_PASELECT }
 #else
@@ -87,6 +88,7 @@ extern "C" {
                                     .dio1_pin  = SX127X_PARAM_DIO1,         \
                                     .dio2_pin  = SX127X_PARAM_DIO2,         \
                                     .dio3_pin  = SX127X_PARAM_DIO3,         \
+									.dio4_pin  = SX127X_PARAM_DIO4,         \
                                     .paselect  = SX127X_PARAM_PASELECT }
 #endif
 #endif

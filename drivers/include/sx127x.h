@@ -217,10 +217,13 @@ typedef struct
     uint32_t freq_dev;                      /**< Frequency deviation */
     uint32_t bandwidth_afc;                 /**< Automatic Frequency Correction Bandwidth */
     uint32_t datarate;                      /**< FSK data rate */
+    uint16_t payload_len;                   /**< Payload length */
     int8_t rssi_offset;                     /**< Signed RSSI offset */
     uint8_t mod_shaping;                    /**< Modulation shaping */
     uint8_t pktconfig1;                     /**< RegPacketConfig1 */
     uint8_t pktconfig2;                     /**< RegPacketConfig2 */
+    uint8_t preamble_detect;                /**< PreambleDetect register */
+    uint8_t sysconfig;                      /**< SysConfig */
     int32_t afc_value;                      /**< Automatic Frequency Correction value */
     uint8_t rx_gain;                        /**< RX gain */
     uint8_t flags;                          /**< Boolean flags on FSK mode */
@@ -643,9 +646,10 @@ uint8_t sx127x_get_payload_length(const sx127x_t *dev);
  * @brief   Sets the SX127X payload length
  *
  * @param[in] dev                      The sx127x device descriptor
- * @param[in] len                      The payload len
+ * @param[in] len                      The payload len, up to 2047
+ *                                     bytes in FSK mode
  */
-void sx127x_set_payload_length(sx127x_t *dev, uint8_t len);
+void sx127x_set_payload_length(sx127x_t *dev, uint16_t len);
 
 /**
  * @brief   Gets the SX127X TX radio power
@@ -768,7 +772,10 @@ void sx127x_set_afcbw(sx127x_t *dev, uint32_t afc_bw_value);
 void sx127x_fsk_set_rssi_offset(sx127x_t *dev, int8_t offset);
 int8_t sx127x_fsk_get_rssi_offset(const sx127x_t *dev);
 void sx127x_fsk_set_afc(sx127x_t *dev, bool value);
-
+void sx127x_fsk_set_preamble_detect(sx127x_t *dev, uint8_t value);
+void sx127x_fsk_set_preamble_detector_size(sx127x_t *dev, uint8_t size);
+void sx127x_fsk_set_preamble_detector_tol(sx127x_t *dev, uint8_t value);
+void sx127x_fsk_set_syncword(sx127x_t *dev, uint8_t syncword, uint8_t value);
 
 #ifdef __cplusplus
 }
